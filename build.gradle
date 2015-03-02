@@ -52,6 +52,14 @@ dependencies {
     compile('io.ratpack:ratpack-hikari:0.9.13')
 }
 
+configurations.all {
+    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+        if (details.requested.name == 'logback-classic') {
+            details.useTarget "org.slf4j:slf4j-simple:1.7.7"
+        }
+    }
+}
+
 task wrapper(type: Wrapper) {
     gradleVersion = '2.3'
 }
