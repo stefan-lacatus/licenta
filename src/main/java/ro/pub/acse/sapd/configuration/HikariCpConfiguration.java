@@ -8,30 +8,30 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.sql.DataSource;
-import java.util.Properties;
 
 @Configuration
 public class HikariCpConfiguration {
 
-    @Value("${spring.dataSource.username}")
+    @Value("${spring.datasource.username}")
     private String user;
-    @Value("${spring.dataSource.password}")
+    @Value("${spring.datasource.password}")
     private String password;
-    @Value("${spring.dataSource.dataSourceClassName}")
+    @Value("${spring.datasource.dataSourceClassName}")
     private String dataSourceClassName;
-    @Value("${spring.dataSource.databaseName}")
+    @Value("${spring.datasource.database-name}")
     private String database;
+    @Value("${spring.datasource.server-name")
+    private String server;
 
     @Bean
     public DataSource primaryDataSource() {
-        Properties dsProps = new Properties();
-        dsProps.setProperty("user", user);
-        dsProps.setProperty("password", password);
-        Properties configProps = new Properties();
-        configProps.setProperty("dataSourceClassName", dataSourceClassName);
-        configProps.setProperty("dataSource.databaseName", database);
-        HikariConfig hc = new HikariConfig(configProps);
-        hc.setDataSourceProperties(dsProps);
-        return new HikariDataSource(hc);
+        HikariConfig config = new HikariConfig();
+        config.setMaximumPoolSize(100);
+        config.setDataSourceClassName(dataSourceClassName);
+        //config.addDataSourceProperty("serverName", server);
+        config.addDataSourceProperty("databaseName", database);
+        config.addDataSourceProperty("user", user);
+        config.addDataSourceProperty("password", password);
+        return new HikariDataSource(config);
     }
 }
