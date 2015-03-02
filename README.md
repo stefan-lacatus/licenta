@@ -1,0 +1,2 @@
+# licenta
+Proiectul de licenta
