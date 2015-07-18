@@ -1,0 +1,60 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring3-3.dtd">
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <link href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.5/css/bootstrap.min.css"
+          th:href="@{/webjars/bootstrap/3.3.5/css/bootstrap.min.css}"
+          rel="stylesheet" media="screen"/>
+    <script src="http://cdn.jsdelivr.net/webjars/jquery/2.1.4/jquery.min.js"
+            th:src="@{/webjars/jquery/2.1.4/jquery.min.js}"></script>
+</head>
+<body>
+
+<!-- Navbar -->
+<div class="navbar-wrapper" th:fragment="header">
+    <div class="container">
+        <div class="navbar navbar-inverse navbar-static-top" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#" th:text="#{project_name}"></a>
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li th:classappend="${current_page == 'home' ? 'active' : ''}"><a href="#"
+                                                                                          th:href="@{/}">Home</a></li>
+                        <li th:classappend="${current_page == 'management' ? 'active' : ''}"><a href="#"
+                                                                                                th:href="@{/templates/management}">Management</a>
+                        </li>
+                        <li th:classappend="${current_page == 'reports' ? 'active' : ''}" class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reports <span
+                                    class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="#" th:href="@{/reports/day}">Active Employees</a></li>
+                                <li class="divider"></li>
+                                <li><a href="#" th:href="@{/reports/history}">Employee History</a></li>
+                                <li><a href="#" th:href="@{/reports/time}">Employee Time</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <div class="navbar-right">
+                        <ul class="nav navbar-nav" style="margin-right: 15px">
+                            <li><a href="#" th:text="|#{logged_in_as}: ${#authentication.name}|"> Logged in as </a></li>
+                        </ul>
+                        <form class="navbar-form navbar-right" role="logout" action="/logout" method="post">
+                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                            <button type="submit" class="btn btn-success">Logout</button>
+                        </form>
+                    </div>
+                </div>
+                <!--/.nav-collapse -->
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

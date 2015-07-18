@@ -1,0 +1,39 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title th:text="#{project_name}">Project name</title>
+
+    <link href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.5/css/bootstrap.min.css"
+          th:href="@{/webjars/bootstrap/3.3.5/css/bootstrap.min.css}"
+          rel="stylesheet" media="screen"/>
+
+    <script src="http://cdn.jsdelivr.net/webjars/jquery/2.1.4/jquery.min.js"
+            th:src="@{/webjars/jquery/2.1.4/jquery.min.js}"></script>
+</head>
+
+<body>
+<div class="container">
+
+    <h2>An error has occurred...</h2>
+
+    <p th:text="${error}">The exception message...</p>
+
+    <p th:text="${exception}">The exception message...</p>
+
+    <strong th:text="${message}">The exception message...</strong>
+
+    <p th:text="${#dates.createNow()}">date.</p>
+
+
+    <div th:replace="fragments/footer :: footer" class="footer">
+
+    </div>
+
+
+</div>
+</body>
+
+</html>

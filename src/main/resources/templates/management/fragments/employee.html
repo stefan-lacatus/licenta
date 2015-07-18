@@ -1,0 +1,116 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+<body>
+
+<div class="pageContent">
+    <form class="form-horizontal" role="save" th:object="${input_block}"
+          th:action="|${#httpServletRequest.getRequestURI()}/save|" method="post">
+        <fieldset>
+
+            <legend th:text="@{${add_new} ? 'Add input_block' : 'Edit input_block'}">Add input_block
+                <strong th:text="|${input_block.firstName} ${input_block.lastName}|" th:unless="${input_block == null}">input_block
+                    name</strong>
+            </legend>
+
+            <input value="id" th:field="${input_block.id}" th:value="@{${add_new}? '' : ${input_block.id}}" id="id"
+                   required="Add a first name!" name="id" type="hidden">
+
+            <!-- Text input-->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="firstName">First Name</label>
+
+                <div class="col-md-6">
+                    <input value="first Name" th:field="${input_block.firstName}"
+                           th:value="@{${add_new}? '' : ${input_block.firstName}}" id="firstName"
+                           required="Add a first name!" name="firstName" placeholder="First Name"
+                           class="form-control input-md" type="text">
+                </div>
+            </div>
+
+            <!-- Text input-->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="lastName">Last Name</label>
+
+                <div class="col-md-6">
+                    <input value="Last name" th:field="${input_block.lastName}"
+                           th:value="@{${add_new}? '' : ${input_block.lastName}}" id="lastName"
+                           required="Add a last name!" name="lastName" placeholder="Last Name"
+                           class="form-control input-md" type="text">
+                </div>
+            </div>
+
+            <!-- Text input-->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="userName">User Name</label>
+
+                <div class="col-md-6">
+                    <input value="User name" th:field="${input_block.userName}"
+                           th:value="@{${add_new}? '' : ${input_block.userName}}" id="userName"
+                           required="Add a user name!" name="userName" placeholder="User Name"
+                           class="form-control input-md" type="text">
+                </div>
+            </div>
+
+            <!-- Text input-->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="badgeId">Badge Id</label>
+
+                <div class="col-md-6">
+                    <input value="Badge Id" th:field="${input_block.badgeId}"
+                           th:value="@{${add_new}? '' : ${input_block.badgeId}}" id="badgeId" required="Add a badge Id!"
+                           name="badgeId" placeholder="Badge Id" class="form-control input-md" type="text">
+                    <span class="help-block">The badge id of this input_block</span>
+
+                </div>
+            </div>
+
+            <!-- Text input-->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="password">Password</label>
+
+                <div class="col-md-6">
+                    <input value="Password" th:field="${input_block.password}"
+                           th:value="@{${add_new}? '' : ${input_block.password}}" id="password"
+                           required="Add a password!" name="password" placeholder="Password"
+                           class="form-control input-md" type="text">
+                    <span class="help-block">The password of this input_block</span>
+
+                </div>
+            </div>
+
+            <!-- Textarea -->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="details">Details</label>
+
+                <div class="col-md-6">
+                    <textarea class="form-control" id="details" name="details" th:field="${input_block.details}"
+                              th:text="@{${add_new}? '' : ${input_block.details}}"
+                              placeholder="input_block additional details">
+                        Descriere angajat
+                    </textarea>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="col-md-4 control-label" for="active">Active</label>
+
+                <div class="controls">
+                    <input name="active" id="active" type="checkbox" th:field="${input_block.active}"
+                           th:checked="@{${add_new} || ${input_block.active}}">
+                </div>
+            </div>
+
+            <div class="modal-footer form-group">
+                          <span class="input-group-btn">
+                              <button class="btn btn-info" data-dismiss="modal" aria-hidden="true">Cancel</button>
+                          <button id="save" name="save" class="btn btn-primary">Save</button>
+                          </span>
+            </div>
+        </fieldset>
+    </form>
+
+</div>
+<!--/span-->
+
+</body>
+</html>

@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        springBootVersion = '1.2.3.BUILD-SNAPSHOT'
+        springBootVersion = '1.2.5.RELEASE'
     }
     repositories {
         mavenCentral()
@@ -20,7 +20,7 @@ apply plugin: 'idea'
 
 jar {
     baseName = 'sapd'
-    version = '0.0.1-SNAPSHOT'
+    version = '0.0.2-SNAPSHOT'
 }
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -29,7 +29,6 @@ repositories {
     mavenCentral()
     maven { url "https://repo.spring.io/snapshot" }
     maven { url "https://repo.spring.io/milestone" }
-
 }
 
 
@@ -40,7 +39,7 @@ dependencies {
 
     compile("org.springframework.boot:spring-boot-starter-jetty")
     compile("org.springframework.boot:spring-boot-starter-actuator")
-    compile('org.postgresql:postgresql:9.4-1200-jdbc41')
+    compile('org.postgresql:postgresql:9.4-1201-jdbc41')
     compile("org.springframework.boot:spring-boot-starter-batch")
     compile("org.springframework.boot:spring-boot-starter-data-jpa")
     compile("org.springframework.boot:spring-boot-starter-data-rest")
@@ -48,9 +47,16 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-security")
     compile("org.springframework.boot:spring-boot-starter-thymeleaf")
     compile("org.springframework.boot:spring-boot-starter-web")
+    compile('org.thymeleaf.extras:thymeleaf-extras-springsecurity3')
+    compile('com.zaxxer:HikariCP:2.3.9')
+    compile('net.sourceforge.nekohtml:nekohtml:1.9.22')
+    compile('org.thymeleaf.extras:thymeleaf-extras-java8time:2.1.0.RELEASE')
+
+
+    compile 'org.webjars:bootstrap:3.3.5'
+    compile 'org.webjars:jquery:2.1.4'
+    compile 'org.webjars:tablesorter:2.17.8'
     testCompile("org.springframework.boot:spring-boot-starter-test")
-    compile('com.jolbox:bonecp:0.8.0.RELEASE')
-    compile('io.ratpack:ratpack-hikari:0.9.13')
 }
 
 configurations.all {
@@ -62,5 +68,5 @@ configurations.all {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '2.3'
+    gradleVersion = '2.5'
 }

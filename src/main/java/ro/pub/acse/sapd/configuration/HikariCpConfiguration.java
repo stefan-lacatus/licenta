@@ -26,7 +26,7 @@ public class HikariCpConfiguration {
     @Bean
     public DataSource primaryDataSource() {
         HikariConfig config = new HikariConfig();
-        config.setMaximumPoolSize(100);
+        config.setMaximumPoolSize(10);
         config.setDataSourceClassName(dataSourceClassName);
         //config.addDataSourceProperty("serverName", server);
         config.addDataSourceProperty("databaseName", database);
