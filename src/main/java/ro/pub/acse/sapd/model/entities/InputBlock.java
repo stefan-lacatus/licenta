@@ -18,7 +18,7 @@ public class InputBlock implements Serializable {
     private String description;
     private List<InputChannel> channels;
     private ApplicationUser lastEditedBy;
-    private boolean enabled;
+    private boolean active;
     private Date lastEditedTime;
 
     @Id
@@ -68,12 +68,12 @@ public class InputBlock implements Serializable {
         this.lastEditedBy = lastEditedBy;
     }
 
-    public boolean isEnabled() {
-        return enabled;
+    public boolean isActive() {
+        return active;
     }
 
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     public Date getLastEditedTime() {
