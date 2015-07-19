@@ -11,9 +11,9 @@ import java.util.List;
  */
 @Entity
 public class InputBlock implements Serializable {
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 4434541342673637095L;
 
-    private Integer id;
+    private long id;
     private String name;
     private String description;
     private List<InputChannel> channels;
@@ -23,11 +23,11 @@ public class InputBlock implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Integer getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -59,7 +59,7 @@ public class InputBlock implements Serializable {
         this.channels = channels;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     public ApplicationUser getLastEditedBy() {
         return lastEditedBy;
     }

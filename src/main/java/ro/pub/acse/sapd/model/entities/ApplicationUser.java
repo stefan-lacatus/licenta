@@ -1,21 +1,22 @@
 package ro.pub.acse.sapd.model.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * Represents a user in the application
  */
 @Entity
-public class ApplicationUser {
+public class ApplicationUser implements Serializable {
+    private static final long serialVersionUID = -5406081783045553462L;
+
     private String userName;
-    private int id;
+    private long id;
     private String password;
     private String email;
     private boolean active;
 
+    @Column(unique = true)
     public String getUserName() {
         return userName;
     }
@@ -26,11 +27,11 @@ public class ApplicationUser {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

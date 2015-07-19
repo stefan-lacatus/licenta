@@ -12,9 +12,9 @@ import java.io.Serializable;
  */
 @Entity
 public class InputChannel implements Serializable {
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = -4876823382677721689L;
 
-    private Integer id;
+    private long id;
     private String name;
     private String description;
     private DataType dataType;
@@ -23,11 +23,11 @@ public class InputChannel implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Integer getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(long id) {
         this.id = id;
     }
 
