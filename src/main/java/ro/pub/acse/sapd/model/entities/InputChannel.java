@@ -74,6 +74,7 @@ public class InputChannel implements Serializable {
         this.samplingTime = samplingTime;
     }
 
+    @ManyToOne
     public ProcessorBlock getInputPreprocessor() {
         return inputPreprocessor;
     }
