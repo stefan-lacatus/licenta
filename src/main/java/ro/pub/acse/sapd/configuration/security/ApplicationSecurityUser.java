@@ -16,7 +16,7 @@ public class ApplicationSecurityUser extends ApplicationUser implements UserDeta
         if (user != null) {
             this.setId(user.getId());
             this.setEmail(user.getEmail());
-            this.setUserName(user.getUserName());
+            this.setUsername(user.getUsername());
             this.setPassword(user.getPassword());
             this.setActive(user.isActive());
         }
@@ -36,7 +36,7 @@ public class ApplicationSecurityUser extends ApplicationUser implements UserDeta
 
     @Override
     public String getUsername() {
-        return super.getUserName();
+        return super.getUsername();
     }
 
     @Override

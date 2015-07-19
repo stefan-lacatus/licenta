@@ -2,6 +2,7 @@ package ro.pub.acse.sapd.model.entities;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * Represents a user in the application
@@ -10,19 +11,24 @@ import java.io.Serializable;
 public class ApplicationUser implements Serializable {
     private static final long serialVersionUID = -5406081783045553462L;
 
-    private String userName;
+    private String username;
+    private String firstName;
+    private String lastName;
     private long id;
     private String password;
     private String email;
     private boolean active;
+    private String description;
+    private ApplicationUser lastEditedBy;
+    private Date lastEditedTime;
 
     @Column(unique = true)
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     @Id
@@ -57,5 +63,46 @@ public class ApplicationUser implements Serializable {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    @ManyToOne
+    public ApplicationUser getLastEditedBy() {
+        return lastEditedBy;
+    }
+
+    public void setLastEditedBy(ApplicationUser lastEditedBy) {
+        this.lastEditedBy = lastEditedBy;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Date getLastEditedTime() {
+        return lastEditedTime;
+    }
+
+    public void setLastEditedTime(Date lastEditedTime) {
+        this.lastEditedTime = lastEditedTime;
     }
 }

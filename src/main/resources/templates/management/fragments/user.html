@@ -1,0 +1,108 @@
+<div class="pageContent">
+    <form class="form-horizontal" role="save" th:object="${user}"
+          th:action="|${#httpServletRequest.getRequestURI()}/save|" method="post">
+        <fieldset>
+
+            <legend th:text="@{${add_new} ? 'Add user' : 'Edit user'}">Add user
+                <strong th:text="|${user.firstName} ${user.lastName}|" th:unless="${user == null}">user
+                    name</strong>
+            </legend>
+
+            <input value="id" th:field="${user.id}" th:value="@{${add_new}? '' : ${user.id}}" id="id"
+                   required="Add a first name!" name="id" type="hidden">
+
+            <!-- Text input-->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="firstName">First Name</label>
+
+                <div class="col-md-6">
+                    <input value="first Name" th:field="${user.firstName}"
+                           th:value="@{${add_new}? '' : ${user.firstName}}" id="firstName"
+                           required="Add a first name!" name="firstName" placeholder="First Name"
+                           class="form-control input-md" type="text">
+                </div>
+            </div>
+
+            <!-- Text input-->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="lastName">Last Name</label>
+
+                <div class="col-md-6">
+                    <input value="Last name" th:field="${user.lastName}"
+                           th:value="@{${add_new}? '' : ${user.lastName}}" id="lastName"
+                           required="Add a last name!" name="lastName" placeholder="Last Name"
+                           class="form-control input-md" type="text">
+                </div>
+            </div>
+
+            <!-- Text input-->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="username">User Name</label>
+
+                <div class="col-md-6">
+                    <input value="User name" th:field="${user.username}"
+                           th:value="@{${add_new}? '' : ${user.username}}" id="username"
+                           required="Add a user name!" name="username" placeholder="User Name"
+                           class="form-control input-md" type="text">
+                </div>
+            </div>
+
+            <!-- Text input-->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="email">Email</label>
+
+                <div class="col-md-6">
+                    <input value="Email" th:field="${user.email}"
+                           th:value="@{${add_new}? '' : ${user.email}}" id="email" required="Add an email!"
+                           name="email" placeholder="email" class="form-control input-md" type="text">
+                    <span class="help-block">The email of this user</span>
+
+                </div>
+            </div>
+
+            <!-- Text input-->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="password">Password</label>
+
+                <div class="col-md-6">
+                    <input value="Password" th:field="${user.password}"
+                           th:value="@{${add_new}? '' : ${user.password}}" id="password"
+                           required="Add a password!" name="password" placeholder="Password"
+                           class="form-control input-md" type="text">
+                    <span class="help-block">The password of this user</span>
+
+                </div>
+            </div>
+
+            <!-- Textarea -->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="description">Description</label>
+
+                <div class="col-md-6">
+                    <textarea class="form-control" id="description" name="description" th:field="${user.description}"
+                              th:text="@{${add_new}? '' : ${user.description}}"
+                              placeholder="user additional details">
+                        Descriere user
+                    </textarea>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="col-md-4 control-label" for="active">Active</label>
+
+                <div class="controls">
+                    <input name="active" id="active" type="checkbox" th:field="${user.active}"
+                           th:checked="@{${add_new} || ${user.active}}">
+                </div>
+            </div>
+
+            <div class="modal-footer form-group">
+                          <span class="input-group-btn">
+                              <button class="btn btn-info" data-dismiss="modal" aria-hidden="true">Cancel</button>
+                          <button id="save" name="save" class="btn btn-primary">Save</button>
+                          </span>
+            </div>
+        </fieldset>
+    </form>
+
+</div>

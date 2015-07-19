@@ -53,19 +53,13 @@ $(function () {
 });
 
 $(document).ready(function () {
-
     $('a[data-toggle=modal], button[data-toggle=modal]').click(function () {
-
         var data_id = '';
-
         if (typeof $(this).data('id') !== 'undefined') {
-
             data_id = $(this).data('id');
         }
-
-        $('#employeeId').val(data_id);
+        $('#entityId').val(data_id);
     })
-
 });
 
 (function ($, undefined) {
@@ -113,8 +107,8 @@ $(document).ready(function () {
                 // custom event that anybody can listen to
                 form.trigger("submitComplete");
 
-                $("#genericModal .modal-body").html(html);
-                $("#genericModal .render-partial").removeClass("render-partial").addClass("render-modal");
+                $("#genericModal").find(".modal-body").html(html);
+                $("#genericModal").find(".render-partial").removeClass("render-partial").addClass("render-modal");
             });
         });
 
@@ -130,8 +124,8 @@ $(document).ready(function () {
 
         // content rendering in a modal window when clicking on a link
         $("body").on("click", "a.render-modal", allowNewTabShortcuts(function (e) {
-            $("#genericModal .modal-body").load(this.href, function () {
-                $("#genericModal .render-partial").removeClass("render-partial").addClass("render-modal");
+            $("#genericModal").find(".modal-body").load(this.href, function () {
+                $("#genericModal").find(".render-partial").removeClass("render-partial").addClass("render-modal");
             });
             $("#genericModal").modal("show");
         }));

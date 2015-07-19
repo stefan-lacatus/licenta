@@ -55,7 +55,6 @@ dependencies {
 
     compile 'org.webjars:bootstrap:3.3.5'
     compile 'org.webjars:jquery:2.1.4'
-    compile 'org.webjars:tablesorter:2.17.8'
     testCompile("org.springframework.boot:spring-boot-starter-test")
 }
 
