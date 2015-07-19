@@ -1,0 +1,71 @@
+<div xmlns:th="http://www.w3.org/1999/xhtml" class="pageContent">
+    <form class="form-horizontal" role="save" th:object="${input}"
+          th:action="|${#httpServletRequest.getRequestURI()}/save|" method="post">
+        <fieldset>
+
+            <legend th:text="@{${add_new} ? 'Add input' : 'Edit input'}">Add input
+                <strong th:text="${input.name}" th:unless="${input == null}">input
+                    name</strong>
+            </legend>
+
+            <input value="id" th:field="${input.id}" th:value="@{${add_new}? '' : ${input.id}}" id="id"
+                   name="id" type="hidden">
+
+            <!-- Text input-->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="name">First Name</label>
+
+                <div class="col-md-6">
+                    <input value="name" th:field="${input.name}"
+                           th:value="@{${add_new}? '' : ${input.name}}" id="name"
+                           required="Add a name for the input!" name="name" placeholder="Input Name"
+                           class="form-control input-md" type="text">
+                </div>
+            </div>
+
+
+            <!-- Text input-->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="tags">Tags</label>
+
+                <div class="col-md-6">
+                    <input value="Tags" th:field="${input.name}"
+                           th:value="@{${add_new}? '' : ${input.name}}" id="tags"
+                           name="tags" placeholder="email" class="form-control input-md" type="text">
+                    <span class="help-block">The tags of this input</span>
+
+                </div>
+            </div>
+
+            <!-- Textarea -->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="description">Description</label>
+
+                <div class="col-md-6">
+                    <textarea class="form-control" id="description" name="description" th:field="${input.description}"
+                              th:text="@{${add_new}? '' : ${input.description}}"
+                              placeholder="input additional details">
+                        Descriere input
+                    </textarea>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="col-md-4 control-label" for="active">Active</label>
+
+                <div class="controls">
+                    <input name="active" id="active" type="checkbox" th:field="${input.active}"
+                           th:checked="@{${add_new} || ${input.active}}">
+                </div>
+            </div>
+
+            <div class="modal-footer form-group">
+                          <span class="input-group-btn">
+                              <button class="btn btn-info" data-dismiss="modal" aria-hidden="true">Cancel</button>
+                          <button id="save" name="save" class="btn btn-primary">Save</button>
+                          </span>
+            </div>
+        </fieldset>
+    </form>
+
+</div>
