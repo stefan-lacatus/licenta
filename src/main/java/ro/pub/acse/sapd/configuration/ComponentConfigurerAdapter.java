@@ -51,7 +51,7 @@ public class ComponentConfigurerAdapter extends WebMvcConfigurerAdapter {
         resolver.setPageParameterName("page.page");
         resolver.setSizeParameterName("page.size");
         resolver.setOneIndexedParameters(true);
-        resolver.setFallbackPageable(new PageRequest(0, 15, Sort.Direction.DESC, "id"));
+        resolver.setFallbackPageable(new PageRequest(0, 30, Sort.Direction.DESC, "id"));
         argumentResolvers.add(resolver);
         super.addArgumentResolvers(argumentResolvers);
     }
