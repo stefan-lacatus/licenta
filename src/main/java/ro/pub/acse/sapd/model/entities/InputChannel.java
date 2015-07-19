@@ -2,7 +2,6 @@ package ro.pub.acse.sapd.model.entities;
 
 import org.hibernate.validator.constraints.NotBlank;
 import ro.pub.acse.sapd.data.DataType;
-import ro.pub.acse.sapd.input.InputPreprocessorBlock;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -19,7 +18,7 @@ public class InputChannel implements Serializable {
     private String description;
     private DataType dataType;
     private Integer samplingTime;
-    private InputPreprocessorBlock inputPreprocessor;
+    private ProcessorBlock inputPreprocessor;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -75,12 +74,11 @@ public class InputChannel implements Serializable {
         this.samplingTime = samplingTime;
     }
 
-    @Transient
-    public InputPreprocessorBlock getInputPreprocessor() {
+    public ProcessorBlock getInputPreprocessor() {
         return inputPreprocessor;
     }
 
-    public void setInputPreprocessor(InputPreprocessorBlock inputPreprocessor) {
+    public void setInputPreprocessor(ProcessorBlock inputPreprocessor) {
         this.inputPreprocessor = inputPreprocessor;
     }
 }
