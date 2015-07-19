@@ -3,7 +3,7 @@ package ro.pub.acse.sapd.model.entities;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -19,7 +19,7 @@ public class InputBlock implements Serializable {
     private List<InputChannel> channels;
     private ApplicationUser lastEditedBy;
     private boolean enabled;
-    private LocalDateTime lastEditedTime;
+    private Date lastEditedTime;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -76,11 +76,11 @@ public class InputBlock implements Serializable {
         this.enabled = enabled;
     }
 
-    public LocalDateTime getLastEditedTime() {
+    public Date getLastEditedTime() {
         return lastEditedTime;
     }
 
-    public void setLastEditedTime(LocalDateTime lastEditedTime) {
+    public void setLastEditedTime(Date lastEditedTime) {
         this.lastEditedTime = lastEditedTime;
     }
 }
