@@ -20,6 +20,7 @@ public class InputBlock implements Serializable {
     private ApplicationUser lastEditedBy;
     private boolean active;
     private Date lastEditedTime;
+    private List<ApplicationTag> tags;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -82,5 +83,14 @@ public class InputBlock implements Serializable {
 
     public void setLastEditedTime(Date lastEditedTime) {
         this.lastEditedTime = lastEditedTime;
+    }
+
+    @OneToMany
+    public List<ApplicationTag> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<ApplicationTag> tags) {
+        this.tags = tags;
     }
 }
