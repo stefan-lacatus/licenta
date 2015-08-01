@@ -1,4 +1,19 @@
 <div class="pageContent">
+    <script src="http://cdn.jsdelivr.net/webjars/jquery/2.1.4/jquery.min.js"
+            th:src="@{/webjars/jquery/2.1.4/jquery.min.js}"></script>
+
+    <script src="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.5/js/bootstrap.min.js"
+            th:src="@{/webjars/bootstrap/3.3.5/js/bootstrap.min.js}"></script>
+
+    <script src="http://cdn.jsdelivr.net/webjars/org.webjars/bootstrap-tagsinput/0.5/bootstrap-tagsinput.min.js"
+            th:src="@{/webjars/bootstrap-tagsinput/0.5/bootstrap-tagsinput.min.js}"></script>
+
+    <link rel="stylesheet"
+          href="http://cdn.jsdelivr.net/webjars/org.webjars/bootstrap-tagsinput/0.5/bootstrap-tagsinput.css"
+          th:href="@{/webjars/bootstrap-tagsinput/0.5/bootstrap-tagsinput.css}" media="screen"/>
+
+    <script th:src="@{/js/bootstrap3-typeahead.min.js}"></script>
+
     <form class="form-horizontal" role="save" th:object="${user}"
           th:action="|${#httpServletRequest.getRequestURI()}/save|" method="post">
         <fieldset>
@@ -71,6 +86,33 @@
                            class="form-control input-md" type="text">
                     <span class="help-block">The password of this user</span>
 
+                </div>
+            </div>
+
+            <!-- Text input-->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="tags">Tags</label>
+
+                <div class="col-md-6">
+                    <input name="tags" id="tags" type="text" th:value="@{${add_new}? '' : ${user.tags}}"
+                           data-role="tagsinput"/>
+                    <script th:inline="javascript">
+                        var elt = $("#tags");
+                        elt.tagsinput({
+                            itemValue: 'id',
+                            itemText: 'name',
+                            typeahead: {
+                                source: function () {
+                                    return $.get('/tags/getTags');
+                                }
+                            }
+                        });
+                        var tags = /*[[${user.tags}]]*/ [];
+                        $.each(tags, function (id, tag) {
+                            elt.tagsinput('add', {"id": tag.id, "name": tag.name});
+                        })
+
+                    </script>
                 </div>
             </div>
 
