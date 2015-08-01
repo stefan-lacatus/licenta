@@ -48,7 +48,7 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-thymeleaf")
     compile("org.springframework.boot:spring-boot-starter-web")
     compile('org.thymeleaf.extras:thymeleaf-extras-springsecurity4')
-    compile('com.zaxxer:HikariCP:2.3.9')
+    compile('com.zaxxer:HikariCP:2.4.0')
     compile('net.sourceforge.nekohtml:nekohtml:1.9.22')
     compile('org.thymeleaf.extras:thymeleaf-extras-java8time:2.1.0.RELEASE')
 
