@@ -8,17 +8,21 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import ro.pub.acse.sapd.configuration.PageWrapper;
 import ro.pub.acse.sapd.configuration.security.ApplicationSecurityUser;
 import ro.pub.acse.sapd.logging.Loggable;
+import ro.pub.acse.sapd.model.entities.ApplicationTag;
 import ro.pub.acse.sapd.model.entities.ApplicationUser;
+import ro.pub.acse.sapd.repository.ApplicationTagRepository;
 import ro.pub.acse.sapd.repository.ApplicationUserRepository;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 import java.util.Date;
+import java.util.HashSet;
 
 /**
  * Mappings and controller for managing application users
@@ -31,6 +35,8 @@ public class ApplicationUserController {
 
     @Autowired
     private ApplicationUserRepository users;
+    @Autowired
+    private ApplicationTagRepository tags;
 
     @RequestMapping("/user/new")
     public String newUser(Model model) {
@@ -41,7 +47,26 @@ public class ApplicationUserController {
     }
 
     @RequestMapping(value = {"/user/new/save", "/user/{id}/save"}, method = RequestMethod.POST)
-    public ModelAndView editUser(@ModelAttribute("user") ApplicationUser user, Principal principal) {
+    public ModelAndView editUser(@ModelAttribute("user") ApplicationUser user, BindingResult result,
+                                 Principal principal) {
+        // attempt to create the tags
+        if (result.getFieldErrorCount("tags") > 0) {
+            user.setTags(new HashSet<>());
+            // first attempt to reset all the existing tags
+            String[] values = result.getFieldError("tags").getRejectedValue().toString().split(",");
+            for (String value : values) {
+                try {
+                    long tagId = Long.parseLong(value);
+                    user.getTags().add(tags.findOne(tagId));
+                } catch (NumberFormatException ex) {
+                    // if it's not a long then add the tag manually
+                    ApplicationTag tag = new ApplicationTag();
+                    tag.setName(value);
+                    tags.save(tag);
+                    user.getTags().add(tag);
+                }
+            }
+        }
         ApplicationUser activeUser = (ApplicationSecurityUser) ((Authentication) principal).getPrincipal();
         user.setLastEditedBy(activeUser);
         user.setLastEditedTime(new Date());
