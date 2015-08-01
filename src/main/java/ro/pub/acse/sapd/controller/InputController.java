@@ -73,15 +73,15 @@ public class InputController {
 
     @RequestMapping(value = "/input/disable", method = RequestMethod.POST)
     public String disableInput(@RequestParam Long inputId, Principal principal) {
-        ApplicationSecurityUser activeInput = (ApplicationSecurityUser) ((Authentication) principal).getPrincipal();
+        ApplicationSecurityUser lastEditedBy = (ApplicationSecurityUser) ((Authentication) principal).getPrincipal();
         InputBlock input = inputs.findOne(inputId);
         if (input != null) {
-            input.setLastEditedBy(activeInput);
+            input.setLastEditedBy(lastEditedBy);
             input.setLastEditedTime(new Date());
             input.setActive(false);
             inputs.save(input);
             log.info(String.format("Disabled input %s by input %s",
-                    input.getName(), activeInput.getUsername()));
+                    input.getName(), lastEditedBy.getUsername()));
         }
         return "redirect:/management/inputs";
     }
@@ -93,8 +93,8 @@ public class InputController {
 
     @RequestMapping(value = {"/inputs/", "/inputs"}, method = RequestMethod.GET)
     public String listInputs(HttpServletRequest request, Model model, Pageable pageable) {
-        Sort sortOrder = new Sort(new Sort.Order(Sort.Direction.ASC, "name"),
-                new Sort.Order(Sort.Direction.ASC, "active"));
+        Sort sortOrder = new Sort(new Sort.Order(Sort.Direction.DESC, "active"),
+                new Sort.Order(Sort.Direction.ASC, "name"));
         PageRequest pageRequest = new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), sortOrder);
         PageWrapper<InputBlock> page = new PageWrapper<>(inputs.findAll(pageRequest), "/management/inputs");
         model.addAttribute("page", page);
