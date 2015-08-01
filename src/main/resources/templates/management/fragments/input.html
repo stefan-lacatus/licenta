@@ -1,4 +1,20 @@
 <div xmlns:th="http://www.w3.org/1999/xhtml" class="pageContent">
+
+    <script src="http://cdn.jsdelivr.net/webjars/jquery/2.1.4/jquery.min.js"
+            th:src="@{/webjars/jquery/2.1.4/jquery.min.js}"></script>
+
+    <script src="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.5/js/bootstrap.min.js"
+            th:src="@{/webjars/bootstrap/3.3.5/js/bootstrap.min.js}"></script>
+
+    <script src="http://cdn.jsdelivr.net/webjars/org.webjars/bootstrap-tagsinput/0.5/bootstrap-tagsinput.min.js"
+            th:src="@{/webjars/bootstrap-tagsinput/0.5/bootstrap-tagsinput.min.js}"></script>
+
+    <link rel="stylesheet"
+          href="http://cdn.jsdelivr.net/webjars/org.webjars/bootstrap-tagsinput/0.5/bootstrap-tagsinput.css"
+          th:href="@{/webjars/bootstrap-tagsinput/0.5/bootstrap-tagsinput.css}" media="screen"/>
+
+    <script th:src="@{/js/bootstrap3-typeahead.min.js}"></script>
+
     <form class="form-horizontal" role="save" th:object="${input}"
           th:action="|${#httpServletRequest.getRequestURI()}/save|" method="post">
         <fieldset>
@@ -13,7 +29,7 @@
 
             <!-- Text input-->
             <div class="form-group">
-                <label class="col-md-4 control-label" for="name">First Name</label>
+                <label class="col-md-4 control-label" for="name">Input Name</label>
 
                 <div class="col-md-6">
                     <input value="name" th:field="${input.name}"
@@ -29,11 +45,25 @@
                 <label class="col-md-4 control-label" for="tags">Tags</label>
 
                 <div class="col-md-6">
-                    <input value="Tags" th:field="${input.name}"
-                           th:value="@{${add_new}? '' : ${input.name}}" id="tags"
-                           name="tags" placeholder="email" class="form-control input-md" type="text">
-                    <span class="help-block">The tags of this input</span>
+                    <input name="tags" id="tags" type="text" th:value="@{${add_new}? '' : ${input.tags}}"
+                           data-role="tagsinput"/>
+                    <script th:inline="javascript">
+                        var elt = $("#tags");
+                        elt.tagsinput({
+                            itemValue: 'id',
+                            itemText: 'name',
+                            typeahead: {
+                                source: function () {
+                                    return $.get('/tags/getTags');
+                                }
+                            }
+                        });
+                        var tags = /*[[${input.tags}]]*/ [];
+                        $.each(tags, function (id, tag) {
+                            elt.tagsinput('add', {"id": tag.id, "name": tag.name});
+                        })
 
+                    </script>
                 </div>
             </div>
 

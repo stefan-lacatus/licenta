@@ -45,3 +45,7 @@ body {
     border-top-left-radius: 0;
     border-bottom-right-radius: 0;
 }
+
+.bootstrap-tagsinput {
+    width: 100% !important;
+}
