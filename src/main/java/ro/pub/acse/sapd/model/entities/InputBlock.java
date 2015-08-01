@@ -5,6 +5,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Represents an input block that groups several channels
@@ -20,7 +21,7 @@ public class InputBlock implements Serializable {
     private ApplicationUser lastEditedBy;
     private boolean active;
     private Date lastEditedTime;
-    private List<ApplicationTag> tags;
+    private Set<ApplicationTag> tags;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -85,12 +86,12 @@ public class InputBlock implements Serializable {
         this.lastEditedTime = lastEditedTime;
     }
 
-    @OneToMany
-    public List<ApplicationTag> getTags() {
+    @ManyToMany(cascade = CascadeType.ALL)
+    public Set<ApplicationTag> getTags() {
         return tags;
     }
 
-    public void setTags(List<ApplicationTag> tags) {
+    public void setTags(Set<ApplicationTag> tags) {
         this.tags = tags;
     }
 }

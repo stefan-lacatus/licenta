@@ -3,7 +3,7 @@ package ro.pub.acse.sapd.model.entities;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
+import java.util.Set;
 
 /**
  * Represents a user in the application
@@ -22,7 +22,7 @@ public class ApplicationUser implements Serializable {
     private String description;
     private ApplicationUser lastEditedBy;
     private Date lastEditedTime;
-    private List<ApplicationTag> tags;
+    private Set<ApplicationTag> tags;
 
     @Column(unique = true)
     public String getUsername() {
@@ -108,13 +108,12 @@ public class ApplicationUser implements Serializable {
         this.lastEditedTime = lastEditedTime;
     }
 
-
-    @OneToMany
-    public List<ApplicationTag> getTags() {
+    @ManyToMany(cascade = CascadeType.ALL)
+    public Set<ApplicationTag> getTags() {
         return tags;
     }
 
-    public void setTags(List<ApplicationTag> tags) {
+    public void setTags(Set<ApplicationTag> tags) {
         this.tags = tags;
     }
 }

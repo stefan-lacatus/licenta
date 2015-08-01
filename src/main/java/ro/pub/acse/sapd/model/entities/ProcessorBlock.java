@@ -4,7 +4,7 @@ import ro.pub.acse.sapd.blocks.ProcessorBlockType;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.List;
+import java.util.Set;
 
 /**
  * A block that takes in input data and returns output data
@@ -19,7 +19,7 @@ public class ProcessorBlock implements Serializable {
     private String functionCode;
     private ProcessorBlockType blockType;
     private String code;
-    private List<ApplicationTag> tags;
+    private Set<ApplicationTag> tags;
 
     public String getCode() {
         return code;
@@ -72,13 +72,12 @@ public class ProcessorBlock implements Serializable {
         this.id = id;
     }
 
-
-    @OneToMany
-    public List<ApplicationTag> getTags() {
+    @ManyToMany(cascade = CascadeType.ALL)
+    public Set<ApplicationTag> getTags() {
         return tags;
     }
 
-    public void setTags(List<ApplicationTag> tags) {
+    public void setTags(Set<ApplicationTag> tags) {
         this.tags = tags;
     }
 }
