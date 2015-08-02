@@ -110,13 +110,13 @@
                          aria-labelledby="channelsHeader" style="height: 0;">
                         <div class="panel-body">
                             <div id="channelForm" class="form-horizontal">
-                                <div class="form-group" data-book-index="0">
+                                <div class="form-group channel-class" data-channel-index="0">
                                     <div class="col-xs-3 horizontal-form-padding">
-                                        <input type="text" class="form-control" name="channel[0].name"
+                                        <input type="text" class="form-control" name="channels[0].name"
                                                placeholder="Name"/>
                                     </div>
                                     <div class="col-xs-3 horizontal-form-padding">
-                                        <select class="form-control" name="channel[0].dataType">
+                                        <select class="form-control" name="channels[0].dataType">
                                             <option value="" selected disabled>Data Type</option>
                                             <option th:each="color : ${T(ro.pub.acse.sapd.data.DataType).values()}"
                                                     th:value="${color}" th:text="${color.value}"
@@ -124,7 +124,7 @@
                                         </select>
                                     </div>
                                     <div class="col-xs-4 horizontal-form-padding">
-                                        <input type="text" class="form-control" name="channel[0].inputPreprocessor"
+                                        <input type="text" class="form-control" name="channelss[0].inputPreprocessor"
                                                placeholder="Input Preprocessor"/>
                                     </div>
                                     <div class="col-xs-1 horizontal-form-padding">
@@ -136,7 +136,7 @@
 
 
                                 <!-- The template for adding new field -->
-                                <div class="form-group hide" id="channelTemplate">
+                                <div class="form-group hide channel-class" id="channelTemplate">
                                     <div class="col-xs-3 horizontal-form-padding">
                                         <input type="text" class="form-control" name="name" placeholder="Name"/>
                                     </div>
@@ -173,16 +173,26 @@
                                                         .attr('data-channel-index', channelIndex).insertBefore($template);
 
                                                 // Update the name attributes
-                                                $clone.find('[name="name"]').attr('name', 'channel[' + channelIndex + '].name').end()
-                                                        .find('[name="dataType"]').attr('name', 'channel[' + channelIndex + '].dataType').end()
-                                                        .find('[name="inputPreprocessor"]').attr('name', 'channel[' + channelIndex + '].inputPreprocessor').end();
-
+                                                $clone.find('[name="name"]').attr('name', 'channels[' + channelIndex + '].name').end()
+                                                        .find('[name="dataType"]').attr('name', 'channels[' + channelIndex + '].dataType').end()
+                                                        .find('[name="inputPreprocessor"]').attr('name', 'channels[' + channelIndex + '].inputPreprocessor').end();
                                             })
-
                                         // Remove button click handler
                                             .on('click', '.removeButton', function () {
-                                                var $row = $(this).parents('.form-group'),
-                                                        index = $row.attr('data-channel-index');
+                                                var $row = $(this).parents('.form-group');
+                                                var index = $row.attr('data-channel-index');
+                                                // push back all the elements with a index larger that this one
+                                                $(".channel-class").each(function () {
+                                                    var curr_index = $(this).attr('data-channel-index');
+                                                    if (curr_index > index) {
+                                                        var new_index = curr_index - 1;
+                                                        $(this).attr('data-channel-index', new_index).
+                                                                find('[name="name"]').attr('name', 'channels[' + new_index + '].name').end()
+                                                                .find('[name="dataType"]').attr('name', 'channels[' + new_index + '].dataType').end()
+                                                                .find('[name="inputPreprocessor"]').attr('name', 'channels[' + new_index + '].inputPreprocessor').end();
+                                                    }
+                                                });
+                                                channelIndex--;
                                                 // Remove element containing the fields
                                                 $row.remove();
                                             });
