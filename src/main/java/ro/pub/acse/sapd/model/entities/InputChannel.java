@@ -17,7 +17,6 @@ public class InputChannel implements Serializable {
     private String name;
     private String description;
     private DataType dataType;
-    private Integer samplingTime;
     private ProcessorBlock inputPreprocessor;
 
     @Id
@@ -64,14 +63,6 @@ public class InputChannel implements Serializable {
      */
     public void setDataType(DataType dataType) {
         this.dataType = dataType;
-    }
-
-    public Integer getSamplingTime() {
-        return samplingTime;
-    }
-
-    public void setSamplingTime(Integer samplingTime) {
-        this.samplingTime = samplingTime;
     }
 
     @ManyToOne
