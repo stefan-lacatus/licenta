@@ -110,28 +110,41 @@
                          aria-labelledby="channelsHeader" style="height: 0;">
                         <div class="panel-body">
                             <div id="channelForm" class="form-horizontal">
-                                <div class="form-group channel-class" data-channel-index="0">
-                                    <input type="hidden" class="form-control" name="channels[0].id"/>
+                                <div class="form-group">
+                                    <button type="button" class="btn btn-default addButton">
+                                        <span class="glyphicon glyphicon-plus "
+                                              aria-hidden="true">Add new Channel</span>
+                                    </button>
+                                </div>
+                                <div th:each="channel, stat: ${input.channels}" class="form-group channel-class"
+                                     data-channel-index="0" th:attr="data-channel-index=${stat.index}">
+                                    <input type="hidden" class="form-control" name="channels[0].id"
+                                           th:name="channels[ + ${stat.index} + ].id" th:value="${channel.id}"/>
 
                                     <div class="col-xs-3 horizontal-form-padding">
                                         <input type="text" class="form-control" name="channels[0].name"
+                                               th:name="channels[ + ${stat.index} + ].name" th:value="${channel.name}"
                                                placeholder="Name"/>
                                     </div>
                                     <div class="col-xs-3 horizontal-form-padding">
-                                        <select class="form-control" name="channels[0].dataType">
+                                        <select class="form-control" name="channels[0].dataType"
+                                                th:name="channels[ + ${stat.index} + ].dataType">
                                             <option value="" selected disabled>Data Type</option>
-                                            <option th:each="color : ${T(ro.pub.acse.sapd.data.DataType).values()}"
-                                                    th:value="${color}" th:text="${color.value}"
-                                            ></option>
+                                            <option th:each="dataType : ${T(ro.pub.acse.sapd.data.DataType).values()}"
+                                                    th:value="${dataType}" th:text="${dataType.value}"
+                                                    th:selected="${dataType == channel.dataType}">
+                                            </option>
                                         </select>
                                     </div>
                                     <div class="col-xs-4 horizontal-form-padding">
                                         <input type="text" class="form-control" name="channels[0].inputPreprocessor"
-                                               placeholder="Input Preprocessor"/>
+                                               th:name="channels[ + ${stat.index} + ].inputPreprocessor"
+                                               placeholder="Input Preprocessor"
+                                               th:value="${channel.inputPreprocessor}"/>
                                     </div>
                                     <div class="col-xs-1 horizontal-form-padding">
-                                        <button type="button" class="btn btn-default addButton">
-                                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                                        <button type="button" class="btn btn-default removeButton">
+                                            <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
                                         </button>
                                     </div>
                                 </div>
@@ -147,8 +160,8 @@
                                     <div class="col-xs-3 horizontal-form-padding">
                                         <select class="form-control" name="dataType">
                                             <option value="" selected disabled>Data Type</option>
-                                            <option th:each="color : ${T(ro.pub.acse.sapd.data.DataType).values()}"
-                                                    th:value="${color}" th:text="${color.value}"
+                                            <option th:each="dataType : ${T(ro.pub.acse.sapd.data.DataType).values()}"
+                                                    th:value="${dataType}" th:text="${dataType.value}"
                                             ></option>
                                         </select>
                                     </div>
@@ -164,9 +177,15 @@
                                 </div>
                             </div>
 
-                            <script>
+                            <script th:inline="javascript">
                                 $(document).ready(function () {
                                     var channelIndex = 0;
+                                    // find the minimum index of already added channels
+                                    $(".channel-class").each(function () {
+                                        if ($(this).attr('data-channel-index') > channelIndex) {
+                                            channelIndex = $(this).attr('data-channel-index');
+                                        }
+                                    });
 
                                     $('#channelForm')
                                         // Add button click handler
@@ -191,11 +210,11 @@
                                                     var curr_index = $(this).attr('data-channel-index');
                                                     if (curr_index > index) {
                                                         var new_index = curr_index - 1;
-                                                        $(this).attr('data-channel-index', new_index).
-                                                                find('[name="name"]').attr('name', 'channels[' + new_index + '].name').end()
-                                                                .find('[name="dataType"]').attr('name', 'channels[' + new_index + '].dataType').end()
-                                                                .find('[name="inputPreprocessor"]').attr('name', 'channels[' + new_index + '].inputPreprocessor').end()
-                                                                .find('[name="id"]').attr('name', 'channels[' + channelIndex + '].id').end();
+                                                        $(this).attr('data-channel-index', new_index);
+                                                        $(this).find("[name='channels[" + curr_index + "].name']").attr('name', 'channels[' + new_index + '].name').end()
+                                                                .find("[name='channels[" + curr_index + "].dataType']").attr('name', 'channels[' + new_index + '].dataType').end()
+                                                                .find("[name='channels[" + curr_index + "].inputPreprocessor']").attr('name', 'channels[' + new_index + '].inputPreprocessor').end()
+                                                                .find("[name='channels[" + curr_index + "].id']").attr('name', 'channels[' + new_index + '].id').end();
                                                     }
                                                 });
                                                 channelIndex--;
