@@ -17,7 +17,9 @@
     <link rel="stylesheet"
           href="http://cdn.jsdelivr.net/webjars/org.webjars/bootstrap-tagsinput/0.5/bootstrap-tagsinput.css"
           th:href="@{/css/bootstrap-tagsinput.css}" media="screen"/>
-    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+    </button>
 
     <form class="form-horizontal" role="save" th:object="${input}"
           th:action="|${#httpServletRequest.getRequestURI()}/save|" method="post">
@@ -93,6 +95,104 @@
                 </div>
             </div>
 
+
+            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="channelsHeader">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#channelsCollapse"
+                               aria-expanded="false" aria-controls="channelsCollapse" class="collapsed">
+                                Input channels
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="channelsCollapse" class="panel-collapse collapse" role="tabpanel"
+                         aria-labelledby="channelsHeader" style="height: 0;">
+                        <div class="panel-body">
+                            <div id="channelForm" class="form-horizontal">
+                                <div class="form-group" data-book-index="0">
+                                    <div class="col-xs-3 horizontal-form-padding">
+                                        <input type="text" class="form-control" name="channel[0].name"
+                                               placeholder="Name"/>
+                                    </div>
+                                    <div class="col-xs-3 horizontal-form-padding">
+                                        <select class="form-control" name="channel[0].dataType">
+                                            <option value="" selected disabled>Data Type</option>
+                                            <option th:each="color : ${T(ro.pub.acse.sapd.data.DataType).values()}"
+                                                    th:value="${color}" th:text="${color.value}"
+                                            ></option>
+                                        </select>
+                                    </div>
+                                    <div class="col-xs-4 horizontal-form-padding">
+                                        <input type="text" class="form-control" name="channel[0].inputPreprocessor"
+                                               placeholder="Input Preprocessor"/>
+                                    </div>
+                                    <div class="col-xs-1 horizontal-form-padding">
+                                        <button type="button" class="btn btn-default addButton">
+                                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                                        </button>
+                                    </div>
+                                </div>
+
+
+                                <!-- The template for adding new field -->
+                                <div class="form-group hide" id="channelTemplate">
+                                    <div class="col-xs-3 horizontal-form-padding">
+                                        <input type="text" class="form-control" name="name" placeholder="Name"/>
+                                    </div>
+                                    <div class="col-xs-3 horizontal-form-padding">
+                                        <select class="form-control" name="dataType">
+                                            <option value="" selected disabled>Data Type</option>
+                                            <option th:each="color : ${T(ro.pub.acse.sapd.data.DataType).values()}"
+                                                    th:value="${color}" th:text="${color.value}"
+                                            ></option>
+                                        </select>
+                                    </div>
+                                    <div class="col-xs-4 horizontal-form-padding">
+                                        <input type="text" class="form-control" name="inputPreprocessor"
+                                               placeholder="Input Preprocessor"/>
+                                    </div>
+                                    <div class="col-xs-1 horizontal-form-padding">
+                                        <button type="button" class="btn btn-default removeButton">
+                                            <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <script>
+                                $(document).ready(function () {
+                                    var channelIndex = 0;
+
+                                    $('#channelForm')
+                                        // Add button click handler
+                                            .on('click', '.addButton', function () {
+                                                channelIndex++;
+                                                var $template = $('#channelTemplate');
+                                                var $clone = $template.clone().removeClass('hide').removeAttr('id')
+                                                        .attr('data-channel-index', channelIndex).insertBefore($template);
+
+                                                // Update the name attributes
+                                                $clone.find('[name="name"]').attr('name', 'channel[' + channelIndex + '].name').end()
+                                                        .find('[name="dataType"]').attr('name', 'channel[' + channelIndex + '].dataType').end()
+                                                        .find('[name="inputPreprocessor"]').attr('name', 'channel[' + channelIndex + '].inputPreprocessor').end();
+
+                                            })
+
+                                        // Remove button click handler
+                                            .on('click', '.removeButton', function () {
+                                                var $row = $(this).parents('.form-group'),
+                                                        index = $row.attr('data-channel-index');
+                                                // Remove element containing the fields
+                                                $row.remove();
+                                            });
+                                });
+                            </script>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="modal-footer form-group">
                           <span class="input-group-btn">
                               <button class="btn btn-info" data-dismiss="modal" aria-hidden="true">Cancel</button>
@@ -101,5 +201,4 @@
             </div>
         </fieldset>
     </form>
-
 </div>

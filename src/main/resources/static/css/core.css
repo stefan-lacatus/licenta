@@ -49,3 +49,8 @@ body {
 .bootstrap-tagsinput {
     width: 100% !important;
 }
+
+.horizontal-form-padding {
+    padding: 2px !important;
+    margin: 2px !important;
+}

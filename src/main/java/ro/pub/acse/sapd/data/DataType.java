@@ -7,14 +7,24 @@ public enum DataType {
     /**
      * Integer data type, from -2^63 to 2^63 -1, using {@link Long} as an internal representation
      */
-    INTEGER(),
+    INTEGER("Integer"),
     /**
      * Floating point data type, 4 bytes of precision using {@link Float} as an internal representation
      */
-    FLOAT(),
+    FLOAT("Float"),
     /**
      * String data type, as a text, escaped according to RFC4627, using a {@link String} as internal representation
      * @see <a href="http://www.ietf.org/rfc/rfc4627.txt">RFC4627</a>
      */
-    STRING()
+    STRING("String");
+
+    private final String value;
+
+    DataType(String value) {
+        this.value = value;
+    }
+
+    public String getValue() {
+        return value;
+    }
 }
