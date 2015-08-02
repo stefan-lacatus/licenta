@@ -111,6 +111,8 @@
                         <div class="panel-body">
                             <div id="channelForm" class="form-horizontal">
                                 <div class="form-group channel-class" data-channel-index="0">
+                                    <input type="hidden" class="form-control" name="channels[0].id"/>
+
                                     <div class="col-xs-3 horizontal-form-padding">
                                         <input type="text" class="form-control" name="channels[0].name"
                                                placeholder="Name"/>
@@ -124,7 +126,7 @@
                                         </select>
                                     </div>
                                     <div class="col-xs-4 horizontal-form-padding">
-                                        <input type="text" class="form-control" name="channelss[0].inputPreprocessor"
+                                        <input type="text" class="form-control" name="channels[0].inputPreprocessor"
                                                placeholder="Input Preprocessor"/>
                                     </div>
                                     <div class="col-xs-1 horizontal-form-padding">
@@ -137,6 +139,8 @@
 
                                 <!-- The template for adding new field -->
                                 <div class="form-group hide channel-class" id="channelTemplate">
+                                    <input type="hidden" class="form-control" name="id"/>
+
                                     <div class="col-xs-3 horizontal-form-padding">
                                         <input type="text" class="form-control" name="name" placeholder="Name"/>
                                     </div>
@@ -175,7 +179,8 @@
                                                 // Update the name attributes
                                                 $clone.find('[name="name"]').attr('name', 'channels[' + channelIndex + '].name').end()
                                                         .find('[name="dataType"]').attr('name', 'channels[' + channelIndex + '].dataType').end()
-                                                        .find('[name="inputPreprocessor"]').attr('name', 'channels[' + channelIndex + '].inputPreprocessor').end();
+                                                        .find('[name="inputPreprocessor"]').attr('name', 'channels[' + channelIndex + '].inputPreprocessor').end()
+                                                        .find('[name="id"]').attr('name', 'channels[' + channelIndex + '].id').end();
                                             })
                                         // Remove button click handler
                                             .on('click', '.removeButton', function () {
@@ -189,7 +194,8 @@
                                                         $(this).attr('data-channel-index', new_index).
                                                                 find('[name="name"]').attr('name', 'channels[' + new_index + '].name').end()
                                                                 .find('[name="dataType"]').attr('name', 'channels[' + new_index + '].dataType').end()
-                                                                .find('[name="inputPreprocessor"]').attr('name', 'channels[' + new_index + '].inputPreprocessor').end();
+                                                                .find('[name="inputPreprocessor"]').attr('name', 'channels[' + new_index + '].inputPreprocessor').end()
+                                                                .find('[name="id"]').attr('name', 'channels[' + channelIndex + '].id').end();
                                                     }
                                                 });
                                                 channelIndex--;

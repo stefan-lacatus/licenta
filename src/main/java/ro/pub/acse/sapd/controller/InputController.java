@@ -17,6 +17,7 @@ import ro.pub.acse.sapd.logging.Loggable;
 import ro.pub.acse.sapd.model.entities.InputBlock;
 import ro.pub.acse.sapd.repository.ApplicationTagRepository;
 import ro.pub.acse.sapd.repository.InputBlockRepository;
+import ro.pub.acse.sapd.repository.InputChannelRepository;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
@@ -35,6 +36,8 @@ public class InputController {
     private InputBlockRepository inputs;
     @Autowired
     private ApplicationTagRepository tags;
+    @Autowired
+    private InputChannelRepository channels;
 
     @RequestMapping("/input/new")
     public String newInput(Model model) {
@@ -49,6 +52,7 @@ public class InputController {
         if (result.getFieldErrorCount("tags") > 0) {
             input.setTags(tags.addTagsFromBindingResult(result));
         }
+        channels.save(input.getChannels());
         ApplicationSecurityUser activeUser = (ApplicationSecurityUser) ((Authentication) principal).getPrincipal();
         input.setLastEditedBy(activeUser);
         input.setLastEditedTime(new Date());

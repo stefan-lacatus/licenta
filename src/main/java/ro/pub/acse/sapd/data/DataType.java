@@ -14,6 +14,7 @@ public enum DataType {
     FLOAT("Float"),
     /**
      * String data type, as a text, escaped according to RFC4627, using a {@link String} as internal representation
+     *
      * @see <a href="http://www.ietf.org/rfc/rfc4627.txt">RFC4627</a>
      */
     STRING("String");
