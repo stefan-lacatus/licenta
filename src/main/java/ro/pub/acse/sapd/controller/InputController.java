@@ -8,12 +8,14 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import ro.pub.acse.sapd.configuration.PageWrapper;
 import ro.pub.acse.sapd.configuration.security.ApplicationSecurityUser;
 import ro.pub.acse.sapd.logging.Loggable;
 import ro.pub.acse.sapd.model.entities.InputBlock;
+import ro.pub.acse.sapd.repository.ApplicationTagRepository;
 import ro.pub.acse.sapd.repository.InputBlockRepository;
 
 import javax.servlet.http.HttpServletRequest;
@@ -31,6 +33,8 @@ public class InputController {
 
     @Autowired
     private InputBlockRepository inputs;
+    @Autowired
+    private ApplicationTagRepository tags;
 
     @RequestMapping("/input/new")
     public String newInput(Model model) {
@@ -41,7 +45,10 @@ public class InputController {
     }
 
     @RequestMapping(value = {"/input/new/save", "/input/{id}/save"}, method = RequestMethod.POST)
-    public ModelAndView editInput(@ModelAttribute("input") InputBlock input, Principal principal) {
+    public ModelAndView editInput(@ModelAttribute("input") InputBlock input, BindingResult result, Principal principal) {
+        if (result.getFieldErrorCount("tags") > 0) {
+            input.setTags(tags.addTagsFromBindingResult(result));
+        }
         ApplicationSecurityUser activeUser = (ApplicationSecurityUser) ((Authentication) principal).getPrincipal();
         input.setLastEditedBy(activeUser);
         input.setLastEditedTime(new Date());

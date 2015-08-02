@@ -51,21 +51,7 @@ public class ApplicationUserController {
                                  Principal principal) {
         // attempt to create the tags
         if (result.getFieldErrorCount("tags") > 0) {
-            user.setTags(new HashSet<>());
-            // first attempt to reset all the existing tags
-            String[] values = result.getFieldError("tags").getRejectedValue().toString().split(",");
-            for (String value : values) {
-                try {
-                    long tagId = Long.parseLong(value);
-                    user.getTags().add(tags.findOne(tagId));
-                } catch (NumberFormatException ex) {
-                    // if it's not a long then add the tag manually
-                    ApplicationTag tag = new ApplicationTag();
-                    tag.setName(value);
-                    tags.save(tag);
-                    user.getTags().add(tag);
-                }
-            }
+            user.setTags(tags.addTagsFromBindingResult(result));
         }
         ApplicationUser activeUser = (ApplicationSecurityUser) ((Authentication) principal).getPrincipal();
         user.setLastEditedBy(activeUser);
