@@ -1,5 +1,9 @@
 <div xmlns:th="http://www.w3.org/1999/xhtml" class="pageContent">
 
+    <link href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.5/css/bootstrap.min.css"
+          th:href="@{/webjars/bootstrap/3.3.5/css/bootstrap.min.css}"
+          rel="stylesheet" media="screen"/>
+
     <script src="http://cdn.jsdelivr.net/webjars/jquery/2.1.4/jquery.min.js"
             th:src="@{/webjars/jquery/2.1.4/jquery.min.js}"></script>
 
@@ -44,7 +48,7 @@
                 <label class="col-md-4 control-label" for="tags">Tags</label>
 
                 <div class="col-md-6">
-                    <input name="tags" id="tags" type="text" th:value="@{${add_new}? '' : ${input.tags}}"
+                    <input name="tags" id="tags" type="text"
                            data-role="tagsinput"/>
                     <script th:inline="javascript">
                         var elt = $("#tags");

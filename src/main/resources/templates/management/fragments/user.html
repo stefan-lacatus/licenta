@@ -93,8 +93,7 @@
                 <label class="col-md-4 control-label" for="tags">Tags</label>
 
                 <div class="col-md-6">
-                    <input name="tags" id="tags" type="text" th:value="@{${add_new}? '' : ${user.tags}}"
-                           data-role="tagsinput"/>
+                    <input name="tags" id="tags" type="text" data-role="tagsinput"/>
                     <script th:inline="javascript">
                         var elt = $("#tags");
                         elt.tagsinput({
