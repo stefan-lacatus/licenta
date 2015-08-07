@@ -8,6 +8,6 @@ import java.util.Set;
 /**
  * Adds the method to create tags from a binding result with errors
  */
-public interface ApplicationTagRepositoryCustom {
+public interface ApplicationTagCustomRepository {
     Set<ApplicationTag> addTagsFromBindingResult(BindingResult result);
 }

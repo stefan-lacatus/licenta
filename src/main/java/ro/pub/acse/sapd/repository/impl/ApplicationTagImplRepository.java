@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import ro.pub.acse.sapd.model.entities.ApplicationTag;
 import ro.pub.acse.sapd.repository.ApplicationTagRepository;
+import ro.pub.acse.sapd.repository.custom.ApplicationTagCustomRepository;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -11,7 +12,7 @@ import java.util.Set;
 /**
  * An implementation of the repository
  */
-public class ApplicationTagRepositoryImpl implements ro.pub.acse.sapd.repository.custom.ApplicationTagRepositoryCustom {
+public class ApplicationTagImplRepository implements ApplicationTagCustomRepository {
     @Autowired
     private ApplicationTagRepository tagRepository;
 
