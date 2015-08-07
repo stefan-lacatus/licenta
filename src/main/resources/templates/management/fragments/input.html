@@ -116,6 +116,32 @@
                                               aria-hidden="true">Add new Channel</span>
                                     </button>
                                 </div>
+                                <div th:if="${input.channels.size()} == 0" class="form-group channel-class"
+                                     data-channel-index="0">
+                                    <input type="hidden" class="form-control" name="channels[0].id"/>
+
+                                    <div class="col-xs-3 horizontal-form-padding">
+                                        <input type="text" class="form-control" name="channels[0].name"
+                                               placeholder="Name"/>
+                                    </div>
+                                    <div class="col-xs-3 horizontal-form-padding">
+                                        <select class="form-control" name="channels[0].dataType">
+                                            <option value="" selected disabled>Data Type</option>
+                                            <option th:each="dataType : ${T(ro.pub.acse.sapd.data.DataType).values()}"
+                                                    th:value="${dataType}" th:text="${dataType.value}">
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="col-xs-4 horizontal-form-padding">
+                                        <input type="text" class="form-control" name="channels[0].inputPreprocessor"
+                                               placeholder="Input Preprocessor"/>
+                                    </div>
+                                    <div class="col-xs-1 horizontal-form-padding">
+                                        <button type="button" class="btn btn-default removeButton">
+                                            <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+                                        </button>
+                                    </div>
+                                </div>
                                 <div th:each="channel, stat: ${input.channels}" class="form-group channel-class"
                                      data-channel-index="0" th:attr="data-channel-index=${stat.index}">
                                     <input type="hidden" class="form-control" name="channels[0].id"
