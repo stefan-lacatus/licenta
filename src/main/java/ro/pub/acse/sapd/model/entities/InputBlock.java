@@ -2,6 +2,9 @@ package ro.pub.acse.sapd.model.entities;
 
 
 import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.OrderBy;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -50,7 +53,7 @@ public class InputBlock implements Serializable {
         this.description = description;
     }
 
-    @OneToMany
+    @OneToMany(orphanRemoval = true)
     @JoinColumn(name = "input_block_id")
     @OrderBy("id asc")
     public List<InputChannel> getChannels() {
@@ -58,7 +61,16 @@ public class InputBlock implements Serializable {
     }
 
     public void setChannels(List<InputChannel> channels) {
-        this.channels = channels;
+        if (this.channels == null) {
+            this.channels = channels;
+        } else {
+            if(channels != this.channels) {
+                this.channels.clear();
+                if (channels != null) {
+                    this.channels.addAll(channels);
+                }
+            }
+        }
     }
 
     @ManyToOne
