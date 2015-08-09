@@ -1,4 +1,4 @@
-package ro.pub.acse.sapd.controller;
+package ro.pub.acse.sapd.controller.web;
 
 import org.springframework.stereotype.Controller;
 

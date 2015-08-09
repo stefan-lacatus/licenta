@@ -1,4 +1,4 @@
-package ro.pub.acse.sapd.controller;
+package ro.pub.acse.sapd.controller.web;
 
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -6,6 +6,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -14,7 +15,6 @@ import org.springframework.web.servlet.ModelAndView;
 import ro.pub.acse.sapd.configuration.PageWrapper;
 import ro.pub.acse.sapd.configuration.security.ApplicationSecurityUser;
 import ro.pub.acse.sapd.logging.Loggable;
-import ro.pub.acse.sapd.model.entities.ApplicationTag;
 import ro.pub.acse.sapd.model.entities.ApplicationUser;
 import ro.pub.acse.sapd.repository.ApplicationTagRepository;
 import ro.pub.acse.sapd.repository.ApplicationUserRepository;
@@ -22,7 +22,6 @@ import ro.pub.acse.sapd.repository.ApplicationUserRepository;
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 import java.util.Date;
-import java.util.HashSet;
 
 /**
  * Mappings and controller for managing application users
@@ -37,6 +36,8 @@ public class ApplicationUserController {
     private ApplicationUserRepository users;
     @Autowired
     private ApplicationTagRepository tags;
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
     @RequestMapping("/user/new")
     public String newUser(Model model) {
@@ -56,6 +57,9 @@ public class ApplicationUserController {
         ApplicationUser activeUser = (ApplicationSecurityUser) ((Authentication) principal).getPrincipal();
         user.setLastEditedBy(activeUser);
         user.setLastEditedTime(new Date());
+        if (user.getId() != 0) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
         users.save(user);
         log.info(String.format("Edited user %s by %s", user.getUsername(), activeUser.getUsername()));
         return new ModelAndView("redirect:/management/users");
