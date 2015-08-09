@@ -12,7 +12,7 @@ import java.util.Set;
 /**
  * An implementation of the repository
  */
-public class ApplicationTagImplRepository implements ApplicationTagCustomRepository {
+public class ApplicationTagRepositoryImpl implements ApplicationTagCustomRepository {
     @Autowired
     private ApplicationTagRepository tagRepository;
 

@@ -2,18 +2,18 @@ package ro.pub.acse.sapd.data.impl;
 
 import ro.pub.acse.sapd.data.DataPoint;
 
-import java.time.Instant;
+import java.util.Date;
 
 /**
  * Created by placatus on 07.08.2015.
  */
 public class FloatDataPoint implements DataPoint<Double> {
-    private final Instant instant;
+    private final Date instant;
     private double value;
 
     public FloatDataPoint(double value) {
         this.value = value;
-        instant = Instant.now();
+        instant = new Date();
     }
 
     @Override
@@ -22,7 +22,7 @@ public class FloatDataPoint implements DataPoint<Double> {
     }
 
     @Override
-    public Instant getTimeStamp() {
+    public Date getTimeStamp() {
         return instant;
     }
 }
