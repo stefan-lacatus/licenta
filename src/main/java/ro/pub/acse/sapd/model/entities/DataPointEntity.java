@@ -21,7 +21,7 @@ public class DataPointEntity implements DataPoint, Serializable {
     @JoinColumn(name = "channel_id")
     private InputChannel channel;
     @Id
-    private Date date;
+    private Date timestamp;
     @Id
     private String value;
 
@@ -43,10 +43,10 @@ public class DataPointEntity implements DataPoint, Serializable {
 
     @Override
     public Date getTimeStamp() {
-        return date;
+        return timestamp;
     }
 
     public void setTimeStamp(Date date) {
-        this.date = date;
+        this.timestamp = date;
     }
 }
