@@ -19,8 +19,12 @@ public class InputDataController {
     @ResponseBody
     String addDataPut(@PathVariable Long inputId, @PathVariable Long channelId,
                       @PathVariable String data) {
+       addData(inputId, channelId, data);
+        return "ok";
+    }
+
+    public void addData(Long inputId, Long channelId, String data) {
         StringDataPoint dataPoint = new StringDataPoint(data);
         dataRepository.addDataToTable(inputId, channelId, dataPoint);
-        return "ok";
     }
 }

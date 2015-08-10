@@ -1,4 +1,4 @@
-package ro.pub.acse.sapd.controller.web;
+package ro.pub.acse.sapd.controller.api;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
