@@ -3,7 +3,9 @@ package ro.pub.acse.sapd.model.entities;
 import ro.pub.acse.sapd.blocks.ProcessorBlockType;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Set;
 
 /**
@@ -18,17 +20,13 @@ public class ProcessorBlock implements Serializable {
     private String description;
     private String functionCode;
     private ProcessorBlockType blockType;
-    private String code;
     private Set<ApplicationTag> tags;
+    private ApplicationUser lastEditedBy;
+    private Date lastEditedTime;
+    private boolean active;
 
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
+    @NotNull
+    @Enumerated(EnumType.STRING)
     public ProcessorBlockType getBlockType() {
         return blockType;
     }
@@ -79,5 +77,30 @@ public class ProcessorBlock implements Serializable {
 
     public void setTags(Set<ApplicationTag> tags) {
         this.tags = tags;
+    }
+
+    @ManyToOne
+    public ApplicationUser getLastEditedBy() {
+        return lastEditedBy;
+    }
+
+    public void setLastEditedBy(ApplicationUser lastEditedBy) {
+        this.lastEditedBy = lastEditedBy;
+    }
+
+    public Date getLastEditedTime() {
+        return lastEditedTime;
+    }
+
+    public void setLastEditedTime(Date lastEditedTime) {
+        this.lastEditedTime = lastEditedTime;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }

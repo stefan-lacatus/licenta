@@ -44,11 +44,11 @@
         <div class="panel panel-primary">
             <div class="panel-heading">
 
-                <h3 class="panel-title">Users&nbsp;&nbsp;
+                <h3 class="panel-title">Blocks&nbsp;&nbsp;
 
-                    <span class="clickable panel-title" data-toggle="tooltip" title="Add new user"
+                    <span class="clickable panel-title" data-toggle="tooltip" title="Add new block"
                           data-container="body">
-								<a href="#" th:href="@{/management/user/new/}"
+								<a href="#" th:href="@{/management/block/new/}"
                                    class="glyphicon glyphicon-plus-sign render-modal"></a>
                     </span>
                     &nbsp;&nbsp;
@@ -60,8 +60,8 @@
                 </h3>
 
                 <div class="pull-right input-group">
-                    <form class="form-search" role="search" th:action="@{/management/user/search}"
-                          action="/management/user/search" method="POST">
+                    <form class="form-search" role="search" th:action="@{/management/block/search}"
+                          action="/management/block/search" method="POST">
                         <div class="input-group">
                             <input name="search" class="form-control" type="text" title=""/>
                           <span class="input-group-btn">
@@ -74,41 +74,39 @@
                 </div>
             </div>
             <div class="panel-body header-search">
-                <input type="text" class="form-control" id="users-table-filter" data-action="filter"
-                       data-filters="#users-table" placeholder="Filter users"/>
+                <input type="text" class="form-control" id="blocks-table-filter" data-action="filter"
+                       data-filters="#blocks-table" placeholder="Filter blocks"/>
             </div>
-            <table class="table table-hover" id="users-table">
+            <table class="table table-hover" id="blocks-table">
                 <thead>
                 <tr>
                     <th>#</th>
-                    <th>Username</th>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Email</th>
-                    <th>Last Edited by</th>
-                    <th>Last Edited on</th>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Last Edited By</th>
+                    <th>Last Edited On</th>
                     <th data-sorter="false">Edit</th>
                     <th data-sorter="false">Disable</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="user : ${page.content}" th:classappend="${!user.active} ? 'danger'">
-                    <td th:text="${user.id}">id</td>
-                    <td th:text="${user.username}">name</td>
-                    <td th:text="${user.firstName}">firstName</td>
-                    <td th:text="${user.lastName}">lastName</td>
-                    <td th:text="${user.email}">email</td>
-                    <td th:text="${user.lastEditedBy?.username}">lastName</td>
-                    <td th:text="${user.lastEditedTime}">lastEdit</td>
+                <tr th:each="block : ${page.content}">
+                    <td th:text="${block.id}">id</td>
+                    <td th:text="${block.name}">name</td>
+                    <td th:text="${block.blockType.value}">firstName</td>
+                    <td th:text="${block.description}">lastName</td>
+                    <td th:text="${block.lastEditedBy?.username}">lastName</td>
+                    <td th:text="${block.lastEditedTime}">lastEdit</td>
                     <td>
-                        <a th:href="@{/management/user/{userId}(userId=${user.id})}" href="#"
+                        <a th:href="@{/management/block/{blockId}(blockId=${block.id})}" href="#"
                            class="render-modal btn btn-default btn-warning btn-xs">
                             <span class="glyphicon glyphicon-pencil"></span>
                         </a>
                     </td>
                     <td>
                         <a data-toggle="modal" href="#deleteModal" class="btn btn-default btn-danger btn-xs"
-                           th:attr="data-id=${user.id}">
+                           th:attr="data-id=${block.id}">
                             <span class="glyphicon glyphicon-remove-sign"></span>
                         </a>
                     </td>
@@ -117,7 +115,7 @@
             </table>
             <script type="text/javascript">
                 $(function () {
-                    $("#users-table").tablesorter({
+                    $("#blocks-table").tablesorter({
                         theme: "bootstrap",
                         sortList: [[0, 0], [3, 0]],
                         widgets: ["uitheme", "zebra"],
@@ -148,11 +146,11 @@
                     <h4 class="modal-title" id="deleteModalLabel">Disable confirmation</h4>
                 </div>
                 <div class="modal-body">
-                    <p class="error-text">Are you sure you want to disable the user?</p>
+                    <p class="error-text">Are you sure you want to disable the block?</p>
                 </div>
                 <div class="modal-footer">
-                    <form th:action="@{/management/user/disable}" action="/management/user/disable" method="post">
-                        <input type="hidden" name="userId" id="entityId" class="form-control">
+                    <form th:action="@{/management/block/disable}" action="/management/block/disable" method="post">
+                        <input type="hidden" name="blockId" id="entityId" class="form-control">
                           <span class="input-group-btn">
                               <button class="btn btn-info" data-dismiss="modal" aria-hidden="true">Cancel</button>
                               <button type="submit" class="btn btn-danger">Disable</button>

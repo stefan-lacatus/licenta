@@ -1,0 +1,125 @@
+<div class="pageContent">
+    <script src="http://cdn.jsdelivr.net/webjars/jquery/2.1.4/jquery.min.js"
+            th:src="@{/webjars/jquery/2.1.4/jquery.min.js}"></script>
+
+    <script src="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.5/js/bootstrap.min.js"
+            th:src="@{/webjars/bootstrap/3.3.5/js/bootstrap.min.js}"></script>
+
+    <script th:src="@{/js/bootstrap-tagsinput.js}"></script>
+
+    <script th:src="@{/js/bootstrap3-typeahead.min.js}"></script>
+
+    <link rel="stylesheet"
+          href="http://cdn.jsdelivr.net/webjars/org.webjars/bootstrap-tagsinput/0.5/bootstrap-tagsinput.css"
+          th:href="@{/css/bootstrap-tagsinput.css}" media="screen"/>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+    </button>
+
+    <form class="form-horizontal" role="save" th:object="${block}"
+          th:action="|${#httpServletRequest.getRequestURI()}/save|" method="post">
+        <fieldset>
+
+            <legend th:text="@{${add_new} ? 'Add block' : 'Edit block'}">Add block
+                <strong th:text="${block.name}" th:unless="${block == null}">block
+                    name</strong>
+            </legend>
+
+            <input value="id" th:field="${block.id}" th:value="@{${add_new}? '' : ${block.id}}" id="id"
+                   required="Add a name!" name="id" type="hidden">
+
+            <!-- Text input-->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="name">First Name</label>
+
+                <div class="col-md-6">
+                    <input value="name" th:field="${block.name}"
+                           th:value="@{${add_new}? '' : ${block.name}}" id="name"
+                           required="Add a name!" name="name" placeholder="Block Name"
+                           class="form-control input-md" type="text">
+                </div>
+            </div>
+
+            <!-- Textarea -->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="description">Description</label>
+
+                <div class="col-md-6">
+                    <textarea class="form-control" id="description" name="description" th:field="${block.description}"
+                              th:text="@{${add_new}? '' : ${block.description}}"
+                              placeholder="block additional details">
+                        Descriere block
+                    </textarea>
+                </div>
+            </div>
+
+            <!-- Text input-->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="tags">Tags</label>
+
+                <div class="col-md-6">
+                    <input name="tags" id="tags" type="text" data-role="tagsinput"/>
+                    <script th:inline="javascript">
+                        var elt = $("#tags");
+                        elt.tagsinput({
+                            itemValue: 'id',
+                            itemText: 'name',
+                            typeahead: {
+                                source: function () {
+                                    return $.get('/tags/getTags');
+                                }
+                            }
+                        });
+                        var tags = /*[[${block.tags}]]*/ [];
+                        $.each(tags, function (id, tag) {
+                            elt.tagsinput('add', {"id": tag.id, "name": tag.name});
+                        })
+
+                    </script>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="blockType">Tags</label>
+
+                <div class="col-xs-3 horizontal-form-padding">
+                    <select class="form-control" name="blockType">
+                        <option value="" selected disabled>Block Type</option>
+                        <option th:each="type : ${T(ro.pub.acse.sapd.blocks.ProcessorBlockType).values()}"
+                                th:value="${type}" th:text="${type.value}"
+                                th:selected="${type == block.blockType}">>
+                        </option>
+                    </select>
+                </div>
+
+            </div>
+
+            <!-- Textarea -->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="functionCode">Code</label>
+
+                <div class="col-md-6">
+                    <textarea class="form-control" id="functionCode" name="description" th:field="${block.functionCode}"
+                              th:text="@{${add_new}? '' : ${block.functionCode}}"
+                              placeholder="block Function details">
+                    </textarea>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="active">Active</label>
+
+                <div class="col-md-6">
+                    <input name="active" id="active" type="checkbox" th:field="${block.active}"
+                           th:checked="@{${add_new} || ${block.active}}">
+                </div>
+            </div>
+
+            <div class="modal-footer form-group">
+                          <span class="input-group-btn">
+                              <button class="btn btn-info" data-dismiss="modal" aria-hidden="true">Cancel</button>
+                          <button id="save" name="save" class="btn btn-primary">Save</button>
+                          </span>
+            </div>
+        </fieldset>
+    </form>
+
+</div>
