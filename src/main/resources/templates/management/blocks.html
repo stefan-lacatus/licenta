@@ -162,7 +162,7 @@
     </div>
     <div id="genericModal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="genericModal"
          aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog" style="width: 900px;">
             <div class="modal-content">
                 <div class="modal-body">
                     <p>One fine body</p>
@@ -170,6 +170,16 @@
             </div>
         </div>
     </div>
+    <script> $('#genericModal').on('shown.bs.modal', function () {
+        CodeMirror.fromTextArea($("#blockFunction")[0], {
+            autoCloseTags: true,
+            lineNumbers: true,
+            fixedGutter: true,
+            lineWrapping: true,
+            autoCloseBrackets: true
+        });
+    });
+    </script>
     <div th:replace="fragments/footer :: footer">&copy; 2014 The Static Templates</div>
 </div>
 </body>
