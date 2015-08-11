@@ -102,8 +102,9 @@
 
                 <div class="col-md-10">
                     <textarea class="form-control" id="functionCode" name="description" th:field="${block.functionCode}"
-                              th:text="@{${add_new}? '' : ${block.functionCode}}" id="blockFunction"
-                              placeholder="block Function details">
+                              th:text="@{${add_new}? 'var parseInput = function(data) {
+
+};' : ${block.functionCode}}" placeholder="block Function details">
                     </textarea>
                 </div>
             </div>
