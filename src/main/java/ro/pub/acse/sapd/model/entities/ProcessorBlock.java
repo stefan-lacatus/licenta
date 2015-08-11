@@ -43,7 +43,6 @@ public class ProcessorBlock implements Serializable {
         this.functionCode = functionCode;
     }
 
-    @Column(unique = true)
     public String getDescription() {
         return description;
     }
@@ -52,6 +51,7 @@ public class ProcessorBlock implements Serializable {
         this.description = description;
     }
 
+    @Column(unique = true)
     public String getName() {
         return name;
     }
