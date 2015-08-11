@@ -5,6 +5,8 @@ import ro.pub.acse.sapd.data.impl.IntegerDataPoint;
 import ro.pub.acse.sapd.input.InputParseException;
 import ro.pub.acse.sapd.input.InputPreprocessorBlock;
 
+import java.util.List;
+
 /**
  * A block that just passes the data through
  */
@@ -17,5 +19,11 @@ public class InputIntegerProcessorBlock implements InputPreprocessorBlock<DataPo
         } catch (NumberFormatException ex) {
             throw new InputParseException(ex);
         }
+    }
+
+
+    @Override
+    public DataPoint processData(List<DataPoint> data) throws InputParseException {
+        return processData((String) data.get(0).getValue());
     }
 }
