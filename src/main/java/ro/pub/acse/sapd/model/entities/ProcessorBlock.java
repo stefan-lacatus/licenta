@@ -1,5 +1,6 @@
 package ro.pub.acse.sapd.model.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import ro.pub.acse.sapd.blocks.ProcessorBlockType;
 
 import javax.persistence.*;
@@ -80,6 +81,7 @@ public class ProcessorBlock implements Serializable {
     }
 
     @ManyToOne
+    @JsonIgnore
     public ApplicationUser getLastEditedBy() {
         return lastEditedBy;
     }

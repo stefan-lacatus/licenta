@@ -116,7 +116,8 @@
                                               aria-hidden="true">Add new Channel</span>
                                     </button>
                                 </div>
-                                <div th:unless="${add_new}" th:each="channel, stat: ${input.channels}" class="form-group channel-class"
+                                <div th:unless="${add_new}" th:each="channel, stat: ${input.channels}"
+                                     class="form-group channel-class"
                                      data-channel-index="0" th:attr="data-channel-index=${stat.index}">
                                     <input type="hidden" class="form-control" name="channels[0].id"
                                            th:name="channels[ + ${stat.index} + ].id" th:value="${channel.id}"/>
@@ -137,10 +138,13 @@
                                         </select>
                                     </div>
                                     <div class="col-xs-4 horizontal-form-padding">
-                                        <input type="text" class="form-control" name="channels[0].inputPreprocessor"
-                                               th:name="channels[ + ${stat.index} + ].inputPreprocessor"
-                                               placeholder="Input Preprocessor"
-                                               th:value="${channel.inputPreprocessor}"/>
+                                        <input type="hidden" th:name="channels[ + ${stat.index} + ].inputPreprocessor"
+                                               th:value="@{${channel.inputPreprocessor != null}? ${channel.inputPreprocessor.id} : 0}"/>
+                                        <input type="text" class="form-control inputPreprocessor"
+                                               name="channels[0].inputPreprocessorName"
+                                               th:name="channels[ + ${stat.index} + ].inputPreprocessorName"
+                                               placeholder="Input Preprocessor" autocomplete="off"
+                                               th:value="${channel.inputPreprocessor?.name}"/>
                                     </div>
                                     <div class="col-xs-1 horizontal-form-padding">
                                         <button type="button" class="btn btn-default removeButton">
@@ -148,7 +152,8 @@
                                         </button>
                                     </div>
                                 </div>
-                                <div th:if="${add_new} or ${input.channels.size() == 0} " class="form-group channel-class"
+                                <div th:if="${add_new} or ${input.channels.size() == 0} "
+                                     class="form-group channel-class"
                                      data-channel-index="0">
                                     <input type="hidden" class="form-control" name="channels[0].id"/>
 
@@ -165,7 +170,9 @@
                                         </select>
                                     </div>
                                     <div class="col-xs-4 horizontal-form-padding">
-                                        <input type="text" class="form-control" name="channels[0].inputPreprocessor"
+                                        <input type="hidden" name="channels[0].inputPreprocessor" value="0"/>
+                                        <input type="text" class="form-control inputPreprocessor"
+                                               name="channels[0].inputPreprocessorName" autocomplete="off"
                                                placeholder="Input Preprocessor"/>
                                     </div>
                                     <div class="col-xs-1 horizontal-form-padding">
@@ -178,13 +185,13 @@
 
                                 <!-- The template for adding new field -->
                                 <div class="form-group hide channel-class" id="channelTemplate">
-                                    <input type="hidden" class="form-control" name="id"/>
+                                    <input type="hidden" class="form-control" name="idc"/>
 
                                     <div class="col-xs-3 horizontal-form-padding">
-                                        <input type="text" class="form-control" name="name" placeholder="Name"/>
+                                        <input type="text" class="form-control" name="namec" placeholder="Name"/>
                                     </div>
                                     <div class="col-xs-3 horizontal-form-padding">
-                                        <select class="form-control" name="dataType">
+                                        <select class="form-control" name="dataTypec">
                                             <option value="" selected disabled>Data Type</option>
                                             <option th:each="dataType : ${T(ro.pub.acse.sapd.data.DataType).values()}"
                                                     th:value="${dataType}" th:text="${dataType.value}"
@@ -192,8 +199,21 @@
                                         </select>
                                     </div>
                                     <div class="col-xs-4 horizontal-form-padding">
-                                        <input type="text" class="form-control" name="inputPreprocessor"
-                                               placeholder="Input Preprocessor"/>
+                                        <input type="hidden" name="inputPreprocessorc" value="0"/>
+                                        <input autocomplete="off" type="text" class="form-control inputPreprocessor"
+                                               name="inputPreprocessorNamec" placeholder="Input Preprocessor"/>
+                                        <script>
+                                            var blocks = $.getJSON('/blocks/getBlocks', function (data) {
+                                                var elt = $(".inputPreprocessor");
+                                                elt.typeahead({
+                                                    source: data,
+                                                    autoSelect: true,
+                                                    afterSelect: function (currItem) {
+                                                        $('[name="' +  elt.attr("name").slice(0, -4) + '"').val(currItem.id);
+                                                    }
+                                                });
+                                            });
+                                        </script>
                                     </div>
                                     <div class="col-xs-1 horizontal-form-padding">
                                         <button type="button" class="btn btn-default removeButton">
@@ -222,10 +242,11 @@
                                                         .attr('data-channel-index', channelIndex).insertBefore($template);
 
                                                 // Update the name attributes
-                                                $clone.find('[name="name"]').attr('name', 'channels[' + channelIndex + '].name').end()
-                                                        .find('[name="dataType"]').attr('name', 'channels[' + channelIndex + '].dataType').end()
-                                                        .find('[name="inputPreprocessor"]').attr('name', 'channels[' + channelIndex + '].inputPreprocessor').end()
-                                                        .find('[name="id"]').attr('name', 'channels[' + channelIndex + '].id').end();
+                                                $clone.find('[name="namec"]').attr('name', 'channels[' + channelIndex + '].name').end()
+                                                        .find('[name="dataTypec"]').attr('name', 'channels[' + channelIndex + '].dataType').end()
+                                                        .find('[name="inputPreprocessorc"]').attr('name', 'channels[' + channelIndex + '].inputPreprocessor').end()
+                                                        .find('[name="inputPreprocessorNamec"]').attr('name', 'channels[' + channelIndex + '].inputPreprocessorName').end()
+                                                        .find('[name="idc"]').attr('name', 'channels[' + channelIndex + '].id').end();
                                             })
                                         // Remove button click handler
                                             .on('click', '.removeButton', function () {
@@ -240,6 +261,7 @@
                                                         $(this).find("[name='channels[" + curr_index + "].name']").attr('name', 'channels[' + new_index + '].name').end()
                                                                 .find("[name='channels[" + curr_index + "].dataType']").attr('name', 'channels[' + new_index + '].dataType').end()
                                                                 .find("[name='channels[" + curr_index + "].inputPreprocessor']").attr('name', 'channels[' + new_index + '].inputPreprocessor').end()
+                                                                .find("[name='channels[" + curr_index + "].inputPreprocessorName']").attr('name', 'channels[' + new_index + '].inputPreprocessorName').end()
                                                                 .find("[name='channels[" + curr_index + "].id']").attr('name', 'channels[' + new_index + '].id').end();
                                                     }
                                                 });

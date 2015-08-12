@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
+import org.springframework.format.FormatterRegistry;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -12,6 +13,7 @@ import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
+import ro.pub.acse.sapd.model.entities.IdToProcessorBlockConverter;
 
 import java.util.List;
 import java.util.Locale;
@@ -54,5 +56,12 @@ public class ComponentConfigurerAdapter extends WebMvcConfigurerAdapter {
         resolver.setFallbackPageable(new PageRequest(0, 30, Sort.Direction.DESC, "id"));
         argumentResolvers.add(resolver);
         super.addArgumentResolvers(argumentResolvers);
+    }
+
+
+    @Override
+    public void addFormatters(FormatterRegistry registry) {
+        super.addFormatters(registry);
+        registry.addConverter(new IdToProcessorBlockConverter());
     }
 }

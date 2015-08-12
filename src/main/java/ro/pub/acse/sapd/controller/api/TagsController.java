@@ -12,7 +12,6 @@ import java.util.stream.Collectors;
 
 @Controller
 public class TagsController {
-
     @Autowired
     private ApplicationTagRepository tagRepository;
 
