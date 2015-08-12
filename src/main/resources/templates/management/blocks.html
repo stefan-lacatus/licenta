@@ -171,13 +171,14 @@
         </div>
     </div>
     <script> $('#genericModal').on('shown.bs.modal', function () {
-        CodeMirror.fromTextArea($("#blockFunction")[0], {
+        codeMirror = CodeMirror.fromTextArea($("#blockFunction")[0], {
             autoCloseTags: true,
             lineNumbers: true,
             fixedGutter: true,
             lineWrapping: true,
             autoCloseBrackets: true
         });
+        window.codeMirror.setOption("mode", $('#blockType').val().toLowerCase());
     });
     </script>
     <div th:replace="fragments/footer :: footer">&copy; 2014 The Static Templates</div>
