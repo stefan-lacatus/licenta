@@ -11,7 +11,11 @@ public enum ProcessorBlockType {
     /**
      * A javascript function that respects the functional declaration in the ProcessorBlockFunction
      */
-    JAVASCRIPT("Javascript");
+    JAVASCRIPT("Javascript"),
+    /**
+     * A ruby function that respects the functional declaration in the ProcessorBlockFunction
+     */
+    RUBY("Ruby");
 
     private final String value;
 

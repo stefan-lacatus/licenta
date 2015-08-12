@@ -1,45 +1,40 @@
 package ro.pub.acse.sapd.blocks;
 
 import org.slf4j.Logger;
+import ro.pub.acse.sapd.blocks.executors.GenericBlockExecutor;
+import ro.pub.acse.sapd.blocks.executors.JavaBlockExecutor;
+import ro.pub.acse.sapd.blocks.executors.JavascriptBlockExecutor;
+import ro.pub.acse.sapd.blocks.executors.RubyBlockExecutor;
 import ro.pub.acse.sapd.data.DataPoint;
+import ro.pub.acse.sapd.data.impl.StringDataPoint;
 import ro.pub.acse.sapd.input.InputParseException;
 import ro.pub.acse.sapd.logging.Loggable;
 import ro.pub.acse.sapd.model.entities.ProcessorBlock;
 
 import javax.script.ScriptException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Executes blocks
  */
 public class BlockExecutor {
-    private final JavaBlockExecutor javaBlockExecutor;
-    private final JavascriptBlockExecutor javascriptBlockExecutor;
+    Map<ProcessorBlockType, GenericBlockExecutor> executors = new HashMap<>();
     @Loggable
     private Logger log;
 
     public BlockExecutor() {
-        javaBlockExecutor = new JavaBlockExecutor();
-        javascriptBlockExecutor = new JavascriptBlockExecutor();
+        executors.put(ProcessorBlockType.JAVA, new JavaBlockExecutor());
+        executors.put(ProcessorBlockType.JAVASCRIPT, new JavascriptBlockExecutor());
+        executors.put(ProcessorBlockType.RUBY, new RubyBlockExecutor());
     }
 
     public <T> DataPoint execute(ProcessorBlock block, List<DataPoint<T>> points) throws BlockExecutionException {
-        if (block.getBlockType().equals(ProcessorBlockType.JAVA)) {
-            try {
-                return javaBlockExecutor.processData(block.getFunctionCode(), points);
-            } catch (IllegalStateException | InputParseException ex) {
-                log.error("Failed to process data on block " + block.getName(), ex);
-                throw new BlockExecutionException(ex);
-            }
-        } else if (block.getBlockType().equals(ProcessorBlockType.JAVASCRIPT)) {
-            try {
-                return javascriptBlockExecutor.processData(block.getFunctionCode(), points);
-            } catch (ScriptException | NoSuchMethodException ex) {
-                log.error("Failed to process data on block " + block.getName(), ex);
-                throw new BlockExecutionException(ex);
-            }
-        } else {
-            return null;
+        if(executors.containsKey(block.getBlockType())) {
+            return executors.get(block.getBlockType()).processData(block.getFunctionCode(), points);
+        }  else {
+            return points.get(0);
         }
     }
 }
