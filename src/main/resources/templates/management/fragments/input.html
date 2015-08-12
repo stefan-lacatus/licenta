@@ -247,6 +247,16 @@
                                                         .find('[name="inputPreprocessorc"]').attr('name', 'channels[' + channelIndex + '].inputPreprocessor').end()
                                                         .find('[name="inputPreprocessorNamec"]').attr('name', 'channels[' + channelIndex + '].inputPreprocessorName').end()
                                                         .find('[name="idc"]').attr('name', 'channels[' + channelIndex + '].id').end();
+                                                $.getJSON('/blocks/getBlocks', function (data) {
+                                                    var elt = $clone.find('[name="channels[' + channelIndex + '].inputPreprocessorName' + '"]') ;
+                                                    elt.typeahead({
+                                                        source: data,
+                                                        autoSelect: true,
+                                                        afterSelect: function (currItem) {
+                                                            $('[name="' +  elt.attr("name").slice(0, -4) + '"').val(currItem.id);
+                                                        }
+                                                    });
+                                                });
                                             })
                                         // Remove button click handler
                                             .on('click', '.removeButton', function () {
