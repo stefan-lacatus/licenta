@@ -73,7 +73,7 @@ public class ProcessorBlockController {
     public String searchBlock(HttpServletRequest request, Model model, Pageable pageable,
                               @PathVariable("searchTerm") String search) {
         final Sort sortOrder = new Sort(new Sort.Order(Sort.Direction.DESC, "active"),
-                new Sort.Order(Sort.Direction.ASC, "lastName"));
+                new Sort.Order(Sort.Direction.ASC, "name"));
         PageRequest pageRequest = new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), sortOrder);
         PageWrapper<ProcessorBlock> page = new PageWrapper<>(blocks.search(pageRequest, search.toLowerCase()),
                 request.getRequestURI());
