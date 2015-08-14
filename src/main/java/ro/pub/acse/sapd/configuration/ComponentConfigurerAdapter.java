@@ -13,7 +13,7 @@ import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
-import ro.pub.acse.sapd.model.entities.IdToProcessorBlockConverter;
+import ro.pub.acse.sapd.model.converters.IdToProcessorBlockConverter;
 
 import java.util.List;
 import java.util.Locale;

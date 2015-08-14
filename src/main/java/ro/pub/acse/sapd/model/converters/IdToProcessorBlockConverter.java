@@ -1,8 +1,9 @@
-package ro.pub.acse.sapd.model.entities;
+package ro.pub.acse.sapd.model.converters;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
+import ro.pub.acse.sapd.model.entities.ProcessorBlock;
 import ro.pub.acse.sapd.repository.ProcessorBlockRepository;
 
 /**
