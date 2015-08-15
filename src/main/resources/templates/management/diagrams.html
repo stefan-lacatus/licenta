@@ -1,0 +1,176 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <script src="http://cdn.jsdelivr.net/webjars/jquery/2.1.4/jquery.min.js"
+            th:src="@{/webjars/jquery/2.1.4/jquery.min.js}"></script>
+
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.22.3/css/theme.bootstrap.min.css"
+          th:href="@{/css/tablesorter/theme.bootstrap.min.css}" rel="stylesheet" media="screen"/>
+
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.22.3/js/jquery.tablesorter.min.js"
+            th:src="@{/js/tablesorter/jquery.tablesorter.combined.js}"></script>
+
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.22.3/js/jquery.tablesorter.widgets.min.js"
+            th:src="@{/js/tablesorter/jquery.tablesorter.widgets.min.js}"></script>
+
+    <link href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.5/css/bootstrap.min.css"
+          th:href="@{/webjars/bootstrap/3.3.5/css/bootstrap.min.css}"
+          rel="stylesheet" media="screen"/>
+
+    <script src="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.5/js/bootstrap.min.js"
+            th:src="@{/webjars/bootstrap/3.3.5/js/bootstrap.min.js}"></script>
+
+    <script src="../../static/js/custom.js"
+            th:src="@{/js/custom.js}"></script>
+
+    <link href="../../static/css/core.css" rel="stylesheet" media="screen"
+          th:href="@{/css/core.css}"/>
+
+    <title th:text="#{project_name}">Project name</title>
+
+</head>
+<body>
+<div th:replace="fragments/header :: header">
+</div>
+<div class="container">
+
+    <div class="well">
+
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+
+                <h3 class="panel-title">Diagrams&nbsp;&nbsp;
+
+                    <span class="clickable panel-title" data-toggle="tooltip" title="Add new diagram"
+                          data-container="body">
+								<a href="#" th:href="@{/management/diagram/new/}"
+                                   class="glyphicon glyphicon-plus-sign render-modal"></a>
+                    </span>
+                    &nbsp;&nbsp;
+                    <span class="clickable filter" data-toggle="tooltip" title="Toggle table filter"
+                          data-container="body">
+								<i class="glyphicon glyphicon-filter"></i>
+							</span>
+
+                </h3>
+
+                <div class="pull-right input-group">
+                    <form class="form-search" role="search" th:action="@{/management/diagram/search}"
+                          action="/management/diagram/search" method="POST">
+                        <div class="input-group">
+                            <input name="search" class="form-control" type="text" title=""/>
+                          <span class="input-group-btn">
+                            <button type="submit" class="btn btn-default"><i class="glyphicon glyphicon-search"></i>
+                            </button>
+                          </span>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+            <div class="panel-body header-search">
+                <input type="text" class="form-control" id="diagrams-table-filter" data-action="filter"
+                       data-filters="#diagrams-table" placeholder="Filter diagrams"/>
+            </div>
+            <table class="table table-hover" id="diagrams-table">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Last Edited By</th>
+                    <th>Last Edited On</th>
+                    <th data-sorter="false">Edit</th>
+                    <th data-sorter="false">Disable</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="diagram : ${page.content}">
+                    <td th:text="${diagram.id}">id</td>
+                    <td th:text="${diagram.name}">name</td>
+                    <td th:text="${diagram.diagramType.value}">firstName</td>
+                    <td th:text="${diagram.description}">lastName</td>
+                    <td th:text="${diagram.lastEditedBy?.username}">lastName</td>
+                    <td th:text="${diagram.lastEditedTime}">lastEdit</td>
+                    <td>
+                        <a th:href="@{/management/diagram/{diagramId}(diagramId=${diagram.id})}" href="#"
+                           class="render-modal btn btn-default btn-warning btn-xs">
+                            <span class="glyphicon glyphicon-pencil"></span>
+                        </a>
+                    </td>
+                    <td>
+                        <a data-toggle="modal" href="#deleteModal" class="btn btn-default btn-danger btn-xs"
+                           th:attr="data-id=${diagram.id}">
+                            <span class="glyphicon glyphicon-remove-sign"></span>
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <script type="text/javascript">
+                $(function () {
+                    $("#diagrams-table").tablesorter({
+                        theme: "bootstrap",
+                        sortList: [[0, 0], [3, 0]],
+                        widgets: ["uitheme", "zebra"],
+                        headerTemplate: '{content} {icon}'
+                    })
+                });
+            </script>
+        </div>
+        <div th:replace="fragments/pagination :: paginationbar" class="pagination">
+            <ul class="pagination">
+                <li><a href="#">&laquo;</a></li>
+                <li><a href="#">1</a></li>
+                <li><a href="#">2</a></li>
+                <li><a href="#">3</a></li>
+                <li><a href="#">4</a></li>
+                <li><a href="#">5</a></li>
+                <li><a href="#">&raquo;</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="deleteModal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span></a>
+                    <h4 class="modal-title" id="deleteModalLabel">Disable confirmation</h4>
+                </div>
+                <div class="modal-body">
+                    <p class="error-text">Are you sure you want to disable the diagram?</p>
+                </div>
+                <div class="modal-footer">
+                    <form th:action="@{/management/diagram/disable}" action="/management/diagram/disable" method="post">
+                        <input type="hidden" name="diagramId" id="entityId" class="form-control">
+                          <span class="input-group-btn">
+                              <button class="btn btn-info" data-dismiss="modal" aria-hidden="true">Cancel</button>
+                              <button type="submit" class="btn btn-danger">Disable</button>
+                          </span>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="genericModal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="genericModal"
+         aria-hidden="true">
+        <div class="modal-dialog" style="width: 900px;">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <p>One fine body</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:replace="fragments/footer :: footer">&copy; 2014 The Static Templates</div>
+</div>
+</body>
+</html>
