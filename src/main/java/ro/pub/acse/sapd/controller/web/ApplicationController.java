@@ -17,14 +17,9 @@ public class ApplicationController {
     @Autowired
     private InputBlockRepository inputBlockRepository;
 
-    @RequestMapping(value = {"/", "", "/inputs", "/inputs/"})
-    public String managementHome(Model model, Pageable pageable) {
-        final Sort sortOrder = new Sort(new Sort.Order(Sort.Direction.DESC, "enabled"),
-                new Sort.Order(Sort.Direction.ASC, "lastEditedTime"));
-        PageRequest pageRequest = new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), sortOrder);
-        PageWrapper<InputBlock> page = new PageWrapper<>(inputBlockRepository.findAll(pageRequest), "/management/input_blocks");
-        model.addAttribute("page", page);
-        model.addAttribute("current_page", "inputs");
-        return "management/input_blocks";
+    @RequestMapping(value = {"/", ""})
+    public String managementHome(Model model) {
+        model.addAttribute("current_page", "home");
+        return "home";
     }
 }

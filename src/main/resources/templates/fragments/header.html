@@ -1,10 +1,12 @@
-<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring3-3.dtd">
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 <html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
     <link href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.5/css/bootstrap.min.css"
           th:href="@{/webjars/bootstrap/3.3.5/css/bootstrap.min.css}"
           rel="stylesheet" media="screen"/>
+    <script src="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.5/js/bootstrap.min.js"
+            th:src="@{/webjars/bootstrap/3.3.5/js/bootstrap.min.js}"></script>
     <script src="http://cdn.jsdelivr.net/webjars/jquery/2.1.4/jquery.min.js"
             th:src="@{/webjars/jquery/2.1.4/jquery.min.js}"></script>
 </head>
@@ -25,19 +27,29 @@
                 </div>
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
-                        <li th:classappend="${current_page == 'home' ? 'active' : ''}"><a href="#"
-                                                                                          th:href="@{/}">Home</a></li>
-                        <li th:classappend="${current_page == 'management' ? 'active' : ''}"><a href="#"
-                                                                                                th:href="@{/templates/management}">Management</a>
+                        <li th:classappend="${current_page == 'home' ? 'active' : ''}">
+                            <a href="#" th:href="@{/}">Home</a>
+                        </li>
+                        <li th:classappend="${current_page == 'management' ? 'active' : ''}" class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Management <span
+                                    class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="#" th:href="@{/management/inputs}">Inputs</a></li>
+                                <li><a href="#" th:href="@{/management/blocks}">Blocks</a></li>
+                                <li><a href="#" th:href="@{/management/diagrams}">Diagrams</a></li>
+                                <li class="divider"></li>
+                                <li><a href="#" th:href="@{/management/users}">Users</a></li>
+                            </ul>
                         </li>
                         <li th:classappend="${current_page == 'reports' ? 'active' : ''}" class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reports <span
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Monitoring <span
                                     class="caret"></span></a>
                             <ul class="dropdown-menu" role="menu">
-                                <li><a href="#" th:href="@{/reports/day}">Active Employees</a></li>
+                                <li><a href="#" th:href="@{/monitor/logs}">Running logs</a></li>
                                 <li class="divider"></li>
-                                <li><a href="#" th:href="@{/reports/history}">Employee History</a></li>
-                                <li><a href="#" th:href="@{/reports/time}">Employee Time</a></li>
+                                <li><a href="#" th:href="@{/monitor/inputs}">Data history</a></li>
+                                <li><a href="#" th:href="@{/monitor/outputs}">Output history</a></li>
                             </ul>
                         </li>
                     </ul>

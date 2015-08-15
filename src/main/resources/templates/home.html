@@ -17,7 +17,7 @@
     <script src="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.5/js/bootstrap.min.js"
             th:src="@{/webjars/bootstrap/3.3.5/js/bootstrap.min.js}"></script>
 
-    <link href="../../static/css/core.css" rel="stylesheet" media="screen"
+    <link href="../static/css/core.css" rel="stylesheet" media="screen"
           th:href="@{/css/core.css}"/>
 </head>
 <body>
@@ -32,8 +32,8 @@
             Here are some features you might be interested in:
         </p>
         <ul>
-            <li><a href="/templates/management">Manage users</a></li>
-            <li><a href="/reports">Generate reports</a></li>
+            <li><a href="/templates/management/users.html" th:href="@{/management/users}">Management</a></li>
+            <li><a href="/templates/monitoring/users.html" th:href="@{/monitor/logs}">Monitoring</a></li>
         </ul>
 
     </div>
