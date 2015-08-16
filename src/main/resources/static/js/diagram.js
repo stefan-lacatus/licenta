@@ -195,7 +195,7 @@ function init_diagram() {
     myDiagram.toolManager.linkingTool.temporaryLink.routing = go.Link.Orthogonal;
     myDiagram.toolManager.relinkingTool.temporaryLink.routing = go.Link.Orthogonal;
 
-    load();  // load an initial diagram from some JSON text
+    loadDiagram();  // loadDiagram an initial diagram from some JSON text
     loop(); // simulate flow through pipes
     // initialize the Palette that is on the left side of the page
     myPalette =
@@ -240,11 +240,12 @@ function loop() {
 
 
 // Show the diagram's model in JSON format that the user may edit
-function save() {
+function saveDiagram() {
     document.getElementById("mySavedModel").value = myDiagram.model.toJson();
     myDiagram.isModified = false;
+    return true;
 }
-function load() {
+function loadDiagram() {
     myDiagram.model = go.Model.fromJson(document.getElementById("mySavedModel").value);
 }
 

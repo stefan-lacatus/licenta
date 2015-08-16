@@ -21,6 +21,13 @@
     <script src="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.5/js/bootstrap.min.js"
             th:src="@{/webjars/bootstrap/3.3.5/js/bootstrap.min.js}"></script>
 
+    <script th:src="@{/js/bootstrap-tagsinput.js}"></script>
+
+    <script th:src="@{/js/bootstrap3-typeahead.min.js}"></script>
+    <link rel="stylesheet"
+          href="http://cdn.jsdelivr.net/webjars/org.webjars/bootstrap-tagsinput/0.5/bootstrap-tagsinput.css"
+          th:href="@{/css/bootstrap-tagsinput.css}" media="screen"/>
+
     <link href="../../../static/css/core.css" rel="stylesheet" media="screen"
           th:href="@{/css/core.css}"/>
     <link href="../../../static/css/diagram.css" rel="stylesheet" media="screen"
@@ -38,107 +45,135 @@
 
         <div class="panel panel-primary">
             <div class="panel-heading">
-
-                <h3 class="panel-title" th:text="@{${add_new} ? 'Add diagram' : 'Edit diagram'}">Diagram #id&nbsp;&nbsp;
-
-                    <span class="clickable panel-title" data-toggle="tooltip" title="Add new diagram"
-                          data-container="body">
-								<a href="#" th:href="@{/management/diagram/new/}"
-                                   class="glyphicon glyphicon-plus-sign"></a>
-                    </span>
-                    &nbsp;&nbsp;
-                    <span class="clickable filter" data-toggle="tooltip" title="Toggle table filter"
-                          data-container="body">
-								<i class="glyphicon glyphicon-filter"></i>
-							</span>
-
-                </h3>
-
-                <div th:unless="${add_new}" class="pull-right input-group">
-                    <a data-toggle="modal" href="#deleteModal" class="btn btn-default btn-danger btn-xs"
-                       th:attr="data-id=${diagram.id}">
-                        <span class="glyphicon glyphicon-remove-sign"></span>
-                    </a>
-                </div>
+                <h3 class="panel-title" th:text="@{${add_new} ? 'Add diagram' : 'Edit diagram'}">Diagram #id </h3>
             </div>
+
             <div class="panel-body">
-                <div id="blockPalette" class="diagramPalette"></div>
+                <form class="form-horizontal" role="save" th:object="${diagram}" onsubmit="return saveDiagram()"
+                      th:action="|${#httpServletRequest.getRequestURI()}/save|" method="post">
+                    <fieldset>
 
-                <div id="blockDiagram" class="diagram"></div>
-                <button id="SaveButton" onclick="save()">Save</button>
-                <button onclick="load()">Load</button>
-  <textarea id="mySavedModel" style="width:100%;height:300px;display: none;">
-{ "class": "go.GraphLinksModel",
-  "linkFromPortIdProperty": "fromPort",
-  "linkToPortIdProperty": "toPort",
-  "nodeDataArray": [
-{"category":"Comment",  "text":"Kookie Brittle", "key":-13},
-{"key":-1, "category":"Start","text":"Start"},
-{"key":0, "text":"Preheat oveF"},
-{"key":1,  "text":"In n salt"},
-{"key":2,  "text":"Graduallyour"},
-{"key":3,  "text":"Mix ls"},
-{"key":4,  "text":"Press"},
-{"key":5, "text":"Finely c"},
-{"key":6,  "text":"Sprp"},
-{"key":7,  "text":"Bakl"},
-{"key":8,  "text":"Cut d"},
-{"key":-2, "category":"End", "text":"End"}
- ],
-  "linkDataArray": [
-{"from":1, "to":2,  "fromPort":"OUT", "toPort":"IN"},
-{"from":2, "to":3,  "fromPort":"OUT", "toPort":"IN"},
-{"from":3, "to":4,  "fromPort":"OUT", "toPort":"IN"},
-{"from":4, "to":6,  "fromPort":"OUT", "toPort":"IN"},
-{"from":6, "to":7,  "fromPort":"OUT", "toPort":"IN"},
-{"from":7, "to":8,  "fromPort":"OUT", "toPort":"IN"},
-{"from":8, "to":-2, "fromPort":"OUT", "toPort":"IN"},
-{"from":-1, "to":0, "fromPort":"OUT", "toPort":"IN"},
-{"from":-1, "to":1, "fromPort":"OUT", "toPort":"IN"},
-{"from":-1, "to":5, "fromPort":"OUT", "toPort":"IN"},
-{"from":5, "to":4,  "fromPort":"OUT", "toPort":"IN"},
-{"from":0, "to":4,  "fromPort":"OUT", "toPort":"IN"},
-{"from":2, "to":4,  "fromPort":"OUT", "toPort":"IN"}
- ]}
-  </textarea>
+                        <legend th:text="@{${add_new} ? 'Add diagram' : 'Edit diagram'}">Add diagram
+                            <strong th:text="${diagram.name}" th:unless="${diagram == null}">diagram
+                                name</strong>
+                        </legend>
 
-                <p>Click to save as a non interactive image.</p>
-                <button onclick="makeSVG()">Render as SVG</button>
-                <div id="SVGArea" class="text-center"></div>
+                        <input value="id" th:field="${diagram.id}" th:value="@{${add_new}? '' : ${diagram.id}}"
+                               id="id" name="id" type="hidden">
+
+                        <!-- Text input-->
+                        <div class="form-group">
+                            <label class="col-md-2 control-label" for="name">Name</label>
+
+                            <div class="col-md-10">
+                                <input value="name" th:field="${diagram.name}"
+                                       th:value="@{${add_new}? '' : ${diagram.name}}" id="name"
+                                       required="Add a name!" name="name" placeholder="Diagram Name"
+                                       class="form-control input-md" type="text">
+                            </div>
+                        </div>
+
+                        <!-- Textarea -->
+                        <div class="form-group">
+                            <label class="col-md-2 control-label" for="description">Description</label>
+
+                            <div class="col-md-10">
+                    <textarea class="form-control" id="description" name="description" th:field="${diagram.description}"
+                              th:text="@{${add_new}? '' : ${diagram.description}}"
+                              placeholder="diagram additional details">
+                        Descriere diagram
+                    </textarea>
+                            </div>
+                        </div>
+
+                        <!-- Text input-->
+                        <div class="form-group">
+                            <label class="col-md-2 control-label" for="tags">Tags</label>
+
+                            <div class="col-md-10">
+                                <input name="tags" id="tags" type="text" data-role="tagsinput"/>
+                                <script th:inline="javascript">
+                                    var elt = $("#tags");
+                                    elt.tagsinput({
+                                        itemValue: 'id',
+                                        itemText: 'name',
+                                        typeahead: {
+                                            source: function () {
+                                                return $.get('/tags/getTags');
+                                            }
+                                        }
+                                    });
+                                    var tags = /*[[${diagram?.tags}]]*/ [];
+                                    if (tags) {
+                                        $.each(tags, function (id, tag) {
+                                            elt.tagsinput('add', {"id": tag.id, "name": tag.name});
+                                        })
+                                    }
+
+                                </script>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-md-2 control-label" for="active">Active</label>
+
+                            <div class="col-md-10">
+                                <input name="active" id="active" type="checkbox" th:field="${diagram.active}"
+                                       th:checked="@{${add_new} || ${diagram.active}}">
+                            </div>
+                        </div>
+
+                        <div id="blockPalette" class="diagramPalette bootstrapArea"></div>
+
+                        <div id="blockDiagram" class="diagram bootstrapArea"></div>
+
+                        <textarea id="mySavedModel" name="code" th:field="${diagram.code}"
+                                  th:text=" @{${add_new}? ${default_diagram} :  ${diagram.code}}"
+                                  style="display: none;">
+                        </textarea>
+
+                        <div id="SVGArea" class="text-center" style="margin-bottom: 5px;"></div>
+                        <div class="form-group">
+                            <div class="pull-right" style="padding-right: 15px;">
+                                <button th:unless="${add_new}" type="button" name="delete" class="btn btn-danger"
+                                        data-toggle="modal" data-target="#deleteModal" th:attr="data-id=${diagram.id}">
+                                    Delete
+                                </button>
+                                <button type="button" onclick="makeSVG()" name="cancel" class="btn btn-info">Render
+                                    SVG
+                                </button>
+
+                                <button name="save" class="btn btn-success">Save</button>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
             </div>
-
         </div>
     </div>
-
-    <div id="deleteModal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
+    <div id="deleteModal" class="modal fade in" tabindex="-1" role="dialog"
+         aria-labelledby="deleteModalLabel"
          aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <a class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span></a>
+                    <a class="btn btn-default" data-dismiss="modal"><span
+                            class="glyphicon glyphicon-remove"></span></a>
                     <h4 class="modal-title" id="deleteModalLabel">Disable confirmation</h4>
                 </div>
                 <div class="modal-body">
                     <p class="error-text">Are you sure you want to disable the diagram?</p>
                 </div>
+
                 <div class="modal-footer">
-                    <form th:action="@{/management/diagram/disable}" action="/management/diagram/disable" method="post">
+                    <form th:action="@{/management/diagram/disable}" action="/management/diagram/disable"
+                          method="post">
                         <input type="hidden" name="diagramId" id="entityId" class="form-control">
                           <span class="input-group-btn">
                               <button class="btn btn-info" data-dismiss="modal" aria-hidden="true">Cancel</button>
                               <button type="submit" class="btn btn-danger">Disable</button>
                           </span>
                     </form>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div id="genericModal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="genericModal"
-         aria-hidden="true">
-        <div class="modal-dialog" style="width: 900px;">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <p>One fine body</p>
                 </div>
             </div>
         </div>

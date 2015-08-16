@@ -82,7 +82,6 @@
                 <tr>
                     <th>#</th>
                     <th>Name</th>
-                    <th>Type</th>
                     <th>Description</th>
                     <th>Last Edited By</th>
                     <th>Last Edited On</th>
@@ -94,7 +93,6 @@
                 <tr th:each="diagram : ${page.content}">
                     <td th:text="${diagram.id}">id</td>
                     <td th:text="${diagram.name}">name</td>
-                    <td th:text="${diagram.diagramType.value}">firstName</td>
                     <td th:text="${diagram.description}">lastName</td>
                     <td th:text="${diagram.lastEditedBy?.username}">lastName</td>
                     <td th:text="${diagram.lastEditedTime}">lastEdit</td>

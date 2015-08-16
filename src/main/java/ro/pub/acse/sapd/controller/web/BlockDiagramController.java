@@ -42,8 +42,119 @@ public class BlockDiagramController {
     @RequestMapping("/diagram/new")
     public String newDiagram(Model model) {
         model.addAttribute("current_page", "management");
-        model.addAttribute("diagram", new BlockDiagramController());
+        model.addAttribute("diagram", new BlockDiagram());
         model.addAttribute("add_new", true);
+        model.addAttribute("default_diagram","  {\n" +
+                "      \"class\": \"go.GraphLinksModel\",\n" +
+                "      \"linkFromPortIdProperty\": \"fromPort\",\n" +
+                "      \"linkToPortIdProperty\": \"toPort\",\n" +
+                "      \"nodeDataArray\": [{\n" +
+                "          \"category\": \"Comment\",\n" +
+                "          \"text\": \"Kookie Brittle\",\n" +
+                "          \"key\": -13\n" +
+                "      }, {\n" +
+                "          \"key\": -1,\n" +
+                "          \"category\": \"Start\",\n" +
+                "          \"text\": \"Start\"\n" +
+                "      }, {\n" +
+                "          \"key\": 0,\n" +
+                "          \"text\": \"Preheat oveF\"\n" +
+                "      }, {\n" +
+                "          \"key\": 1,\n" +
+                "          \"text\": \"In n salt\"\n" +
+                "      }, {\n" +
+                "          \"key\": 2,\n" +
+                "          \"text\": \"Graduallyour\"\n" +
+                "      }, {\n" +
+                "          \"key\": 3,\n" +
+                "          \"text\": \"Mix ls\"\n" +
+                "      }, {\n" +
+                "          \"key\": 4,\n" +
+                "          \"text\": \"Press\"\n" +
+                "      }, {\n" +
+                "          \"key\": 5,\n" +
+                "          \"text\": \"Finely c\"\n" +
+                "      }, {\n" +
+                "          \"key\": 6,\n" +
+                "          \"text\": \"Sprp\"\n" +
+                "      }, {\n" +
+                "          \"key\": 7,\n" +
+                "          \"text\": \"Bakl\"\n" +
+                "      }, {\n" +
+                "          \"key\": 8,\n" +
+                "          \"text\": \"Cut d\"\n" +
+                "      }, {\n" +
+                "          \"key\": -2,\n" +
+                "          \"category\": \"End\",\n" +
+                "          \"text\": \"End\"\n" +
+                "      }],\n" +
+                "      \"linkDataArray\": [{\n" +
+                "          \"from\": 1,\n" +
+                "          \"to\": 2,\n" +
+                "          \"fromPort\": \"OUT\",\n" +
+                "          \"toPort\": \"IN\"\n" +
+                "      }, {\n" +
+                "          \"from\": 2,\n" +
+                "          \"to\": 3,\n" +
+                "          \"fromPort\": \"OUT\",\n" +
+                "          \"toPort\": \"IN\"\n" +
+                "      }, {\n" +
+                "          \"from\": 3,\n" +
+                "          \"to\": 4,\n" +
+                "          \"fromPort\": \"OUT\",\n" +
+                "          \"toPort\": \"IN\"\n" +
+                "      }, {\n" +
+                "          \"from\": 4,\n" +
+                "          \"to\": 6,\n" +
+                "          \"fromPort\": \"OUT\",\n" +
+                "          \"toPort\": \"IN\"\n" +
+                "      }, {\n" +
+                "          \"from\": 6,\n" +
+                "          \"to\": 7,\n" +
+                "          \"fromPort\": \"OUT\",\n" +
+                "          \"toPort\": \"IN\"\n" +
+                "      }, {\n" +
+                "          \"from\": 7,\n" +
+                "          \"to\": 8,\n" +
+                "          \"fromPort\": \"OUT\",\n" +
+                "          \"toPort\": \"IN\"\n" +
+                "      }, {\n" +
+                "          \"from\": 8,\n" +
+                "          \"to\": -2,\n" +
+                "          \"fromPort\": \"OUT\",\n" +
+                "          \"toPort\": \"IN\"\n" +
+                "      }, {\n" +
+                "          \"from\": -1,\n" +
+                "          \"to\": 0,\n" +
+                "          \"fromPort\": \"OUT\",\n" +
+                "          \"toPort\": \"IN\"\n" +
+                "      }, {\n" +
+                "          \"from\": -1,\n" +
+                "          \"to\": 1,\n" +
+                "          \"fromPort\": \"OUT\",\n" +
+                "          \"toPort\": \"IN\"\n" +
+                "      }, {\n" +
+                "          \"from\": -1,\n" +
+                "          \"to\": 5,\n" +
+                "          \"fromPort\": \"OUT\",\n" +
+                "          \"toPort\": \"IN\"\n" +
+                "      }, {\n" +
+                "          \"from\": 5,\n" +
+                "          \"to\": 4,\n" +
+                "          \"fromPort\": \"OUT\",\n" +
+                "          \"toPort\": \"IN\"\n" +
+                "      }, {\n" +
+                "          \"from\": 0,\n" +
+                "          \"to\": 4,\n" +
+                "          \"fromPort\": \"OUT\",\n" +
+                "          \"toPort\": \"IN\"\n" +
+                "      }, {\n" +
+                "          \"from\": 2,\n" +
+                "          \"to\": 4,\n" +
+                "          \"fromPort\": \"OUT\",\n" +
+                "          \"toPort\": \"IN\"\n" +
+                "      }]\n" +
+                "  }");
         return "management/fragments/diagram";
     }
 
