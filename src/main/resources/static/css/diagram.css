@@ -1,0 +1,14 @@
+.diagramPalette {
+    vertical-align: top;
+    width: 100%;
+    border: solid 1px gray;
+    height: 100px;
+}
+
+.diagram {
+    width: 100%;
+    vertical-align: top;
+    border: solid 1px gray;
+    margin-top: 5px;
+    height: 500px;
+}

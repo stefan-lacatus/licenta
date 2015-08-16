@@ -49,7 +49,7 @@
                     <span class="clickable panel-title" data-toggle="tooltip" title="Add new diagram"
                           data-container="body">
 								<a href="#" th:href="@{/management/diagram/new/}"
-                                   class="glyphicon glyphicon-plus-sign render-modal"></a>
+                                   class="glyphicon glyphicon-plus-sign"></a>
                     </span>
                     &nbsp;&nbsp;
                     <span class="clickable filter" data-toggle="tooltip" title="Toggle table filter"
@@ -100,7 +100,7 @@
                     <td th:text="${diagram.lastEditedTime}">lastEdit</td>
                     <td>
                         <a th:href="@{/management/diagram/{diagramId}(diagramId=${diagram.id})}" href="#"
-                           class="render-modal btn btn-default btn-warning btn-xs">
+                           class="btn btn-default btn-warning btn-xs">
                             <span class="glyphicon glyphicon-pencil"></span>
                         </a>
                     </td>
