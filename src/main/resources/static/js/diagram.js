@@ -9,7 +9,9 @@ function initDiagram() {
                 initialContentAlignment: go.Spot.Center,
                 allowDrop: true,  // must be true to accept drops from the Palette
                 "animationManager.duration": 800, // slightly longer than default (600ms) animation
-                "undoManager.isEnabled": true  // enable undo & redo
+                "undoManager.isEnabled": true,  // enable undo & redo
+                "TextEdited": onTextEdited,
+                "ChangedSelection": onSelectionChanged
             });
 
     // when the document is modified, add a "*" to the title and enable the "Save" button
@@ -83,6 +85,7 @@ function initDiagram() {
             {
                 doubleClick: function (e, obj) {
                     console.log(obj.data);
+                    obj.data.blockId = 1;
                 }
             },
             // the main object is a Panel that surrounds a TextBlock with a rectangular Shape
@@ -98,11 +101,18 @@ function initDiagram() {
                     $(go.TextBlock,  // the node title
                         {
                             column: 0, row: 0, columnSpan: 3, alignment: go.Spot.Center,
-                            font: "bold 10pt sans-serif", margin: new go.Margin(4, 2)
+                            font: "bold 10pt sans-serif", margin: new go.Margin(4, 2),
+                            editable: true, isMultiline: false
                         },
                         new go.Binding("text").makeTwoWay()),
+                    $(go.TextBlock,  // the node block
+                        {
+                            column: 0, row: 1, columnSpan: 3, alignment: go.Spot.Center,
+                            font: "bold 10pt sans-serif", margin: new go.Margin(4, 2)
+                        },
+                        new go.Binding("text", "internalType").makeTwoWay()),
                     $(go.Panel, "Horizontal",
-                        {column: 0, row: 1},
+                        {column: 0, row: 2},
                         $(go.Shape,  // the "IN" port
                             {
                                 width: 6,
@@ -114,7 +124,7 @@ function initDiagram() {
                         $(go.TextBlock, "Inputs")  // "Inputs" port label
                     ),
                     $(go.Panel, "Horizontal",
-                        {column: 2, row: 1, rowSpan: 2},
+                        {column: 2, row: 2, rowSpan: 2},
                         $(go.TextBlock, "Out"),  // "Out" port label
                         $(go.Shape,  // the "Out" port
                             {
@@ -132,23 +142,44 @@ function initDiagram() {
     functionDiagram.nodeTemplateMap.add("Input",
         $(go.Node, "Spot", nodeStyle(),
             $(go.Panel, "Auto",
-                $(go.Shape, "Rectangle",
-                    {minSize: new go.Size(40, 40), fill: "#79C900", stroke: null}),
-                $(go.TextBlock, "Start",
-                    {font: "bold 11pt Helvetica, Arial, sans-serif", stroke: lightText},
-                    new go.Binding("text"))
-            ),
-            $(go.Shape, "Rectangle",
-                {
-                    width: 6,
-                    height: 6,
-                    alignment: new go.Spot(1, 0.5),
-                    portId: "OUT",
-                    fromSpot: go.Spot.Right,
-                    fromLinkable: true
-                }
+                $(go.Panel, "Auto",
+                    $(go.Shape, "Rectangle",
+                        {minSize: new go.Size(40, 40), fill: "#79C900", stroke: null})
+                ),
+                $(go.Panel, "Table",
+                    $(go.RowColumnDefinition,
+                        {column: 0, alignment: go.Spot.Left}),
+                    $(go.RowColumnDefinition,
+                        {column: 2, alignment: go.Spot.Right}),
+                    $(go.TextBlock,  // the node title
+                        {
+                            column: 0, row: 0, columnSpan: 3, alignment: go.Spot.Center,
+                            font: "bold 10pt sans-serif", margin: new go.Margin(4, 2),
+                            editable: true, isMultiline: false
+                        },
+                        new go.Binding("text").makeTwoWay()),
+                    $(go.TextBlock,  // the node block
+                        {
+                            column: 0, row: 1, columnSpan: 3, alignment: go.Spot.Center,
+                            font: "bold 10pt sans-serif", margin: new go.Margin(4, 2)
+                        },
+                        new go.Binding("text", "internalType").makeTwoWay()),
+                    $(go.Panel, "Horizontal",
+                        {column: 2, row: 2, rowSpan: 2},
+                        $(go.TextBlock, "Out"),  // "Out" port label
+                        $(go.Shape,  // the "Out" port
+                            {
+                                width: 6,
+                                height: 6,
+                                portId: "OUT",
+                                fromSpot: go.Spot.Right,
+                                fromLinkable: true
+                            })
+                    )
+                )
             )
-        ));
+        )
+    );
 
     functionDiagram.nodeTemplateMap.add("End",
         $(go.Node, "Spot", nodeStyle(),
@@ -237,6 +268,75 @@ function loop() {
     }, 100);
 }
 
+// Allow the user to edit text when a single node is selected
+function onSelectionChanged(e) {
+    var node = e.diagram.selection.first();
+    if (node instanceof go.Node) {
+        updateProperties(node.data);
+    } else {
+        updateProperties(null);
+    }
+}
+
+function onTextEdited(e) {
+    var tb = e.subject;
+    if (tb === null || !tb.name) return;
+    var node = tb.part;
+    if (node instanceof go.Node) {
+        updateProperties(node.data);
+    }
+}
+
+// Update the HTML elements for editing the properties of the currently selected node, if any
+function updateProperties(data) {
+    if (data === null) {
+        document.getElementById("propertiesProcessorPanel").style.display = "none";
+        document.getElementById("propertiesChannelPanel").style.display = "none";
+        document.getElementById("processorId").value = "";
+        document.getElementById("processorName").value = "";
+        document.getElementById("blockName").value = "";
+        document.getElementById("blockComments").value = "";
+        document.getElementById("blockEditAnchor").href = "#";
+        document.getElementById("blockChannelName").value = "";
+        document.getElementById("channelId").value = "";
+        document.getElementById("channelName").value = "";
+        document.getElementById("blockChannelComments").value = "";
+    } else {
+        if (data.category === 'Input') {
+            document.getElementById("propertiesProcessorPanel").style.display = "none";
+            document.getElementById("propertiesChannelPanel").style.display = "block";
+            document.getElementById("blockChannelName").value = data.text || "";
+            document.getElementById("channelId").value = data.blockId || "";
+            document.getElementById("channelName").value = data.internalType || "";
+            document.getElementById("blockChannelComments").value = data.comments || "";
+        } else if (data.category === 'Comment') {
+            document.getElementById("propertiesProcessorPanel").style.display = "none";
+            document.getElementById("propertiesChannelPanel").style.display = "none";
+        }
+        else {
+            document.getElementById("propertiesProcessorPanel").style.display = "block";
+            document.getElementById("propertiesChannelPanel").style.display = "none";
+            document.getElementById("blockName").value = data.text || "";
+            document.getElementById("processorId").value = data.blockId || "";
+            document.getElementById("blockComments").value = data.comments || "";
+            document.getElementById("processorName").value = data.internalType || "";
+            document.getElementById("blockEditAnchor").href = "/management/block/" + data.blockId || "#";
+        }
+    }
+}
+
+// Update the data fields when the text is changed
+function updateData(text, key) {
+    var node = functionDiagram.selection.first();
+    // maxSelectionCount = 1, so there can only be one Part in this collection
+    var data = node.data;
+    if (node instanceof go.Node && data !== null) {
+        var model = functionDiagram.model;
+        model.startTransaction("modified " + key);
+        model.setDataProperty(data, key, text);
+        model.commitTransaction("modified " + key);
+    }
+}
 
 // Show the diagram's model in JSON format that the user may edit
 function saveDiagram() {

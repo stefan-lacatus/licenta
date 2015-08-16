@@ -127,10 +127,15 @@ $(document).ready(function () {
         // content rendering in a modal window when clicking on a link
         bodyTag.on("click", "a.render-modal", allowNewTabShortcuts(function (e) {
             var genericModalTag = $("#genericModal");
-            genericModalTag.find(".modal-body").load(this.href, function () {
-                $("#genericModal").find(".render-partial").removeClass("render-partial").addClass("render-modal");
+            genericModalTag.find(".modal-body").load(this.href, function (response, status, xhr) {
+                if (status == "success") {
+                    $("#genericModal").find(".render-partial").removeClass("render-partial").addClass("render-modal");
+                    genericModalTag.modal("show");
+                } else {
+                    var msg = "Sorry but there was an error: ";
+                    alert(msg + xhr.status + " " + xhr.statusText);
+                }
             });
-            genericModalTag.modal("show");
         }));
     });
 

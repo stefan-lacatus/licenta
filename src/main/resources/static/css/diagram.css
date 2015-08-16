@@ -16,7 +16,6 @@
     /* Code Mirror Settings */
     font-family: monospace;
     position: relative;
-    overflow: hidden;
 }
 
 .bootstrapArea-focused {
@@ -40,4 +39,8 @@
     margin-top: 5px;
     height: 500px;
     margin-bottom: 5px;
+}
+
+.propertiesPanel .form-group {
+    margin: 0;
 }

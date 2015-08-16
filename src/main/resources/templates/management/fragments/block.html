@@ -59,12 +59,12 @@
 
             <!-- Text input-->
             <div class="form-group">
-                <label class="col-md-2 control-label" for="tags">Tags</label>
+                <label class="col-md-2 control-label" for="blockTags">Tags</label>
 
                 <div class="col-md-10">
-                    <input name="tags" id="tags" type="text" data-role="tagsinput"/>
+                    <input name="tags" id="blockTags" type="text" data-role="tagsinput"/>
                     <script th:inline="javascript">
-                        var elt = $("#tags");
+                        var elt = $("#blockTags");
                         elt.tagsinput({
                             itemValue: 'id',
                             itemText: 'name',

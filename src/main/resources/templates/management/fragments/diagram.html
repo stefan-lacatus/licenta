@@ -11,9 +11,6 @@
     <script src="../../../static/js/go.js"
             th:src="@{/js/go.js}"></script>
 
-    <script src="../../../static/js/diagram.js"
-            th:src="@{/js/diagram.js}"></script>
-
     <link href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.5/css/bootstrap.min.css"
           th:href="@{/webjars/bootstrap/3.3.5/css/bootstrap.min.css}"
           rel="stylesheet" media="screen"/>
@@ -24,6 +21,11 @@
     <script th:src="@{/js/bootstrap-tagsinput.js}"></script>
 
     <script th:src="@{/js/bootstrap3-typeahead.min.js}"></script>
+
+    <script src="../../../static/js/diagram.js" th:src="@{/js/diagram.js}"></script>
+
+    <script src="../../../static/js/custom.js" th:src="@{/js/custom.js}"></script>
+
     <link rel="stylesheet"
           href="http://cdn.jsdelivr.net/webjars/org.webjars/bootstrap-tagsinput/0.5/bootstrap-tagsinput.css"
           th:href="@{/css/bootstrap-tagsinput.css}" media="screen"/>
@@ -88,12 +90,12 @@
 
                         <!-- Text input-->
                         <div class="form-group">
-                            <label class="col-md-2 control-label" for="tags">Tags</label>
+                            <label class="col-md-2 control-label" for="diagramTags">Tags</label>
 
                             <div class="col-md-10">
-                                <input name="tags" id="tags" type="text" data-role="tagsinput"/>
+                                <input name="tags" id="diagramTags" type="text"/>
                                 <script th:inline="javascript">
-                                    var elt = $("#tags");
+                                    var elt = $("#diagramTags");
                                     elt.tagsinput({
                                         itemValue: 'id',
                                         itemText: 'name',
@@ -109,7 +111,6 @@
                                             elt.tagsinput('add', {"id": tag.id, "name": tag.name});
                                         })
                                     }
-
                                 </script>
                             </div>
                         </div>
@@ -131,14 +132,92 @@
                                   style="display: none;">
                         </textarea>
 
+                        <div id="propertiesProcessorPanel" class="bootstrapArea propertiesPanel form-inline"
+                             style="display: none;">
+                            <div class="form-group">
+                                <label for="blockName">Name</label>
+                                <input type="text" class="form-control" id="blockName" placeholder="Block Name"
+                                       onkeydown="if (event.keyCode == 13) {updateData(this.value, 'text'); return false;}">
+
+                            </div>
+                            <div class="form-group">
+                                <label for="processorName">Processor</label>
+                                <input type="hidden" class="form-control" id="processorId">
+                                <input type="text" class="form-control" id="processorName" placeholder="Processor Name"
+                                       autocomplete="off" onkeydown="if (event.keyCode == 13) { return false;}">
+                                <script>
+                                    var blocks = $.getJSON('/blocks/getBlocks', function (data) {
+                                        var elt = $("#processorName");
+                                        elt.typeahead({
+                                            source: data,
+                                            autoSelect: true,
+                                            afterSelect: function (currItem) {
+                                                $('#blockId').val(currItem.id);
+                                                updateData(currItem.id, 'blockId');
+                                                updateData(currItem.name, 'internalType');
+                                            }
+                                        });
+                                    });
+                                </script>
+                            </div>
+                            <div class="form-group">
+                                <label for="blockComments">Comments</label>
+                                <input type="text" class="form-control" id="blockComments" placeholder="Comment"
+                                       onkeydown="if (event.keyCode == 13) {updateData(this.value, 'comments'); return false;}">
+
+                            </div>
+                            <div class="form-group">
+                                <a id="blockEditAnchor" href="/management/block/{blockId}(blockId=${block.id})"
+                                   class="render-modal btn btn-default btn-warning">
+                                    Edit Preprocessor Block
+                                </a>
+                            </div>
+                        </div>
+
+                        <div id="propertiesChannelPanel" class="bootstrapArea propertiesPanel form-inline"
+                             style="display: none;">
+                            <div class="form-group">
+                                <label for="blockChannelName">Name</label>
+                                <input type="text" class="form-control" id="blockChannelName" placeholder="Block Name"
+                                       onkeydown="if (event.keyCode == 13) {updateData(this.value, 'text'); return false;}">
+
+                            </div>
+                            <div class="form-group">
+                                <label for="processorName">Channel</label>
+                                <input type="hidden" class="form-control" id="channelId">
+                                <input type="text" class="form-control" id="channelName" placeholder="Channel Name"
+                                       autocomplete="off" onkeydown="if (event.keyCode == 13) { return false;}">
+                                <script>
+                                    var blocks = $.getJSON('/blocks/getChannels', function (data) {
+                                        var elt = $("#channelName");
+                                        elt.typeahead({
+                                            source: data,
+                                            autoSelect: true,
+                                            afterSelect: function (currItem) {
+                                                $('#channelId').val(currItem.id);
+                                                updateData(currItem.id, 'blockId');
+                                                updateData(currItem.name, 'internalType');
+                                            }
+                                        });
+                                    });
+                                </script>
+                            </div>
+                            <div class="form-group">
+                                <label for="blockChannelComments">Comments</label>
+                                <input type="text" class="form-control" id="blockChannelComments" placeholder="Comment"
+                                       onkeydown="if (event.keyCode == 13) {updateData(this.value, 'comments'); return false;}">
+
+                            </div>
+                        </div>
+
                         <div id="SVGArea" class="text-center" style="margin-bottom: 5px;"></div>
                         <div class="form-group">
                             <div class="pull-right" style="padding-right: 15px;">
-                                <button th:unless="${add_new}" type="button" name="delete" class="btn btn-danger"
+                                <button th:unless="${add_new}" type="button" name="" class="btn btn-danger"
                                         data-toggle="modal" data-target="#deleteModal" th:attr="data-id=${diagram.id}">
                                     Delete
                                 </button>
-                                <button type="button" onclick="makeSVG()" name="cancel" class="btn btn-info">Render
+                                <button type="button" onclick="makeSVG()" name="" class="btn btn-info">Render
                                     SVG
                                 </button>
 
@@ -177,6 +256,27 @@
             </div>
         </div>
     </div>
+    <div id="genericModal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="genericModal"
+         aria-hidden="true">
+        <div class="modal-dialog" style="width: 900px;">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <p>One fine body</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script> $('#genericModal').on('shown.bs.modal', function () {
+        codeMirror = CodeMirror.fromTextArea($("#blockFunction")[0], {
+            autoCloseTags: true,
+            lineNumbers: true,
+            fixedGutter: true,
+            lineWrapping: true,
+            autoCloseBrackets: true
+        });
+        window.codeMirror.setOption("mode", $('#blockType').val().toLowerCase());
+    });
+    </script>
     <div th:replace="fragments/footer :: footer">&copy; 2014 The Static Templates</div>
 </div>
 </body>
