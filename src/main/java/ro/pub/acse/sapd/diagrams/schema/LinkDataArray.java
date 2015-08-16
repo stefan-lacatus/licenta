@@ -1,13 +1,12 @@
-
 package ro.pub.acse.sapd.diagrams.schema;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.annotation.*;
 
 import javax.annotation.Generated;
+import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -16,7 +15,8 @@ import java.util.Map;
         "from",
         "to",
         "fromPort",
-        "toPort"
+        "toPort",
+        "points"
 })
 public class LinkDataArray {
 
@@ -28,6 +28,9 @@ public class LinkDataArray {
     private String fromPort;
     @JsonProperty("toPort")
     private String toPort;
+    @JsonProperty("points")
+    @Valid
+    private List<Long> points = new ArrayList<Long>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -93,6 +96,32 @@ public class LinkDataArray {
     @JsonProperty("toPort")
     public void setToPort(String toPort) {
         this.toPort = toPort;
+    }
+
+    /**
+     * @return The points
+     */
+    @JsonProperty("points")
+    public List<Long> getPoints() {
+        return points;
+    }
+
+    /**
+     * @param points The points
+     */
+    @JsonProperty("points")
+    public void setPoints(List<Long> points) {
+        this.points = points;
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
+    }
+
+    @JsonAnySetter
+    public void setAdditionalProperty(String name, Object value) {
+        this.additionalProperties.put(name, value);
     }
 
 }

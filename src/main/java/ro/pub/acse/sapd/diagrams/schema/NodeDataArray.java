@@ -1,10 +1,6 @@
-
 package ro.pub.acse.sapd.diagrams.schema;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.annotation.*;
 
 import javax.annotation.Generated;
 import java.util.HashMap;
@@ -15,7 +11,13 @@ import java.util.Map;
 @JsonPropertyOrder({
         "category",
         "text",
-        "key"
+        "key",
+        "loc",
+        "blockId",
+        "internalType",
+        "processorId",
+        "processorName",
+        "comments"
 })
 public class NodeDataArray {
 
@@ -25,6 +27,18 @@ public class NodeDataArray {
     private String text;
     @JsonProperty("key")
     private long key;
+    @JsonProperty("loc")
+    private String loc;
+    @JsonProperty("blockId")
+    private long blockId;
+    @JsonProperty("internalType")
+    private String internalType;
+    @JsonProperty("processorId")
+    private long processorId;
+    @JsonProperty("processorName")
+    private String processorName;
+    @JsonProperty("comments")
+    private String comments;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -75,4 +89,111 @@ public class NodeDataArray {
     public void setKey(long key) {
         this.key = key;
     }
+
+    /**
+     * @return The loc
+     */
+    @JsonProperty("loc")
+    public String getLoc() {
+        return loc;
+    }
+
+    /**
+     * @param loc The loc
+     */
+    @JsonProperty("loc")
+    public void setLoc(String loc) {
+        this.loc = loc;
+    }
+
+    /**
+     * @return The blockId
+     */
+    @JsonProperty("blockId")
+    public long getBlockId() {
+        return blockId;
+    }
+
+    /**
+     * @param blockId The blockId
+     */
+    @JsonProperty("blockId")
+    public void setBlockId(long blockId) {
+        this.blockId = blockId;
+    }
+
+    /**
+     * @return The internalType
+     */
+    @JsonProperty("internalType")
+    public String getInternalType() {
+        return internalType;
+    }
+
+    /**
+     * @param internalType The internalType
+     */
+    @JsonProperty("internalType")
+    public void setInternalType(String internalType) {
+        this.internalType = internalType;
+    }
+
+    /**
+     * @return The processorId
+     */
+    @JsonProperty("processorId")
+    public long getProcessorId() {
+        return processorId;
+    }
+
+    /**
+     * @param processorId The processorId
+     */
+    @JsonProperty("processorId")
+    public void setProcessorId(long processorId) {
+        this.processorId = processorId;
+    }
+
+    /**
+     * @return The processorName
+     */
+    @JsonProperty("processorName")
+    public String getProcessorName() {
+        return processorName;
+    }
+
+    /**
+     * @param processorName The processorName
+     */
+    @JsonProperty("processorName")
+    public void setProcessorName(String processorName) {
+        this.processorName = processorName;
+    }
+
+    /**
+     * @return The comments
+     */
+    @JsonProperty("comments")
+    public String getComments() {
+        return comments;
+    }
+
+    /**
+     * @param comments The comments
+     */
+    @JsonProperty("comments")
+    public void setComments(String comments) {
+        this.comments = comments;
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
+    }
+
+    @JsonAnySetter
+    public void setAdditionalProperty(String name, Object value) {
+        this.additionalProperties.put(name, value);
+    }
+
 }

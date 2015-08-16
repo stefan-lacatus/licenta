@@ -1,10 +1,6 @@
-
 package ro.pub.acse.sapd.diagrams.schema;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.annotation.*;
 
 import javax.annotation.Generated;
 import javax.validation.Valid;
@@ -23,7 +19,6 @@ import java.util.Map;
         "linkDataArray"
 })
 public class DiagramSchema {
-
     @JsonProperty("class")
     private String _class;
     @JsonProperty("linkFromPortIdProperty")
@@ -118,4 +113,15 @@ public class DiagramSchema {
     public void setLinkDataArray(List<LinkDataArray> linkDataArray) {
         this.linkDataArray = linkDataArray;
     }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
+    }
+
+    @JsonAnySetter
+    public void setAdditionalProperty(String name, Object value) {
+        this.additionalProperties.put(name, value);
+    }
+
 }
