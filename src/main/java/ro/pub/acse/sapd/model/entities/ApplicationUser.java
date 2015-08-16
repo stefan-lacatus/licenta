@@ -1,28 +1,21 @@
 package ro.pub.acse.sapd.model.entities;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
 import java.io.Serializable;
-import java.util.Date;
-import java.util.Set;
 
 /**
  * Represents a user in the application
  */
 @Entity
-public class ApplicationUser implements Serializable {
+public class ApplicationUser extends ManagedEntity implements Serializable {
     private static final long serialVersionUID = -5406081783045553462L;
 
     private String username;
     private String firstName;
     private String lastName;
-    private long id;
     private String password;
     private String email;
-    private boolean active;
-    private String description;
-    private ApplicationUser lastEditedBy;
-    private Date lastEditedTime;
-    private Set<ApplicationTag> tags;
 
     @Column(unique = true)
     public String getUsername() {
@@ -31,16 +24,6 @@ public class ApplicationUser implements Serializable {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public String getPassword() {
@@ -59,23 +42,6 @@ public class ApplicationUser implements Serializable {
         this.email = email;
     }
 
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-
-    @ManyToOne
-    public ApplicationUser getLastEditedBy() {
-        return lastEditedBy;
-    }
-
-    public void setLastEditedBy(ApplicationUser lastEditedBy) {
-        this.lastEditedBy = lastEditedBy;
-    }
-
     public String getLastName() {
         return lastName;
     }
@@ -90,31 +56,5 @@ public class ApplicationUser implements Serializable {
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
-    }
-
-    @Column(columnDefinition="text")
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Date getLastEditedTime() {
-        return lastEditedTime;
-    }
-
-    public void setLastEditedTime(Date lastEditedTime) {
-        this.lastEditedTime = lastEditedTime;
-    }
-
-    @ManyToMany(cascade = CascadeType.ALL)
-    public Set<ApplicationTag> getTags() {
-        return tags;
-    }
-
-    public void setTags(Set<ApplicationTag> tags) {
-        this.tags = tags;
     }
 }
