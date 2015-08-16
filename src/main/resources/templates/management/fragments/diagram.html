@@ -36,7 +36,7 @@
     <title th:text="#{project_name}">Project name</title>
 
 </head>
-<body onload="init_diagram()">
+<body onload="initDiagram()">
 <div th:replace="fragments/header :: header">
 </div>
 <div class="container">
@@ -126,7 +126,7 @@
 
                         <div id="blockDiagram" class="diagram bootstrapArea"></div>
 
-                        <textarea id="mySavedModel" name="code" th:field="${diagram.code}"
+                        <textarea id="diagramModel" name="code" th:field="${diagram.code}"
                                   th:text=" @{${add_new}? ${default_diagram} :  ${diagram.code}}"
                                   style="display: none;">
                         </textarea>

@@ -1,8 +1,8 @@
-function init_diagram() {
+function initDiagram() {
     if (window.goSamples) goSamples();  // init for these samples -- you don't need to call this
     var $ = go.GraphObject.make;  // for conciseness in defining templates
 
-    myDiagram =
+    functionDiagram =
         $(go.Diagram, "blockDiagram",  // must name or refer to the DIV HTML element
             {
                 layout: $(go.TreeLayout),
@@ -13,11 +13,9 @@ function init_diagram() {
             });
 
     // when the document is modified, add a "*" to the title and enable the "Save" button
-    myDiagram.addDiagramListener("Modified", function (e) {
-        var button = document.getElementById("SaveButton");
-        if (button) button.disabled = !myDiagram.isModified;
+    functionDiagram.addDiagramListener("Modified", function (e) {
         var idx = document.title.indexOf("*");
-        if (myDiagram.isModified) {
+        if (functionDiagram.isModified) {
             if (idx < 0) document.title += "*";
         } else {
             if (idx >= 0) document.title = document.title.substr(0, idx);
@@ -53,7 +51,7 @@ function init_diagram() {
 
     var lightText = 'whitesmoke';
 
-    myDiagram.linkTemplate =
+    functionDiagram.linkTemplate =
         $(go.Link,
             {
                 routing: go.Link.AvoidsNodes,
@@ -80,7 +78,7 @@ function init_diagram() {
             $(go.Shape, {toArrow: "Triangle", fill: "black", stroke: null})
         );
 
-    myDiagram.nodeTemplateMap.add("",  // the default category
+    functionDiagram.nodeTemplateMap.add("",  // the default category
         $(go.Node, "Spot", nodeStyle(),
             {
                 doubleClick: function (e, obj) {
@@ -131,7 +129,7 @@ function init_diagram() {
             )
         ));
 
-    myDiagram.nodeTemplateMap.add("Start",
+    functionDiagram.nodeTemplateMap.add("Input",
         $(go.Node, "Spot", nodeStyle(),
             $(go.Panel, "Auto",
                 $(go.Shape, "Rectangle",
@@ -152,7 +150,7 @@ function init_diagram() {
             )
         ));
 
-    myDiagram.nodeTemplateMap.add("End",
+    functionDiagram.nodeTemplateMap.add("End",
         $(go.Node, "Spot", nodeStyle(),
             $(go.Panel, "Auto",
                 $(go.Shape, "Rectangle",
@@ -173,7 +171,7 @@ function init_diagram() {
             )
         ));
 
-    myDiagram.nodeTemplateMap.add("Comment",
+    functionDiagram.nodeTemplateMap.add("Comment",
         $(go.Node, "Auto", nodeStyle(),
             $(go.Shape, "File",
                 {fill: "#EFFAB4", stroke: null}),
@@ -192,8 +190,8 @@ function init_diagram() {
         ));
 
     // temporary links used by LinkingTool and RelinkingTool are also orthogonal:
-    myDiagram.toolManager.linkingTool.temporaryLink.routing = go.Link.Orthogonal;
-    myDiagram.toolManager.relinkingTool.temporaryLink.routing = go.Link.Orthogonal;
+    functionDiagram.toolManager.linkingTool.temporaryLink.routing = go.Link.Orthogonal;
+    functionDiagram.toolManager.relinkingTool.temporaryLink.routing = go.Link.Orthogonal;
 
     loadDiagram();  // loadDiagram an initial diagram from some JSON text
     loop(); // simulate flow through pipes
@@ -202,9 +200,10 @@ function init_diagram() {
         $(go.Palette, "blockPalette",  // must name or refer to the DIV HTML element
             {
                 "animationManager.duration": 800, // slightly longer than default (600ms) animation
-                nodeTemplateMap: myDiagram.nodeTemplateMap,  // share the templates used by myDiagram
+                nodeTemplateMap: functionDiagram.nodeTemplateMap,  // share the templates used by functionDiagram
                 model: new go.GraphLinksModel([  // specify the contents of the Palette
-                    {text: "Step"},
+                    {category: "Input", text: "Channel"},
+                    {text: "Function"},
                     {category: "Comment", text: "Comment"}
                 ])
             });
@@ -221,7 +220,7 @@ function showPorts(node, show) {
 }
 
 function loop() {
-    var diagram = myDiagram;
+    var diagram = functionDiagram;
     setTimeout(function () {
         var oldskips = diagram.skipsUndoManager;
         diagram.skipsUndoManager = true;
@@ -241,17 +240,17 @@ function loop() {
 
 // Show the diagram's model in JSON format that the user may edit
 function saveDiagram() {
-    document.getElementById("mySavedModel").value = myDiagram.model.toJson();
-    myDiagram.isModified = false;
+    document.getElementById("diagramModel").value = functionDiagram.model.toJson();
+    functionDiagram.isModified = false;
     return true;
 }
 function loadDiagram() {
-    myDiagram.model = go.Model.fromJson(document.getElementById("mySavedModel").value);
+    functionDiagram.model = go.Model.fromJson(document.getElementById("diagramModel").value);
 }
 
 // add an SVG rendering of the diagram at the end of this page
 function makeSVG() {
-    var svg = myDiagram.makeSvg({
+    var svg = functionDiagram.makeSvg({
         scale: 1.0
     });
     svg.style.border = "1px solid black";
