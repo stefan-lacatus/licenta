@@ -44,117 +44,21 @@ public class BlockDiagramController {
         diagram.setActive(true);
         model.addAttribute("diagram", diagram);
         model.addAttribute("add_new", true);
-        model.addAttribute("default_diagram","  {\n" +
-                "      \"class\": \"go.GraphLinksModel\",\n" +
-                "      \"linkFromPortIdProperty\": \"fromPort\",\n" +
-                "      \"linkToPortIdProperty\": \"toPort\",\n" +
-                "      \"nodeDataArray\": [{\n" +
-                "          \"category\": \"Comment\",\n" +
-                "          \"text\": \"Kookie Brittle\",\n" +
-                "          \"key\": -13\n" +
-                "      }, {\n" +
-                "          \"key\": -1,\n" +
-                "          \"category\": \"Start\",\n" +
-                "          \"text\": \"Start\"\n" +
-                "      }, {\n" +
-                "          \"key\": 0,\n" +
-                "          \"text\": \"Preheat oveF\"\n" +
-                "      }, {\n" +
-                "          \"key\": 1,\n" +
-                "          \"text\": \"In n salt\"\n" +
-                "      }, {\n" +
-                "          \"key\": 2,\n" +
-                "          \"text\": \"Graduallyour\"\n" +
-                "      }, {\n" +
-                "          \"key\": 3,\n" +
-                "          \"text\": \"Mix ls\"\n" +
-                "      }, {\n" +
-                "          \"key\": 4,\n" +
-                "          \"text\": \"Press\"\n" +
-                "      }, {\n" +
-                "          \"key\": 5,\n" +
-                "          \"text\": \"Finely c\"\n" +
-                "      }, {\n" +
-                "          \"key\": 6,\n" +
-                "          \"text\": \"Sprp\"\n" +
-                "      }, {\n" +
-                "          \"key\": 7,\n" +
-                "          \"text\": \"Bakl\"\n" +
-                "      }, {\n" +
-                "          \"key\": 8,\n" +
-                "          \"text\": \"Cut d\"\n" +
-                "      }, {\n" +
-                "          \"key\": -2,\n" +
-                "          \"category\": \"End\",\n" +
-                "          \"text\": \"End\"\n" +
-                "      }],\n" +
-                "      \"linkDataArray\": [{\n" +
-                "          \"from\": 1,\n" +
-                "          \"to\": 2,\n" +
-                "          \"fromPort\": \"OUT\",\n" +
-                "          \"toPort\": \"IN\"\n" +
-                "      }, {\n" +
-                "          \"from\": 2,\n" +
-                "          \"to\": 3,\n" +
-                "          \"fromPort\": \"OUT\",\n" +
-                "          \"toPort\": \"IN\"\n" +
-                "      }, {\n" +
-                "          \"from\": 3,\n" +
-                "          \"to\": 4,\n" +
-                "          \"fromPort\": \"OUT\",\n" +
-                "          \"toPort\": \"IN\"\n" +
-                "      }, {\n" +
-                "          \"from\": 4,\n" +
-                "          \"to\": 6,\n" +
-                "          \"fromPort\": \"OUT\",\n" +
-                "          \"toPort\": \"IN\"\n" +
-                "      }, {\n" +
-                "          \"from\": 6,\n" +
-                "          \"to\": 7,\n" +
-                "          \"fromPort\": \"OUT\",\n" +
-                "          \"toPort\": \"IN\"\n" +
-                "      }, {\n" +
-                "          \"from\": 7,\n" +
-                "          \"to\": 8,\n" +
-                "          \"fromPort\": \"OUT\",\n" +
-                "          \"toPort\": \"IN\"\n" +
-                "      }, {\n" +
-                "          \"from\": 8,\n" +
-                "          \"to\": -2,\n" +
-                "          \"fromPort\": \"OUT\",\n" +
-                "          \"toPort\": \"IN\"\n" +
-                "      }, {\n" +
-                "          \"from\": -1,\n" +
-                "          \"to\": 0,\n" +
-                "          \"fromPort\": \"OUT\",\n" +
-                "          \"toPort\": \"IN\"\n" +
-                "      }, {\n" +
-                "          \"from\": -1,\n" +
-                "          \"to\": 1,\n" +
-                "          \"fromPort\": \"OUT\",\n" +
-                "          \"toPort\": \"IN\"\n" +
-                "      }, {\n" +
-                "          \"from\": -1,\n" +
-                "          \"to\": 5,\n" +
-                "          \"fromPort\": \"OUT\",\n" +
-                "          \"toPort\": \"IN\"\n" +
-                "      }, {\n" +
-                "          \"from\": 5,\n" +
-                "          \"to\": 4,\n" +
-                "          \"fromPort\": \"OUT\",\n" +
-                "          \"toPort\": \"IN\"\n" +
-                "      }, {\n" +
-                "          \"from\": 0,\n" +
-                "          \"to\": 4,\n" +
-                "          \"fromPort\": \"OUT\",\n" +
-                "          \"toPort\": \"IN\"\n" +
-                "      }, {\n" +
-                "          \"from\": 2,\n" +
-                "          \"to\": 4,\n" +
-                "          \"fromPort\": \"OUT\",\n" +
-                "          \"toPort\": \"IN\"\n" +
-                "      }]\n" +
-                "  }");
+        model.addAttribute("default_diagram", "{ \"class\": \"go.GraphLinksModel\",\n" +
+                "  \"copiesArrays\": true,\n" +
+                "  \"copiesArrayObjects\": true,\n" +
+                "  \"linkFromPortIdProperty\": \"fromPort\",\n" +
+                "  \"linkToPortIdProperty\": \"toPort\",\n" +
+                "  \"nodeDataArray\": [ \n" +
+                "{\"key\":-2, \"category\":\"End\", \"text\":\"End\", \"loc\":\"243.74999999999966 29.450000000000003\"},\n" +
+                "{\"category\":\"Comment\", \"text\":\"Comment\", \"key\":-3, \"loc\":\"521.5 -115\"},\n" +
+                "{\"category\":\"Input\", \"text\":\"Channel\", \"key\":-1, \"loc\":\"28 29.450000000000003\"},\n" +
+                "{\"text\":\"Function\", \"inputArray\":[ {\"portColor\":\"#425e5c\", \"portId\":\"left0\"} ], \"key\":-4, \"loc\":\"142 29.450000000000003\"}\n" +
+                " ],\n" +
+                "  \"linkDataArray\": [ \n" +
+                "{\"from\":-1, \"to\":-4, \"fromPort\":\"OUT\", \"toPort\":\"left0\", \"points\":[56,51.75,66,51.75,81,51.75,81,29.450000000000003,96,29.450000000000003,106,29.450000000000003]},\n" +
+                "{\"from\":-4, \"to\":-2, \"fromPort\":\"OUT\", \"toPort\":\"IN\", \"points\":[171.5,51.75,181.5,51.75,196.75,51.75,196.75,29.450000000000003,212,29.450000000000003,222,29.450000000000003]}\n" +
+                " ]}");
         return "management/fragments/diagram";
     }
 
@@ -184,7 +88,7 @@ public class BlockDiagramController {
 
     @RequestMapping(value = "/diagram/search/{searchTerm}", method = RequestMethod.GET)
     public String searchDiagram(HttpServletRequest request, Model model, Pageable pageable,
-                              @PathVariable("searchTerm") String search) {
+                                @PathVariable("searchTerm") String search) {
         final Sort sortOrder = new Sort(new Sort.Order(Sort.Direction.DESC, "active"),
                 new Sort.Order(Sort.Direction.ASC, "name"));
         PageRequest pageRequest = new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), sortOrder);
