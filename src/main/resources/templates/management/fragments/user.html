@@ -107,9 +107,11 @@
                             }
                         });
                         var tags = /*[[${user.tags}]]*/ [];
-                        $.each(tags, function (id, tag) {
-                            elt.tagsinput('add', {"id": tag.id, "name": tag.name});
-                        })
+                        if (tags) {
+                            $.each(tags, function (id, tag) {
+                                elt.tagsinput('add', {"id": tag.id, "name": tag.name});
+                            })
+                        }
 
                     </script>
                 </div>
@@ -132,8 +134,7 @@
                 <label class="col-md-4 control-label" for="active">Active</label>
 
                 <div class="col-md-6">
-                    <input name="active" id="active" type="checkbox" th:field="${user.active}"
-                           th:checked="@{${add_new} || ${user.active}}">
+                    <input name="active" id="active" type="checkbox" th:field="${user.active}">
                 </div>
             </div>
 

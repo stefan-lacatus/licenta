@@ -74,10 +74,12 @@
                                 }
                             }
                         });
-                        var tags = /*[[${block.tags}]]*/ [];
-                        $.each(tags, function (id, tag) {
-                            elt.tagsinput('add', {"id": tag.id, "name": tag.name});
-                        })
+                        var tags = /*[[${block?.tags}]]*/ [];
+                        if (tags) {
+                            $.each(tags, function (id, tag) {
+                                elt.tagsinput('add', {"id": tag.id, "name": tag.name});
+                            })
+                        }
 
                     </script>
                 </div>
@@ -119,8 +121,7 @@
                 <label class="col-md-2 control-label" for="active">Active</label>
 
                 <div class="col-md-10">
-                    <input name="active" id="active" type="checkbox" th:field="${block.active}"
-                           th:checked="@{${add_new} || ${block.active}}">
+                    <input name="active" id="active" type="checkbox" th:field="${block.active}">
                 </div>
             </div>
 
