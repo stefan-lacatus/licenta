@@ -10,11 +10,7 @@ import java.io.Serializable;
  * Represents an input channel that takes data takes data from the outside world and stores in into our database
  */
 @Entity
-@Table(
-        uniqueConstraints =
-        @UniqueConstraint(columnNames = {"name", "input_block_id"})
-)
-public class InputChannel implements Serializable {
+public class DataChannel implements Serializable {
     private static final long serialVersionUID = -4876823382677721689L;
 
     private long id;

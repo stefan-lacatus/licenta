@@ -12,24 +12,24 @@ import java.util.Date;
  */
 @Entity
 @IdClass(DataPointEntity.class)
-@Table(name = "input_data_points",
+@Table(name = "data_points",
         indexes = {@Index(name = "channel_index", columnList = "channel_id")})
 public class DataPointEntity implements DataPoint, Serializable {
     private static final long serialVersionUID = 538836485799942437L;
     @Id
     @ManyToOne()
     @JoinColumn(name = "channel_id")
-    private InputChannel channel;
+    private DataChannel channel;
     @Id
     private Date timestamp;
     @Id
     private String value;
 
-    public InputChannel getChannel() {
+    public DataChannel getChannel() {
         return channel;
     }
 
-    public void setChannel(InputChannel channel) {
+    public void setChannel(DataChannel channel) {
         this.channel = channel;
     }
 

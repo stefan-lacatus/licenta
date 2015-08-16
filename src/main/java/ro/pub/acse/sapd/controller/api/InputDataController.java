@@ -8,7 +8,7 @@ import ro.pub.acse.sapd.blocks.BlockExecutionException;
 import ro.pub.acse.sapd.blocks.BlockExecutor;
 import ro.pub.acse.sapd.data.DataPoint;
 import ro.pub.acse.sapd.data.impl.StringDataPoint;
-import ro.pub.acse.sapd.model.entities.InputChannel;
+import ro.pub.acse.sapd.model.entities.DataChannel;
 import ro.pub.acse.sapd.repository.InputChannelRepository;
 
 import java.util.ArrayList;
@@ -35,7 +35,7 @@ public class InputDataController {
     }
 
     public void addData(Long inputId, Long channelId, String data) throws BlockExecutionException {
-        InputChannel channel = dataRepository.findOne(channelId);
+        DataChannel channel = dataRepository.findOne(channelId);
         DataPoint dataPoint;
         if (channel.getInputPreprocessor() != null) {
             List<DataPoint<String>> pointList = new ArrayList<>();
