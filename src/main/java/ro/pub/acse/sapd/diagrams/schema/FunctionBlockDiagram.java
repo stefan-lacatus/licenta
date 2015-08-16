@@ -13,14 +13,21 @@ import java.util.Map;
 @Generated("org.jsonschema2pojo")
 @JsonPropertyOrder({
         "class",
+        "copiesArrays",
+        "copiesArrayObjects",
         "linkFromPortIdProperty",
         "linkToPortIdProperty",
         "nodeDataArray",
         "linkDataArray"
 })
-public class DiagramSchema {
+public class FunctionBlockDiagram {
+
     @JsonProperty("class")
     private String _class;
+    @JsonProperty("copiesArrays")
+    private boolean copiesArrays;
+    @JsonProperty("copiesArrayObjects")
+    private boolean copiesArrayObjects;
     @JsonProperty("linkFromPortIdProperty")
     private String linkFromPortIdProperty;
     @JsonProperty("linkToPortIdProperty")
@@ -48,6 +55,38 @@ public class DiagramSchema {
     @JsonProperty("class")
     public void setClass_(String _class) {
         this._class = _class;
+    }
+
+    /**
+     * @return The copiesArrays
+     */
+    @JsonProperty("copiesArrays")
+    public boolean isCopiesArrays() {
+        return copiesArrays;
+    }
+
+    /**
+     * @param copiesArrays The copiesArrays
+     */
+    @JsonProperty("copiesArrays")
+    public void setCopiesArrays(boolean copiesArrays) {
+        this.copiesArrays = copiesArrays;
+    }
+
+    /**
+     * @return The copiesArrayObjects
+     */
+    @JsonProperty("copiesArrayObjects")
+    public boolean isCopiesArrayObjects() {
+        return copiesArrayObjects;
+    }
+
+    /**
+     * @param copiesArrayObjects The copiesArrayObjects
+     */
+    @JsonProperty("copiesArrayObjects")
+    public void setCopiesArrayObjects(boolean copiesArrayObjects) {
+        this.copiesArrayObjects = copiesArrayObjects;
     }
 
     /**

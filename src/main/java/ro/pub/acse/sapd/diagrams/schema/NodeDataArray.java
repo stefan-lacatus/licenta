@@ -1,46 +1,64 @@
 package ro.pub.acse.sapd.diagrams.schema;
 
+
 import com.fasterxml.jackson.annotation.*;
 
 import javax.annotation.Generated;
+import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Generated("org.jsonschema2pojo")
 @JsonPropertyOrder({
+        "key",
         "category",
         "text",
-        "key",
         "loc",
         "blockId",
         "internalType",
-        "processorId",
-        "processorName",
+        "inputArray",
         "comments"
 })
 public class NodeDataArray {
 
+    @JsonProperty("key")
+    private long key;
     @JsonProperty("category")
     private String category;
     @JsonProperty("text")
     private String text;
-    @JsonProperty("key")
-    private long key;
     @JsonProperty("loc")
     private String loc;
     @JsonProperty("blockId")
     private long blockId;
     @JsonProperty("internalType")
     private String internalType;
-    @JsonProperty("processorId")
-    private long processorId;
-    @JsonProperty("processorName")
-    private String processorName;
+    @JsonProperty("inputArray")
+    @Valid
+    private List<InputArray> inputArray = new ArrayList<InputArray>();
     @JsonProperty("comments")
     private String comments;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+
+    /**
+     * @return The key
+     */
+    @JsonProperty("key")
+    public long getKey() {
+        return key;
+    }
+
+    /**
+     * @param key The key
+     */
+    @JsonProperty("key")
+    public void setKey(long key) {
+        this.key = key;
+    }
 
     /**
      * @return The category
@@ -72,22 +90,6 @@ public class NodeDataArray {
     @JsonProperty("text")
     public void setText(String text) {
         this.text = text;
-    }
-
-    /**
-     * @return The key
-     */
-    @JsonProperty("key")
-    public long getKey() {
-        return key;
-    }
-
-    /**
-     * @param key The key
-     */
-    @JsonProperty("key")
-    public void setKey(long key) {
-        this.key = key;
     }
 
     /**
@@ -139,35 +141,19 @@ public class NodeDataArray {
     }
 
     /**
-     * @return The processorId
+     * @return The inputArray
      */
-    @JsonProperty("processorId")
-    public long getProcessorId() {
-        return processorId;
+    @JsonProperty("inputArray")
+    public List<InputArray> getInputArray() {
+        return inputArray;
     }
 
     /**
-     * @param processorId The processorId
+     * @param inputArray The inputArray
      */
-    @JsonProperty("processorId")
-    public void setProcessorId(long processorId) {
-        this.processorId = processorId;
-    }
-
-    /**
-     * @return The processorName
-     */
-    @JsonProperty("processorName")
-    public String getProcessorName() {
-        return processorName;
-    }
-
-    /**
-     * @param processorName The processorName
-     */
-    @JsonProperty("processorName")
-    public void setProcessorName(String processorName) {
-        this.processorName = processorName;
+    @JsonProperty("inputArray")
+    public void setInputArray(List<InputArray> inputArray) {
+        this.inputArray = inputArray;
     }
 
     /**

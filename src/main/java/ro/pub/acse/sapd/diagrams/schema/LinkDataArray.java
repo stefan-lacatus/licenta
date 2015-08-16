@@ -30,7 +30,7 @@ public class LinkDataArray {
     private String toPort;
     @JsonProperty("points")
     @Valid
-    private List<Long> points = new ArrayList<Long>();
+    private List<Double> points = new ArrayList<Double>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -102,7 +102,7 @@ public class LinkDataArray {
      * @return The points
      */
     @JsonProperty("points")
-    public List<Long> getPoints() {
+    public List<Double> getPoints() {
         return points;
     }
 
@@ -110,7 +110,7 @@ public class LinkDataArray {
      * @param points The points
      */
     @JsonProperty("points")
-    public void setPoints(List<Long> points) {
+    public void setPoints(List<Double> points) {
         this.points = points;
     }
 
