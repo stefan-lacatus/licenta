@@ -6,12 +6,9 @@ import ro.pub.acse.sapd.blocks.executors.JavaBlockExecutor;
 import ro.pub.acse.sapd.blocks.executors.JavascriptBlockExecutor;
 import ro.pub.acse.sapd.blocks.executors.RubyBlockExecutor;
 import ro.pub.acse.sapd.data.DataPoint;
-import ro.pub.acse.sapd.data.impl.StringDataPoint;
-import ro.pub.acse.sapd.input.InputParseException;
 import ro.pub.acse.sapd.logging.Loggable;
 import ro.pub.acse.sapd.model.entities.ProcessorBlock;
 
-import javax.script.ScriptException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,9 +17,10 @@ import java.util.Map;
  * Executes blocks
  */
 public class BlockExecutor {
-    Map<ProcessorBlockType, GenericBlockExecutor> executors = new HashMap<>();
     @Loggable
     private Logger log;
+
+    private Map<ProcessorBlockType, GenericBlockExecutor> executors = new HashMap<>();
 
     public BlockExecutor() {
         executors.put(ProcessorBlockType.JAVA, new JavaBlockExecutor());

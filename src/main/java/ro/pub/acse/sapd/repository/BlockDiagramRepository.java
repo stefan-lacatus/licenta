@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import ro.pub.acse.sapd.model.entities.BlockDiagram;
-import ro.pub.acse.sapd.model.entities.ProcessorBlock;
 
 /**
  * Used for getting input channels from the database

@@ -16,10 +16,8 @@ import ro.pub.acse.sapd.configuration.security.ApplicationSecurityUser;
 import ro.pub.acse.sapd.logging.Loggable;
 import ro.pub.acse.sapd.model.entities.ApplicationUser;
 import ro.pub.acse.sapd.model.entities.BlockDiagram;
-import ro.pub.acse.sapd.model.entities.ProcessorBlock;
 import ro.pub.acse.sapd.repository.ApplicationTagRepository;
 import ro.pub.acse.sapd.repository.BlockDiagramRepository;
-import ro.pub.acse.sapd.repository.ProcessorBlockRepository;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
