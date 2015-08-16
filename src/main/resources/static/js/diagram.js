@@ -23,6 +23,71 @@ function initDiagram() {
             if (idx >= 0) document.title = document.title.substr(0, idx);
         }
     });
+    var portSize = new go.Size(6, 6);
+
+    // Add a port to the specified side of the selected nodes.
+    function addPort() {
+        functionDiagram.startTransaction("addPort");
+        functionDiagram.selection.each(function (node) {
+            // skip any selected Links
+            if (!(node instanceof go.Node)) return;
+            // compute the next available index number for the side
+            var i = 0;
+            while (node.findPort('input' + i.toString()) !== node) i++;
+            // now this new port name is unique within the whole Node because of the side prefix
+            var name = 'input' + i.toString();
+            // get the Array of port data to be modified
+            var arr = node.data['inputArray'];
+            if (arr) {
+                // create a new port data object
+                var newportdata = {
+                    portId: name,
+                    portColor: go.Brush.randomColor()
+                    // if you add port data properties here, you should copy them in copyPortData above
+                };
+                // and add it to the Array of port data
+                functionDiagram.model.insertArrayItem(arr, -1, newportdata);
+            }
+        });
+        functionDiagram.commitTransaction("addPort");
+    }
+
+    // Remove the clicked port from the node.
+    // Links to the port will be redrawn to the node's shape.
+    function removePort(port) {
+        functionDiagram.startTransaction("removePort");
+        var pid = port.portId;
+        var arr = port.panel.itemArray;
+        for (var i = 0; i < arr.length; i++) {
+            if (arr[i].portId === pid) {
+                functionDiagram.model.removeArrayItem(arr, i);
+                break;
+            }
+        }
+        functionDiagram.commitTransaction("removePort");
+    }
+
+    var portMenu =  // context menu for each port
+        $(go.Adornment, "Vertical",
+            $("ContextMenuButton",
+                $(go.TextBlock, "Remove input"),
+                // in the click event handler, the obj.part is the Adornment; its adornedObject is the port
+                {
+                    click: function (e, obj) {
+                        removePort(obj.part.adornedObject);
+                    }
+                }));
+
+    var nodeMenu =  // context menu for each Node
+        $(go.Adornment, "Vertical",
+            $("ContextMenuButton",
+                $(go.TextBlock, "Add a new input"),
+                {
+                    click: function () {
+                        addPort();
+                    }
+                })
+        );
 
     // helper definitions for node templates
 
@@ -36,9 +101,6 @@ function initDiagram() {
             {
                 // the Node.location is at the center of each node
                 locationSpot: go.Spot.Center,
-                //isShadowed: true,
-                //shadowColor: "#888",
-                // handle mouse enter/leave events to show/hide the ports
                 mouseEnter: function (e, obj) {
                     showPorts(obj.part, true);
                 },
@@ -50,7 +112,6 @@ function initDiagram() {
     }
 
     // define the Node templates for regular nodes
-
     var lightText = 'whitesmoke';
 
     functionDiagram.linkTemplate =
@@ -64,7 +125,8 @@ function initDiagram() {
                 relinkableFrom: true,
                 selectionAdorned: false,
                 relinkableTo: true,
-                resegmentable: true
+                resegmentable: true,
+                contextMenu: portMenu
             },
             new go.Binding("points").makeTwoWay(),
             // mark each Shape to get the link geometry with isPanelMain: true
@@ -81,18 +143,21 @@ function initDiagram() {
         );
 
     functionDiagram.nodeTemplateMap.add("",  // the default category
-        $(go.Node, "Spot", nodeStyle(),
+        $(go.Node, "Table", nodeStyle(),
             {
                 doubleClick: function (e, obj) {
                     console.log(obj.data);
-                    obj.data.blockId = 1;
-                }
+                },
+                contextMenu: nodeMenu,
+                locationObjectName: "BODY",
+                locationSpot: go.Spot.Center,
+                selectionObjectName: "BODY"
             },
             // the main object is a Panel that surrounds a TextBlock with a rectangular Shape
-            $(go.Panel, "Auto",
+            $(go.Panel, "Auto", {row: 1, column: 1, stretch: go.GraphObject.Fill, name: "BODY"},
                 $(go.Shape, "Rectangle",
-                    {fill: "lightgrey", stroke: null},
-                    new go.Binding("figure", "figure")),
+                    {fill: "lightgrey", stroke: null, minSize: new go.Size(56, 56)}
+                ),
                 $(go.Panel, "Table",
                     $(go.RowColumnDefinition,
                         {column: 0, alignment: go.Spot.Left}),
@@ -104,25 +169,13 @@ function initDiagram() {
                             font: "bold 10pt sans-serif", margin: new go.Margin(4, 2),
                             editable: true, isMultiline: false
                         },
-                        new go.Binding("text").makeTwoWay()),
+                        new go.Binding("text", "text").makeTwoWay()),
                     $(go.TextBlock,  // the node block
                         {
                             column: 0, row: 1, columnSpan: 3, alignment: go.Spot.Center,
                             font: "bold 10pt sans-serif", margin: new go.Margin(4, 2)
                         },
                         new go.Binding("text", "internalType").makeTwoWay()),
-                    $(go.Panel, "Horizontal",
-                        {column: 0, row: 2},
-                        $(go.Shape,  // the "IN" port
-                            {
-                                width: 6,
-                                height: 6,
-                                portId: "IN",
-                                toSpot: go.Spot.Left,
-                                toLinkable: true
-                            }),
-                        $(go.TextBlock, "Inputs")  // "Inputs" port label
-                    ),
                     $(go.Panel, "Horizontal",
                         {column: 2, row: 2, rowSpan: 2},
                         $(go.TextBlock, "Out"),  // "Out" port label
@@ -136,7 +189,34 @@ function initDiagram() {
                             })
                     )
                 )
-            )
+            ),
+            // the Panel holding the left port elements, which are themselves Panels,
+            // created for each item in the itemArray, bound to data.leftArray
+            $(go.Panel, "Vertical",
+                new go.Binding("itemArray", "inputArray"),
+                {
+                    row: 1, column: 0,
+                    itemTemplate: $(go.Panel,
+                        {
+                            _side: "left",  // internal property to make it easier to tell which side it's on
+                            fromSpot: go.Spot.Left,
+                            toSpot: go.Spot.Left,
+                            toMaxLinks: 1,
+                            toLinkable: true,
+                            cursor: "pointer",
+                            contextMenu: portMenu
+                        },
+                        new go.Binding("portId", "portId"),
+                        $(go.Shape, "Rectangle",
+                            {
+                                stroke: null, strokeWidth: 0,
+                                desiredSize: portSize,
+                                margin: new go.Margin(0, 0)
+                            },
+                            new go.Binding("fill", "portColor"))
+                    )  // end itemTemplate
+                }
+            )  // end Vertical Panel
         ));
 
     functionDiagram.nodeTemplateMap.add("Input",
@@ -197,7 +277,8 @@ function initDiagram() {
                     alignment: new go.Spot(0, 0.5),
                     portId: "IN",
                     toSpot: go.Spot.Left,
-                    toLinkable: true
+                    toLinkable: true,
+                    toMaxLinks: 1
                 }
             )
         ));
@@ -234,7 +315,7 @@ function initDiagram() {
                 nodeTemplateMap: functionDiagram.nodeTemplateMap,  // share the templates used by functionDiagram
                 model: new go.GraphLinksModel([  // specify the contents of the Palette
                     {category: "Input", text: "Channel"},
-                    {text: "Function"},
+                    {text: "Function", inputArray: [{"portColor": "#425e5c", "portId": "left0"}]},
                     {category: "Comment", text: "Comment"}
                 ])
             });
