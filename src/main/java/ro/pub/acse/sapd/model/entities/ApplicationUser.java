@@ -92,6 +92,7 @@ public class ApplicationUser implements Serializable {
         this.firstName = firstName;
     }
 
+    @Column(columnDefinition="text")
     public String getDescription() {
         return description;
     }

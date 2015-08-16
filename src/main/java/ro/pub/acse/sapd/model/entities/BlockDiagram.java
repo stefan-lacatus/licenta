@@ -37,6 +37,7 @@ public class BlockDiagram {
         this.name = name;
     }
 
+    @Column(columnDefinition="text")
     public String getDescription() {
         return description;
     }
@@ -79,6 +80,7 @@ public class BlockDiagram {
         this.tags = tags;
     }
 
+    @Column(columnDefinition="text")
     public String getCode() {
         return code;
     }

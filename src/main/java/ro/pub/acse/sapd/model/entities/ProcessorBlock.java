@@ -36,6 +36,7 @@ public class ProcessorBlock implements Serializable {
         this.blockType = blockType;
     }
 
+    @Column(columnDefinition="text")
     public String getFunctionCode() {
         return functionCode;
     }
@@ -44,6 +45,7 @@ public class ProcessorBlock implements Serializable {
         this.functionCode = functionCode;
     }
 
+    @Column(columnDefinition="text")
     public String getDescription() {
         return description;
     }

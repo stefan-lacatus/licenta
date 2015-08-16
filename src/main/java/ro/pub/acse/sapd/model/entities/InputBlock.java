@@ -45,6 +45,7 @@ public class InputBlock implements Serializable {
         this.name = name;
     }
 
+    @Column(columnDefinition="text")
     public String getDescription() {
         return description;
     }
