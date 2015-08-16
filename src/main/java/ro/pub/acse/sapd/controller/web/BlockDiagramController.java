@@ -42,7 +42,9 @@ public class BlockDiagramController {
     @RequestMapping("/diagram/new")
     public String newDiagram(Model model) {
         model.addAttribute("current_page", "management");
-        model.addAttribute("diagram", new BlockDiagram());
+        BlockDiagram diagram = new BlockDiagram();
+        diagram.setActive(true);
+        model.addAttribute("diagram", diagram);
         model.addAttribute("add_new", true);
         model.addAttribute("default_diagram","  {\n" +
                 "      \"class\": \"go.GraphLinksModel\",\n" +

@@ -42,7 +42,9 @@ public class ApplicationUserController {
     @RequestMapping("/user/new")
     public String newUser(Model model) {
         model.addAttribute("current_page", "management");
-        model.addAttribute("user", new ApplicationUser());
+        ApplicationUser user = new ApplicationUser();
+        user.setActive(true);
+        model.addAttribute("user", user);
         model.addAttribute("add_new", true);
         return "management/fragments/user";
     }

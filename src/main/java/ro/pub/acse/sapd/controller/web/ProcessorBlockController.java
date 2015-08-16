@@ -40,7 +40,9 @@ public class ProcessorBlockController {
     @RequestMapping("/block/new")
     public String newBlock(Model model) {
         model.addAttribute("current_page", "management");
-        model.addAttribute("block", new ProcessorBlock());
+        ProcessorBlock process = new ProcessorBlock();
+        process.setActive(true);
+        model.addAttribute("block", process);
         model.addAttribute("add_new", true);
         return "management/fragments/block";
     }

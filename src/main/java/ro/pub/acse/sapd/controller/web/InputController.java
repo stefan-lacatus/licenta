@@ -42,7 +42,9 @@ public class InputController {
     @RequestMapping("/input/new")
     public String newInput(Model model) {
         model.addAttribute("current_page", "management");
-        model.addAttribute("input", new InputBlock());
+        InputBlock block = new InputBlock();
+        block.setActive(true);
+        model.addAttribute("input", block);
         model.addAttribute("add_new", true);
         return "management/fragments/input";
     }
