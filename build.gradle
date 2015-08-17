@@ -16,7 +16,7 @@ apply plugin: 'eclipse'
 apply plugin: 'spring-boot'
 apply plugin: 'idea'
 
-task stage(type: Copy, dependsOn: [clean, build]) {
+task stage(type: Copy, dependsOn: [clean, jar]) {
     from jar.archivePath
     into project.rootDir
     rename {
