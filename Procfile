@@ -1,2 +1,2 @@
 default_process_types:
-  web: java -jar -Dport=$PORT app.jar
+  web: ls -la; java -jar -Dport=$PORT app.jar
