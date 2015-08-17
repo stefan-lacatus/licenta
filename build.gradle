@@ -6,20 +6,32 @@ buildscript {
         mavenCentral()
         maven { url "https://repo.spring.io/snapshot" }
         maven { url "https://repo.spring.io/milestone" }
-
+        maven { url 'http://dl.bintray.com/vermeulen-mp/gradle-plugins' }
     }
     dependencies {
+        classpath("com.wiredforcode:gradle-heroku-plugin:1.0.0")
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
     }
 }
-
+defaultTasks = ["clean", "build", "jar"]
+apply plugin: 'heroku'
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'spring-boot'
 apply plugin: 'idea'
 
+heroku {
+    //get this from heroku
+    apiKey = '5cda7232-08ab-4b6b-ac23-5455890454a0'
+
+    //set this on first run if you don't want a generated name
+    appName = 'alegria-sapd'
+
+    //set this if you are not happy with the default gradlew buildpack
+    //buildpack = 'http://somebuildpack
+}
 jar {
-    baseName = 'sapd'
+    baseName = 'alegria'
     version = '0.0.2-SNAPSHOT'
 }
 sourceCompatibility = 1.8
