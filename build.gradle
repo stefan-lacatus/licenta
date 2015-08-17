@@ -62,7 +62,7 @@ task wrapper(type: Wrapper) {
     gradleVersion = '2.5'
 }
 
-task runShitUp(type: Copy, dependsOn: [clean, jar]) {
+task stage(type: Copy, dependsOn: [clean, jar]) {
     from jar.archivePath
     into project.rootDir
     rename {
