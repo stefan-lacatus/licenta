@@ -1,7 +1,10 @@
 SELECT 1;
-INSERT INTO application_user
-VALUES (2, TRUE, NULL, 'petrisor.lacatus@gmail.com', 'admin', '2015-08-02 13:54:16.188', 'test',
-        '$2a$10$QQfzM2/2qvzSWLEPmfV58ebVCTVBJLpN4wgpScbPVjtHLFREH8mPO', 'admin', '2');
+INSERT INTO application_user (
+        id, active, email, first_name, last_name, password, username,
+        last_edited_by_id, description, last_edited_time, name)
+VALUES (2, TRUE, 'petrisor.lacatus@gmail.com', 'admin', 'test',
+        '$2a$10$QQfzM2/2qvzSWLEPmfV58ebVCTVBJLpN4wgpScbPVjtHLFREH8mPO', 'admin', '2', '2015-08-02 13:54:16.188', 'test',
+        'test');
 
 
 --INSERT INTO "input_block" (id,description,name,last_edited_by_id,active) VALUES (1,'lobortis quis, pede. Suspendisse dui. Fusce diam nunc, ullamcorper eu,','Mauris A Company',2,'true'),(2,'orci, consectetuer euismod est arcu ac orci. Ut semper pretium','Est Industries',2,'true'),(3,'sem ut cursus luctus, ipsum leo elementum sem, vitae aliquam','At Consulting',2,'true'),(4,'Aliquam adipiscing lobortis risus. In mi pede, nonummy ut, molestie','In Nec Institute',2,'true'),(5,'tempor bibendum. Donec felis orci, adipiscing non, luctus sit amet,','Ullamcorper Viverra Inc.',2,'true'),(6,'dapibus quam quis diam. Pellentesque habitant morbi tristique senectus et','Vitae LLP',2,'true'),(7,'vitae velit egestas lacinia. Sed congue, elit sed consequat auctor,','Non Nisi Associates',2,'true'),(8,'orci. Phasellus dapibus quam quis diam. Pellentesque habitant morbi tristique','Parturient Montes Ltd',2,'true'),(9,'lobortis. Class aptent taciti sociosqu ad litora torquent per conubia','Risus Ltd',2,'true'),(10,'nunc id enim. Curabitur massa. Vestibulum accumsan neque et nunc.','Sem Eget Massa Corporation',2,'true');
