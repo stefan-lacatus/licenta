@@ -20,7 +20,10 @@ jar {
     baseName = 'alegria'
     version = '0.0.2-SNAPSHOT'
 }
-
+compileJava {
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+}
 repositories {
     mavenCentral()
     maven { url "https://repo.spring.io/snapshot" }
