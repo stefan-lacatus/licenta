@@ -20,7 +20,7 @@ public class HikariCpConfiguration {
     private String dataSourceClassName;
     @Value("${spring.datasource.database-name}")
     private String database;
-    @Value("${spring.datasource.server-name")
+    @Value("${spring.datasource.server-name}")
     private String server;
 
     @Bean
@@ -28,7 +28,7 @@ public class HikariCpConfiguration {
         HikariConfig config = new HikariConfig();
         config.setMaximumPoolSize(10);
         config.setDataSourceClassName(dataSourceClassName);
-        //config.addDataSourceProperty("serverName", server);
+        config.addDataSourceProperty("serverName", server);
         config.addDataSourceProperty("databaseName", database);
         config.addDataSourceProperty("user", user);
         config.addDataSourceProperty("password", password);

@@ -3,7 +3,7 @@ INSERT INTO application_user (
         id, active, email, first_name, last_name, password, username,
         last_edited_by_id, description, last_edited_time, name)
 VALUES (2, TRUE, 'petrisor.lacatus@gmail.com', 'admin', 'test',
-        '$2a$10$QQfzM2/2qvzSWLEPmfV58ebVCTVBJLpN4wgpScbPVjtHLFREH8mPO', 'admin', '2', '2015-08-02 13:54:16.188', 'test',
+        '$2a$10$QQfzM2/2qvzSWLEPmfV58ebVCTVBJLpN4wgpScbPVjtHLFREH8mPO', 'admin', '2', '', '2015-08-02 13:54:16.188',
         'test');
 
 
