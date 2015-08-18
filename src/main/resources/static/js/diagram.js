@@ -370,7 +370,7 @@ function onTextEdited(e) {
 
 // Update the HTML elements for editing the properties of the currently selected node, if any
 function updateProperties(data) {
-    if (data === null) {
+    if (data === null || data.category === 'End') {
         document.getElementById("propertiesProcessorPanel").style.display = "none";
         document.getElementById("propertiesChannelPanel").style.display = "none";
         document.getElementById("processorId").value = "";

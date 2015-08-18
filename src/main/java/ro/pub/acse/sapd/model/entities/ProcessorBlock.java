@@ -1,6 +1,7 @@
 package ro.pub.acse.sapd.model.entities;
 
 import ro.pub.acse.sapd.blocks.ProcessorBlockType;
+import ro.pub.acse.sapd.diagrams.schema.DiagramBlock;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,7 +14,7 @@ import java.io.Serializable;
  * A block that takes in input data and returns output data
  */
 @Entity
-public class ProcessorBlock extends ManagedEntity implements Serializable {
+public class ProcessorBlock extends ManagedEntity implements Serializable,DiagramBlock {
     private static final long serialVersionUID = 7068416575004254332L;
 
     private String functionCode;

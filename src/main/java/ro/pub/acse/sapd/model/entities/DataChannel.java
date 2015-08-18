@@ -1,6 +1,7 @@
 package ro.pub.acse.sapd.model.entities;
 
 import ro.pub.acse.sapd.data.DataType;
+import ro.pub.acse.sapd.diagrams.schema.DiagramBlock;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -10,7 +11,7 @@ import java.io.Serializable;
  * Represents an input channel that takes data takes data from the outside world and stores in into our database
  */
 @Entity
-public class DataChannel implements Serializable {
+public class DataChannel implements Serializable, DiagramBlock {
     private static final long serialVersionUID = -4876823382677721689L;
 
     private long id;
