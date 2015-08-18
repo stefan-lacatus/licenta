@@ -26,10 +26,9 @@ public class InputDataController {
     BlockExecutor blockExecutor;
 
     @RequestMapping(value = "{inputId}/{channelId}/{data}", method = RequestMethod.PUT)
-    public
     @ResponseBody
-    ResponseEntity<String> addDataPut(@PathVariable Long inputId, @PathVariable Long channelId,
-                                      @PathVariable String data) throws BlockExecutionException {
+    public ResponseEntity<String> addDataPut(@PathVariable Long inputId, @PathVariable Long channelId,
+                                             @PathVariable String data) throws BlockExecutionException {
         addData(inputId, channelId, data);
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -38,7 +37,7 @@ public class InputDataController {
         DataChannel channel = dataRepository.findOne(channelId);
         DataPoint dataPoint;
         if (channel.getInputPreprocessor() != null) {
-            List<DataPoint<String>> pointList = new ArrayList<>();
+            List<DataPoint> pointList = new ArrayList<>();
             pointList.add(new StringDataPoint(data));
             dataPoint = blockExecutor.execute(channel.getInputPreprocessor(), pointList);
         } else {

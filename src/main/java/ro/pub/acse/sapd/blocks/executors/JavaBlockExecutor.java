@@ -19,7 +19,7 @@ public class JavaBlockExecutor implements GenericBlockExecutor {
         }
     }
 
-    public <T> DataPoint processData(final String className, List<DataPoint<T>> data) throws BlockExecutionException {
+    public DataPoint processData(final String className, List<DataPoint> data) throws BlockExecutionException {
         try {
             return instantiate(className, ProcessorBlockFunction.class).processData(data);
         } catch (InputParseException ex) {

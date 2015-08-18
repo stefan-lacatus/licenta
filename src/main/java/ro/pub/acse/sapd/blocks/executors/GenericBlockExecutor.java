@@ -9,5 +9,5 @@ import java.util.List;
  * A executor that runs code of a block
  */
 public interface GenericBlockExecutor {
-    <T> DataPoint processData(String script, List<DataPoint<T>> data) throws BlockExecutionException;
+    DataPoint processData(String script, List<DataPoint> data) throws BlockExecutionException;
 }

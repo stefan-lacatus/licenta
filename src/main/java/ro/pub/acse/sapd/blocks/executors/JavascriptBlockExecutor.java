@@ -20,7 +20,7 @@ public class JavascriptBlockExecutor implements GenericBlockExecutor {
         engine = new ScriptEngineManager().getEngineByName("nashorn");
     }
 
-    public <T> DataPoint processData(final String script, List<DataPoint<T>> data) throws BlockExecutionException {
+    public DataPoint processData(final String script, List<DataPoint> data) throws BlockExecutionException {
         try {
             engine.eval(script);
             Invocable invocable = (Invocable) engine;

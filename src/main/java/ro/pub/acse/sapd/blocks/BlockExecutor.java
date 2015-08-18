@@ -28,7 +28,7 @@ public class BlockExecutor {
         executors.put(ProcessorBlockType.RUBY, new RubyBlockExecutor());
     }
 
-    public <T> DataPoint execute(ProcessorBlock block, List<DataPoint<T>> points) throws BlockExecutionException {
+    public DataPoint execute(ProcessorBlock block, List<DataPoint> points) throws BlockExecutionException {
         if(executors.containsKey(block.getBlockType())) {
             return executors.get(block.getBlockType()).processData(block.getFunctionCode(), points);
         }  else {
