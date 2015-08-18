@@ -1,7 +1,7 @@
 package ro.pub.acse.sapd.diagrams.schema;
 
 /**
- * Created by petrisor on 8/19/15.
+ * An end of the line block in a diagram
  */
 public class EndChannelBlock implements DiagramBlock {
 }

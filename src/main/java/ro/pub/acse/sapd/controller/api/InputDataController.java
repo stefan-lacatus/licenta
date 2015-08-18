@@ -29,11 +29,11 @@ public class InputDataController {
     @ResponseBody
     public ResponseEntity<String> addDataPut(@PathVariable Long inputId, @PathVariable Long channelId,
                                              @PathVariable String data) throws BlockExecutionException {
-        addData(inputId, channelId, data);
+        addData(channelId, data);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    public void addData(Long inputId, Long channelId, String data) throws BlockExecutionException {
+    public void addData(Long channelId, String data) throws BlockExecutionException {
         DataChannel channel = dataRepository.findOne(channelId);
         DataPoint dataPoint;
         if (channel.getInputPreprocessor() != null) {
@@ -44,6 +44,6 @@ public class InputDataController {
             dataPoint = new StringDataPoint(data);
         }
 
-        dataRepository.addDataToTable(inputId, channelId, dataPoint);
+        dataRepository.addDataToTable(channelId, dataPoint);
     }
 }

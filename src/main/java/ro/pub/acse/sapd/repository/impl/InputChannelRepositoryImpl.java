@@ -19,7 +19,7 @@ public class InputChannelRepositoryImpl implements InputChannelCustomRepository 
     private DataSource dataSource;
 
     @Override
-    public int addDataToTable(Long inputBlockId, Long channelId, DataPoint data) {
+    public int addDataToTable(Long channelId, DataPoint data) {
         JdbcTemplate template = new JdbcTemplate(dataSource);
 
         // define query arguments

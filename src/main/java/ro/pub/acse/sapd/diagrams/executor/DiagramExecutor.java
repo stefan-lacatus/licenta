@@ -36,6 +36,8 @@ public class DiagramExecutor {
     private ProcessorBlockRepository blockRepository;
     @Autowired
     private InputChannelRepository channelRepository;
+    @Autowired
+    private InputChannelRepository dataRepository;
 
     public DataPoint execute(BlockDiagram diagram) throws DiagramExecutionException {
         try {
@@ -49,8 +51,10 @@ public class DiagramExecutor {
             for (DiagramBlock block : blockOrder) {
                 executeBlock(block, listMap, results);
             }
-
-            return results.get(blockOrder.get(blockOrder.size() - 2));
+            // get the result of the block just before the end block
+            DataPoint result = results.get(blockOrder.get(blockOrder.size() - 2));
+            dataRepository.addDataToTable(diagram.getChannel().getId(),  result);
+            return result;
         } catch (IOException | TopologicalSortException | BlockExecutionException e) {
             throw new DiagramExecutionException(e);
         }
