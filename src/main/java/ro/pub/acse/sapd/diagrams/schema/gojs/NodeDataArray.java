@@ -1,7 +1,8 @@
-package ro.pub.acse.sapd.diagrams.schema;
+package ro.pub.acse.sapd.diagrams.schema.gojs;
 
 
 import com.fasterxml.jackson.annotation.*;
+import ro.pub.acse.sapd.diagrams.schema.gojs.InputArray;
 
 import javax.annotation.Generated;
 import javax.validation.Valid;

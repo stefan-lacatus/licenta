@@ -3,13 +3,18 @@ package ro.pub.acse.sapd.diagrams.executor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import ro.pub.acse.sapd.blocks.BlockExecutionException;
 import ro.pub.acse.sapd.blocks.BlockExecutor;
 import ro.pub.acse.sapd.data.DataPoint;
+import ro.pub.acse.sapd.data.impl.ObjectDataPoint;
+import ro.pub.acse.sapd.data.impl.StringDataPoint;
 import ro.pub.acse.sapd.diagrams.executor.graph.TopologicalSort;
 import ro.pub.acse.sapd.diagrams.executor.graph.TopologicalSortException;
-import ro.pub.acse.sapd.diagrams.schema.FunctionBlockDiagram;
-import ro.pub.acse.sapd.diagrams.schema.LinkDataArray;
-import ro.pub.acse.sapd.diagrams.schema.NodeDataArray;
+import ro.pub.acse.sapd.diagrams.schema.DiagramBlock;
+import ro.pub.acse.sapd.diagrams.schema.EndChannelBlock;
+import ro.pub.acse.sapd.diagrams.schema.gojs.FunctionBlockDiagram;
+import ro.pub.acse.sapd.diagrams.schema.gojs.LinkDataArray;
+import ro.pub.acse.sapd.diagrams.schema.gojs.NodeDataArray;
 import ro.pub.acse.sapd.model.entities.BlockDiagram;
 import ro.pub.acse.sapd.model.entities.DataChannel;
 import ro.pub.acse.sapd.model.entities.ProcessorBlock;
@@ -32,28 +37,56 @@ public class DiagramExecutor {
     @Autowired
     private InputChannelRepository channelRepository;
 
-    public DiagramExecutor() {
-
-    }
-
-    private static String createIndent(int depth) {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < depth; i++) {
-            sb.append(' ');
-        }
-        return sb.toString();
-    }
-
-    public <T> DataPoint execute(BlockDiagram diagram, DataPoint<T> output) throws DiagramExecutionException {
+    public DataPoint execute(BlockDiagram diagram) throws DiagramExecutionException {
         try {
+            Map<DiagramBlock, List<DiagramBlock>> listMap;
+            Map<DiagramBlock, DataPoint> results = new HashMap<>();
             FunctionBlockDiagram fbdDiagram = mapper.readValue(diagram.getCode(), FunctionBlockDiagram.class);
-            Map<Long, ProcessorBlock> blocks = new HashMap<>();
-            Map<Long, DataChannel> channels = new HashMap<>();
-            for (NodeDataArray nodeDataArray : fbdDiagram.getNodeDataArray()) {
-                if (nodeDataArray.getBlockId() != 0) {
+            Map<Long, DiagramBlock> blocks = getKeyBlockMap(fbdDiagram);
+
+            listMap = getBlockAsGraph(fbdDiagram, blocks);
+            List<DiagramBlock> blockOrder = TopologicalSort.tSort(listMap);
+            for (DiagramBlock block : blockOrder) {
+                executeBlock(block, listMap, results);
+            }
+
+            return results.get(blockOrder.get(blockOrder.size() - 2));
+        } catch (IOException | TopologicalSortException | BlockExecutionException e) {
+            throw new DiagramExecutionException(e);
+        }
+    }
+
+    private void executeBlock(DiagramBlock block, Map<DiagramBlock, List<DiagramBlock>> listMap,
+                              Map<DiagramBlock, DataPoint> results) throws
+            BlockExecutionException, DiagramExecutionException {
+        List<DataPoint> inputs = new ArrayList<>();
+        // build the inputs list
+        for (DiagramBlock parentBlocks : listMap.get(block)) {
+            if (results.containsKey(parentBlocks)) {
+                inputs.add(results.get(parentBlocks));
+            } else {
+                throw new DiagramExecutionException(
+                        String.format("Attempting to execute %s before having result of %s",
+                                block.toString(), parentBlocks.toString()));
+            }
+        }
+        if (block instanceof ProcessorBlock) {
+            results.put(block, blockExecutor.execute(((ProcessorBlock) block), inputs));
+        } else if (block instanceof DataChannel) {
+            results.put(block, new ObjectDataPoint("1"));
+        }
+    }
+
+    private Map<Long, DiagramBlock> getKeyBlockMap(FunctionBlockDiagram fbdDiagram) throws DiagramExecutionException {
+        Map<Long, DiagramBlock> blocks = new HashMap<>();
+        for (NodeDataArray nodeDataArray : fbdDiagram.getNodeDataArray()) {
+            if (!Objects.equals(nodeDataArray.getCategory(), "Comment")) {
+                if (nodeDataArray.getBlockId() != 0 || Objects.equals(nodeDataArray.getCategory(), "End")) {
                     if (Objects.equals(nodeDataArray.getCategory(), "Input")) {
-                        channels.put(nodeDataArray.getKey(), channelRepository.findOne(nodeDataArray.getBlockId()));
-                    } else if (!Objects.equals(nodeDataArray.getCategory(), "End")) {
+                        blocks.put(nodeDataArray.getKey(), channelRepository.findOne(nodeDataArray.getBlockId()));
+                    } else if (Objects.equals(nodeDataArray.getCategory(), "End")) {
+                        blocks.put(nodeDataArray.getKey(), new EndChannelBlock());
+                    } else {
                         blocks.put(nodeDataArray.getKey(), blockRepository.findOne(nodeDataArray.getBlockId()));
                     }
                 } else {
@@ -61,31 +94,24 @@ public class DiagramExecutor {
                             + nodeDataArray.getKey() + " has a blockId 0 ");
                 }
             }
-
-            Map<Long, String> stringMap = new HashMap<>();
-            for (NodeDataArray node : fbdDiagram.getNodeDataArray()) {
-                stringMap.put(node.getKey(), node.getText());
-            }
-            Map<String, List<String>> listMap = new HashMap<>();
-            for (LinkDataArray linkDataArray : fbdDiagram.getLinkDataArray()) {
-                if (listMap.containsKey(stringMap.get(linkDataArray.getTo()))) {
-                    listMap.get(stringMap.get(linkDataArray.getTo())).add(stringMap.get(linkDataArray.getFrom()));
-                } else {
-                    listMap.put(stringMap.get(linkDataArray.getTo()), new ArrayList<>());
-                    listMap.get(stringMap.get(linkDataArray.getTo())).add(stringMap.get(linkDataArray.getFrom()));
-                }
-                if (!listMap.containsKey(stringMap.get(linkDataArray.getFrom()))) {
-                    listMap.put(stringMap.get(linkDataArray.getFrom()), new ArrayList<>());
-                }
-
-            }
-            List<String> strings = TopologicalSort.tSort(listMap);
-
-
-        } catch (IOException | TopologicalSortException e) {
-            throw new DiagramExecutionException(e);
         }
+        return blocks;
+    }
 
-        return null;
+    private Map<DiagramBlock, List<DiagramBlock>> getBlockAsGraph(FunctionBlockDiagram fbdDiagram, Map<Long, DiagramBlock> blocks) {
+        Map<DiagramBlock, List<DiagramBlock>> listMap = new HashMap<>();
+        for (LinkDataArray linkDataArray : fbdDiagram.getLinkDataArray()) {
+            if (listMap.containsKey(blocks.get(linkDataArray.getTo()))) {
+                listMap.get(blocks.get(linkDataArray.getTo())).add(blocks.get(linkDataArray.getFrom()));
+            } else {
+                listMap.put(blocks.get(linkDataArray.getTo()), new ArrayList<>());
+                listMap.get(blocks.get(linkDataArray.getTo())).add(blocks.get(linkDataArray.getFrom()));
+            }
+            if (!listMap.containsKey(blocks.get(linkDataArray.getFrom()))) {
+                listMap.put(blocks.get(linkDataArray.getFrom()), new ArrayList<>());
+            }
+
+        }
+        return listMap;
     }
 }

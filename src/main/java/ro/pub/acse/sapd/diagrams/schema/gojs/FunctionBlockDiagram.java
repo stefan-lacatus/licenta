@@ -1,4 +1,4 @@
-package ro.pub.acse.sapd.diagrams.schema;
+package ro.pub.acse.sapd.diagrams.schema.gojs;
 
 import com.fasterxml.jackson.annotation.*;
 
