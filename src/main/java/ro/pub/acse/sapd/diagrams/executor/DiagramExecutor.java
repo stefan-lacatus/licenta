@@ -7,7 +7,6 @@ import ro.pub.acse.sapd.blocks.BlockExecutionException;
 import ro.pub.acse.sapd.blocks.BlockExecutor;
 import ro.pub.acse.sapd.data.DataPoint;
 import ro.pub.acse.sapd.data.impl.ObjectDataPoint;
-import ro.pub.acse.sapd.data.impl.StringDataPoint;
 import ro.pub.acse.sapd.diagrams.executor.graph.TopologicalSort;
 import ro.pub.acse.sapd.diagrams.executor.graph.TopologicalSortException;
 import ro.pub.acse.sapd.diagrams.schema.DiagramBlock;
