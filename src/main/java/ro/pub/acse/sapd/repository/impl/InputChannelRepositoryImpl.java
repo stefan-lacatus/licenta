@@ -2,6 +2,7 @@ package ro.pub.acse.sapd.repository.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Component;
 import ro.pub.acse.sapd.data.DataPoint;
 import ro.pub.acse.sapd.repository.custom.InputChannelCustomRepository;
 
@@ -9,11 +10,9 @@ import javax.sql.DataSource;
 import java.sql.Timestamp;
 import java.sql.Types;
 
-/**
- * Created by petrisor on 8/9/15.
- */
+@Component
 public class InputChannelRepositoryImpl implements InputChannelCustomRepository {
-    private final static String INSERT_DATA_QUERY = "INSERT INTO input_data_points(channel_id, value, timestamp) " +
+    private final static String INSERT_DATA_QUERY = "INSERT INTO data_points(channel_id, value, timestamp) " +
             "VALUES (?, ?, ?)";
     @Autowired
     private DataSource dataSource;
