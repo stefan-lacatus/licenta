@@ -6,6 +6,7 @@ import ro.pub.acse.sapd.diagrams.schema.DiagramBlock;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.Set;
 
 /**
  * Represents an input channel that takes data takes data from the outside world and stores in into our database
@@ -19,6 +20,7 @@ public class DataChannel implements Serializable, DiagramBlock {
     private String description;
     private DataType dataType;
     private ProcessorBlock inputPreprocessor;
+    private Set<FunctionalDiagram> subscribedDiagrams;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -76,5 +78,22 @@ public class DataChannel implements Serializable, DiagramBlock {
 
     public void setInputPreprocessor(ProcessorBlock inputPreprocessor) {
         this.inputPreprocessor = inputPreprocessor;
+    }
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    public Set<FunctionalDiagram> getSubscribedDiagrams() {
+        return subscribedDiagrams;
+    }
+
+    private void setSubscribedDiagrams(Set<FunctionalDiagram> subscribedDiagrams) {
+        this.subscribedDiagrams = subscribedDiagrams;
+    }
+
+    public boolean addSubscribedDiagram(FunctionalDiagram diagram) {
+        return subscribedDiagrams.add(diagram);
+    }
+
+    public boolean removeSubscribedDiagram(FunctionalDiagram diagram) {
+        return subscribedDiagrams.remove(diagram);
     }
 }
