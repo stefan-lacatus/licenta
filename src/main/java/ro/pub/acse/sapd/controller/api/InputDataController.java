@@ -9,7 +9,7 @@ import ro.pub.acse.sapd.blocks.BlockExecutor;
 import ro.pub.acse.sapd.data.DataPoint;
 import ro.pub.acse.sapd.data.impl.StringDataPoint;
 import ro.pub.acse.sapd.model.entities.DataChannel;
-import ro.pub.acse.sapd.repository.InputChannelRepository;
+import ro.pub.acse.sapd.repository.DataChannelRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +21,7 @@ import java.util.List;
 @RequestMapping("/api/input/")
 public class InputDataController {
     @Autowired
-    InputChannelRepository dataRepository;
+    DataChannelRepository dataRepository;
     @Autowired
     BlockExecutor blockExecutor;
 

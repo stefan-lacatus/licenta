@@ -17,7 +17,7 @@ import ro.pub.acse.sapd.logging.Loggable;
 import ro.pub.acse.sapd.model.entities.InputBlock;
 import ro.pub.acse.sapd.repository.ApplicationTagRepository;
 import ro.pub.acse.sapd.repository.InputBlockRepository;
-import ro.pub.acse.sapd.repository.InputChannelRepository;
+import ro.pub.acse.sapd.repository.DataChannelRepository;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
@@ -37,7 +37,7 @@ public class InputController {
     @Autowired
     private ApplicationTagRepository tags;
     @Autowired
-    private InputChannelRepository channels;
+    private DataChannelRepository channels;
 
     @RequestMapping("/input/new")
     public String newInput(Model model) {
