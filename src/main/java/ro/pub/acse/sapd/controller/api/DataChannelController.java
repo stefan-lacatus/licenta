@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller
-public class InputBlockController {
+public class DataChannelController {
     @Autowired
     private InputBlockRepository inputBlockRepository;
     @Autowired
@@ -24,7 +24,7 @@ public class InputBlockController {
 
     @RequestMapping(value = "/blocks/getChannels", headers = "Accept=application/json")
     @ResponseBody
-    public List<InputChannelJsonResult> getAllTags() {
+    public List<InputChannelJsonResult> getAllChannels() {
         List<InputChannelJsonResult> channels = new ArrayList<>();
         for (InputBlock inputBlock : inputBlockRepository.findAll()) {
             channels.addAll(inputBlock.getChannels().stream().map(channel ->
@@ -47,7 +47,7 @@ public class InputBlockController {
         }
 
         public InputChannelJsonResult(FunctionalDiagram diagram) {
-            this.id = diagram.getId();
+            this.id = diagram.getChannel().getId();
             this.name = "O." + diagram.getName() + "/" + diagram.getChannel().getName();
         }
 
