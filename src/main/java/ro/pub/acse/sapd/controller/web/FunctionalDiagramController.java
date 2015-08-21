@@ -7,19 +7,26 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import ro.pub.acse.sapd.configuration.PageWrapper;
 import ro.pub.acse.sapd.configuration.security.ApplicationSecurityUser;
+import ro.pub.acse.sapd.diagrams.schema.DiagramParseException;
+import ro.pub.acse.sapd.diagrams.schema.DiagramParser;
+import ro.pub.acse.sapd.diagrams.schema.gojs.GoJsDiagramParser;
 import ro.pub.acse.sapd.logging.Loggable;
 import ro.pub.acse.sapd.model.entities.ApplicationUser;
+import ro.pub.acse.sapd.model.entities.DataChannel;
 import ro.pub.acse.sapd.model.entities.FunctionalDiagram;
 import ro.pub.acse.sapd.repository.ApplicationTagRepository;
+import ro.pub.acse.sapd.repository.DataChannelRepository;
 import ro.pub.acse.sapd.repository.FunctionalDiagramRepository;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.security.Principal;
 import java.util.Date;
 
@@ -28,7 +35,7 @@ import java.util.Date;
  */
 @Controller
 @RequestMapping(value = "/management")
-public class BlockDiagramController {
+public class FunctionalDiagramController {
     @Loggable
     private Logger log;
 
@@ -36,6 +43,8 @@ public class BlockDiagramController {
     private FunctionalDiagramRepository diagrams;
     @Autowired
     private ApplicationTagRepository tags;
+    @Autowired
+    private DataChannelRepository dataChannelRepository;
 
     @RequestMapping("/diagram/new")
     public String newDiagram(Model model) {
@@ -62,9 +71,10 @@ public class BlockDiagramController {
         return "management/fragments/diagram";
     }
 
+    @Transactional
     @RequestMapping(value = {"/diagram/new/save", "/diagram/{id}/save"}, method = RequestMethod.POST)
     public ModelAndView editDiagram(@ModelAttribute("diagram") FunctionalDiagram diagram, BindingResult result,
-                                    Principal principal) {
+                                    Principal principal) throws IOException, DiagramParseException {
         // attempt to create the tags
         if (result.getFieldErrorCount("tags") > 0) {
             diagram.setTags(tags.addTagsFromBindingResult(result));
@@ -73,16 +83,30 @@ public class BlockDiagramController {
         diagram.setLastEditedBy(activeUser);
         diagram.setLastEditedTime(new Date());
 
-        diagrams.save(diagram);
+        diagram = diagrams.save(diagram);
+        // parse the diagram to get the channel list
+        DiagramParser parser = new GoJsDiagramParser(diagram, dataChannelRepository);
+        for (DataChannel dataChannel : parser.getUsedChannels()) {
+            dataChannel.addSubscribedDiagram(diagram);
+            dataChannelRepository.save(dataChannel);
+        }
         log.info(String.format("Edited diagram %s by %s", diagram.getName(), activeUser.getUsername()));
         return new ModelAndView("redirect:/management/diagrams");
     }
 
     @RequestMapping("/diagram/{id}")
-    public String getDiagram(Model model, @PathVariable("id") long id) {
+    public String getDiagram(Model model, @PathVariable("id") long id) throws IOException, DiagramParseException {
         model.addAttribute("current_page", "management");
-        model.addAttribute("diagram", diagrams.findOne(id));
+        FunctionalDiagram diagram = diagrams.findOne(id);
+        model.addAttribute("diagram", diagram);
         model.addAttribute("add _new", false);
+        // remove the subscribed channels
+        // parse the diagram to get the channel list
+        DiagramParser parser = new GoJsDiagramParser(diagram, dataChannelRepository);
+        for (DataChannel dataChannel : parser.getUsedChannels()) {
+            dataChannel.removeSubscribedDiagram(diagram);
+            dataChannelRepository.save(dataChannel);
+        }
         return "management/fragments/diagram";
     }
 
