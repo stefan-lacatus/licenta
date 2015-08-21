@@ -1,6 +1,5 @@
 package ro.pub.acse.sapd.diagrams.executor;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ro.pub.acse.sapd.blocks.BlockExecutionException;
@@ -10,10 +9,9 @@ import ro.pub.acse.sapd.data.impl.ObjectDataPoint;
 import ro.pub.acse.sapd.diagrams.executor.graph.TopologicalSort;
 import ro.pub.acse.sapd.diagrams.executor.graph.TopologicalSortException;
 import ro.pub.acse.sapd.diagrams.schema.DiagramBlock;
+import ro.pub.acse.sapd.diagrams.schema.DiagramParseException;
 import ro.pub.acse.sapd.diagrams.schema.DiagramParser;
-import ro.pub.acse.sapd.diagrams.schema.gojs.FunctionBlockDiagram;
 import ro.pub.acse.sapd.diagrams.schema.gojs.GoJsDiagramParser;
-import ro.pub.acse.sapd.diagrams.schema.gojs.LinkDataArray;
 import ro.pub.acse.sapd.model.entities.DataChannel;
 import ro.pub.acse.sapd.model.entities.FunctionalDiagram;
 import ro.pub.acse.sapd.model.entities.ProcessorBlock;
@@ -31,7 +29,6 @@ import java.util.Map;
  */
 @Component
 public class DiagramExecutor {
-    private final ObjectMapper mapper = new ObjectMapper();
     @Autowired
     private BlockExecutor blockExecutor;
     @Autowired
@@ -45,11 +42,9 @@ public class DiagramExecutor {
         try {
             Map<DiagramBlock, List<DiagramBlock>> listMap;
             Map<DiagramBlock, DataPoint> results = new HashMap<>();
-            FunctionBlockDiagram fbdDiagram = mapper.readValue(diagram.getCode(), FunctionBlockDiagram.class);
-            DiagramParser diagramParser = new GoJsDiagramParser(channelRepository, blockRepository);
-            Map<Long, DiagramBlock> blocks = diagramParser.getKeyBlockMap(fbdDiagram);
+            DiagramParser diagramParser = new GoJsDiagramParser(diagram, channelRepository, blockRepository);
 
-            listMap = getBlockAsGraph(fbdDiagram, blocks);
+            listMap = diagramParser.getBlockAsGraph();
             List<DiagramBlock> blockOrder = TopologicalSort.tSort(listMap);
             for (DiagramBlock block : blockOrder) {
                 executeBlock(block, listMap, results);
@@ -58,7 +53,7 @@ public class DiagramExecutor {
             DataPoint result = results.get(blockOrder.get(blockOrder.size() - 2));
             dataRepository.addDataToTable(diagram.getChannel().getId(), result);
             return result;
-        } catch (IOException | TopologicalSortException | BlockExecutionException e) {
+        } catch (IOException | TopologicalSortException | BlockExecutionException | DiagramParseException e) {
             throw new DiagramExecutionException(e);
         }
     }
@@ -82,22 +77,5 @@ public class DiagramExecutor {
         } else if (block instanceof DataChannel) {
             results.put(block, new ObjectDataPoint("1"));
         }
-    }
-
-    private Map<DiagramBlock, List<DiagramBlock>> getBlockAsGraph(FunctionBlockDiagram fbdDiagram, Map<Long, DiagramBlock> blocks) {
-        Map<DiagramBlock, List<DiagramBlock>> listMap = new HashMap<>();
-        for (LinkDataArray linkDataArray : fbdDiagram.getLinkDataArray()) {
-            if (listMap.containsKey(blocks.get(linkDataArray.getTo()))) {
-                listMap.get(blocks.get(linkDataArray.getTo())).add(blocks.get(linkDataArray.getFrom()));
-            } else {
-                listMap.put(blocks.get(linkDataArray.getTo()), new ArrayList<>());
-                listMap.get(blocks.get(linkDataArray.getTo())).add(blocks.get(linkDataArray.getFrom()));
-            }
-            if (!listMap.containsKey(blocks.get(linkDataArray.getFrom()))) {
-                listMap.put(blocks.get(linkDataArray.getFrom()), new ArrayList<>());
-            }
-
-        }
-        return listMap;
     }
 }

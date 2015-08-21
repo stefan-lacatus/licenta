@@ -6,6 +6,7 @@ import ro.pub.acse.sapd.diagrams.schema.DiagramBlock;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -90,6 +91,9 @@ public class DataChannel implements Serializable, DiagramBlock {
     }
 
     public boolean addSubscribedDiagram(FunctionalDiagram diagram) {
+        if (subscribedDiagrams == null) {
+            subscribedDiagrams = new HashSet<>();
+        }
         return subscribedDiagrams.add(diagram);
     }
 
