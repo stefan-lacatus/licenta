@@ -11,18 +11,20 @@ import ro.pub.acse.sapd.diagrams.executor.graph.TopologicalSort;
 import ro.pub.acse.sapd.diagrams.executor.graph.TopologicalSortException;
 import ro.pub.acse.sapd.diagrams.schema.DiagramBlock;
 import ro.pub.acse.sapd.diagrams.schema.DiagramParser;
-import ro.pub.acse.sapd.diagrams.schema.EndChannelBlock;
 import ro.pub.acse.sapd.diagrams.schema.gojs.FunctionBlockDiagram;
 import ro.pub.acse.sapd.diagrams.schema.gojs.GoJsDiagramParser;
 import ro.pub.acse.sapd.diagrams.schema.gojs.LinkDataArray;
-import ro.pub.acse.sapd.model.entities.BlockDiagram;
 import ro.pub.acse.sapd.model.entities.DataChannel;
+import ro.pub.acse.sapd.model.entities.FunctionalDiagram;
 import ro.pub.acse.sapd.model.entities.ProcessorBlock;
 import ro.pub.acse.sapd.repository.DataChannelRepository;
 import ro.pub.acse.sapd.repository.ProcessorBlockRepository;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Executes a diagram
@@ -39,7 +41,7 @@ public class DiagramExecutor {
     @Autowired
     private DataChannelRepository dataRepository;
 
-    public DataPoint execute(BlockDiagram diagram) throws DiagramExecutionException {
+    public DataPoint execute(FunctionalDiagram diagram) throws DiagramExecutionException {
         try {
             Map<DiagramBlock, List<DiagramBlock>> listMap;
             Map<DiagramBlock, DataPoint> results = new HashMap<>();

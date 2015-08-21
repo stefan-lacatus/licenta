@@ -10,7 +10,7 @@ import java.io.Serializable;
  * Represents an function block diagram
  */
 @Entity
-public class BlockDiagram extends ManagedEntity implements Serializable {
+public class FunctionalDiagram extends ManagedEntity implements Serializable {
     private static final long serialVersionUID = -4876463382677721689L;
 
     private String code;

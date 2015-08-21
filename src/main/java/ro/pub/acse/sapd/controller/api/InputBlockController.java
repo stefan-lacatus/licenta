@@ -4,10 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import ro.pub.acse.sapd.model.entities.BlockDiagram;
 import ro.pub.acse.sapd.model.entities.DataChannel;
+import ro.pub.acse.sapd.model.entities.FunctionalDiagram;
 import ro.pub.acse.sapd.model.entities.InputBlock;
-import ro.pub.acse.sapd.repository.BlockDiagramRepository;
+import ro.pub.acse.sapd.repository.FunctionalDiagramRepository;
 import ro.pub.acse.sapd.repository.InputBlockRepository;
 
 import java.io.Serializable;
@@ -20,7 +20,7 @@ public class InputBlockController {
     @Autowired
     private InputBlockRepository inputBlockRepository;
     @Autowired
-    private BlockDiagramRepository diagramRepository;
+    private FunctionalDiagramRepository diagramRepository;
 
     @RequestMapping(value = "/blocks/getChannels", headers = "Accept=application/json")
     @ResponseBody
@@ -46,7 +46,7 @@ public class InputBlockController {
             this.name = "I." + block.getName() + "/" + channel.getName();
         }
 
-        public InputChannelJsonResult(BlockDiagram diagram) {
+        public InputChannelJsonResult(FunctionalDiagram diagram) {
             this.id = diagram.getId();
             this.name = "O." + diagram.getName() + "/" + diagram.getChannel().getName();
         }

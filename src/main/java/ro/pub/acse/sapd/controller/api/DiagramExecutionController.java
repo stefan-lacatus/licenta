@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ro.pub.acse.sapd.data.DataPoint;
 import ro.pub.acse.sapd.diagrams.executor.DiagramExecutionException;
 import ro.pub.acse.sapd.diagrams.executor.DiagramExecutor;
-import ro.pub.acse.sapd.repository.BlockDiagramRepository;
+import ro.pub.acse.sapd.repository.FunctionalDiagramRepository;
 
 /**
  * Handles adding new data
@@ -17,7 +17,7 @@ import ro.pub.acse.sapd.repository.BlockDiagramRepository;
 @RequestMapping("/api/diagram/")
 public class DiagramExecutionController {
     @Autowired
-    BlockDiagramRepository diagramRepository;
+    FunctionalDiagramRepository diagramRepository;
     @Autowired
     DiagramExecutor diagramExecutor;
 

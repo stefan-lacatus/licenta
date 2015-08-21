@@ -15,9 +15,9 @@ import ro.pub.acse.sapd.configuration.PageWrapper;
 import ro.pub.acse.sapd.configuration.security.ApplicationSecurityUser;
 import ro.pub.acse.sapd.logging.Loggable;
 import ro.pub.acse.sapd.model.entities.ApplicationUser;
-import ro.pub.acse.sapd.model.entities.BlockDiagram;
+import ro.pub.acse.sapd.model.entities.FunctionalDiagram;
 import ro.pub.acse.sapd.repository.ApplicationTagRepository;
-import ro.pub.acse.sapd.repository.BlockDiagramRepository;
+import ro.pub.acse.sapd.repository.FunctionalDiagramRepository;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
@@ -33,14 +33,14 @@ public class BlockDiagramController {
     private Logger log;
 
     @Autowired
-    private BlockDiagramRepository diagrams;
+    private FunctionalDiagramRepository diagrams;
     @Autowired
     private ApplicationTagRepository tags;
 
     @RequestMapping("/diagram/new")
     public String newDiagram(Model model) {
         model.addAttribute("current_page", "management");
-        BlockDiagram diagram = new BlockDiagram();
+        FunctionalDiagram diagram = new FunctionalDiagram();
         diagram.setActive(true);
         model.addAttribute("diagram", diagram);
         model.addAttribute("add_new", true);
@@ -63,7 +63,7 @@ public class BlockDiagramController {
     }
 
     @RequestMapping(value = {"/diagram/new/save", "/diagram/{id}/save"}, method = RequestMethod.POST)
-    public ModelAndView editDiagram(@ModelAttribute("diagram") BlockDiagram diagram, BindingResult result,
+    public ModelAndView editDiagram(@ModelAttribute("diagram") FunctionalDiagram diagram, BindingResult result,
                                     Principal principal) {
         // attempt to create the tags
         if (result.getFieldErrorCount("tags") > 0) {
@@ -92,7 +92,7 @@ public class BlockDiagramController {
         final Sort sortOrder = new Sort(new Sort.Order(Sort.Direction.DESC, "active"),
                 new Sort.Order(Sort.Direction.ASC, "name"));
         PageRequest pageRequest = new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), sortOrder);
-        PageWrapper<BlockDiagram> page = new PageWrapper<>(diagrams.search(pageRequest, search.toLowerCase()),
+        PageWrapper<FunctionalDiagram> page = new PageWrapper<>(diagrams.search(pageRequest, search.toLowerCase()),
                 request.getRequestURI());
         model.addAttribute("page", page);
         model.addAttribute("current_page", "management");
@@ -102,7 +102,7 @@ public class BlockDiagramController {
     @RequestMapping(value = "/diagram/disable", method = RequestMethod.POST)
     public String disableDiagram(@RequestParam Long diagramId, Principal principal) {
         ApplicationSecurityUser activeUser = (ApplicationSecurityUser) ((Authentication) principal).getPrincipal();
-        BlockDiagram diagram = diagrams.findOne(diagramId);
+        FunctionalDiagram diagram = diagrams.findOne(diagramId);
         if (diagram != null) {
             diagram.setLastEditedBy(activeUser);
             diagram.setLastEditedTime(new Date());
@@ -123,7 +123,7 @@ public class BlockDiagramController {
         Sort sortOrder = new Sort(new Sort.Order(Sort.Direction.ASC, "name"),
                 new Sort.Order(Sort.Direction.ASC, "active"));
         PageRequest pageRequest = new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), sortOrder);
-        PageWrapper<BlockDiagram> page = new PageWrapper<>(diagrams.findAll(pageRequest), "/management/diagrams");
+        PageWrapper<FunctionalDiagram> page = new PageWrapper<>(diagrams.findAll(pageRequest), "/management/diagrams");
         model.addAttribute("page", page);
         model.addAttribute("current_page", "management");
         return "management/diagrams";
