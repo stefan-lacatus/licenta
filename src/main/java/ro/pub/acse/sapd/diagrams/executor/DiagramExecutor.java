@@ -6,7 +6,6 @@ import ro.pub.acse.sapd.blocks.BlockExecutionException;
 import ro.pub.acse.sapd.blocks.BlockExecutor;
 import ro.pub.acse.sapd.data.DataPoint;
 import ro.pub.acse.sapd.data.DataService;
-import ro.pub.acse.sapd.data.impl.ObjectDataPoint;
 import ro.pub.acse.sapd.diagrams.executor.graph.TopologicalSort;
 import ro.pub.acse.sapd.diagrams.executor.graph.TopologicalSortException;
 import ro.pub.acse.sapd.diagrams.schema.DiagramBlock;
@@ -76,7 +75,12 @@ public class DiagramExecutor {
         if (block instanceof ProcessorBlock) {
             results.put(block, blockExecutor.execute(((ProcessorBlock) block), inputs));
         } else if (block instanceof DataChannel) {
-            results.put(block, new ObjectDataPoint("1"));
+            List<DataPoint> points = dataService.getLastDataPoints((DataChannel) block, 1);
+            if (points.size() > 0) {
+                results.put(block, points.get(0));
+            } else {
+                throw new DiagramExecutionException("There is no data on input " + ((DataChannel) block).getName());
+            }
         }
     }
 }
