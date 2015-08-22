@@ -1,4 +1,4 @@
-package ro.pub.acse.sapd.controller.web;
+package ro.pub.acse.sapd.controller.web.management;
 
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +16,8 @@ import ro.pub.acse.sapd.configuration.security.ApplicationSecurityUser;
 import ro.pub.acse.sapd.logging.Loggable;
 import ro.pub.acse.sapd.model.entities.InputBlock;
 import ro.pub.acse.sapd.repository.ApplicationTagRepository;
-import ro.pub.acse.sapd.repository.InputBlockRepository;
 import ro.pub.acse.sapd.repository.DataChannelRepository;
+import ro.pub.acse.sapd.repository.InputBlockRepository;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
