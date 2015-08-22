@@ -2,6 +2,7 @@ package ro.pub.acse.sapd.data;
 
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import ro.pub.acse.sapd.blocks.BlockExecutionException;
@@ -14,6 +15,7 @@ import ro.pub.acse.sapd.model.entities.FunctionalDiagram;
 import ro.pub.acse.sapd.repository.DataChannelRepository;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -50,5 +52,14 @@ public class DataService {
             LOGGER.debug(String.format("Executed diagram %s because of new data on channel %s and got result %s",
                     functionalDiagram.getName(), channel.getName(), result.getValue()));
         }
+    }
+
+    public List<DataPoint> getDataPoints(DataChannel channel, Date startInterval, Date endInterval) {
+        return dataRepository.getDataOnChannel(channel, startInterval, endInterval);
+    }
+
+    public List<DataPoint> getLastDataPoints(DataChannel channel, Integer maxItems) {
+
+        return dataRepository.getLastDataOnChannel(channel, new PageRequest(0, maxItems));
     }
 }
