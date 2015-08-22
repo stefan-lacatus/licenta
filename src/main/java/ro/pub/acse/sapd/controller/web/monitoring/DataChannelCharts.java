@@ -5,7 +5,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping(value = "/monitoring")
+@RequestMapping(value = "/monitor")
 public class DataChannelCharts {
 
     @RequestMapping(value = {"channels", "channels/"})

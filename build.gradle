@@ -56,6 +56,8 @@ dependencies {
     compile 'org.webjars:jquery:2.1.4'
     compile 'org.webjars:codemirror:5.5'
     compile 'org.webjars.bower:Chart.js:2.0.0-alpha3'
+    compile 'org.webjars:momentjs:2.10.6'
+    compile 'org.webjars:Eonasdan-bootstrap-datetimepicker:4.15.35'
     runtime 'org.jruby:jruby-core:9.0.0.0'
     testCompile("org.springframework.boot:spring-boot-starter-test")
 }
