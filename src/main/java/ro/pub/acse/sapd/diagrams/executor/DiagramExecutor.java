@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import ro.pub.acse.sapd.blocks.BlockExecutionException;
 import ro.pub.acse.sapd.blocks.BlockExecutor;
 import ro.pub.acse.sapd.data.DataPoint;
+import ro.pub.acse.sapd.data.DataService;
 import ro.pub.acse.sapd.data.impl.ObjectDataPoint;
 import ro.pub.acse.sapd.diagrams.executor.graph.TopologicalSort;
 import ro.pub.acse.sapd.diagrams.executor.graph.TopologicalSortException;
@@ -36,7 +37,7 @@ public class DiagramExecutor {
     @Autowired
     private DataChannelRepository channelRepository;
     @Autowired
-    private DataChannelRepository dataRepository;
+    private DataService dataService;
 
     public DataPoint execute(FunctionalDiagram diagram) throws DiagramExecutionException {
         try {
@@ -51,7 +52,7 @@ public class DiagramExecutor {
             }
             // get the result of the block just before the end block
             DataPoint result = results.get(blockOrder.get(blockOrder.size() - 2));
-            dataRepository.addDataToTable(diagram.getChannel().getId(), result);
+            dataService.addData(diagram.getChannel(), result);
             return result;
         } catch (IOException | TopologicalSortException | BlockExecutionException | DiagramParseException e) {
             throw new DiagramExecutionException(e);
