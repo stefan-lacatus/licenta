@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        springBootVersion = '1.3.0.M3'
+        springBootVersion = '1.3.0.M4'
     }
     repositories {
         mavenCentral()
@@ -55,6 +55,7 @@ dependencies {
     compile 'org.webjars:bootstrap:3.3.5'
     compile 'org.webjars:jquery:2.1.4'
     compile 'org.webjars:codemirror:5.5'
+    compile 'org.webjars.bower:Chart.js:2.0.0-alpha3'
     runtime 'org.jruby:jruby-core:9.0.0.0'
     testCompile("org.springframework.boot:spring-boot-starter-test")
 }
