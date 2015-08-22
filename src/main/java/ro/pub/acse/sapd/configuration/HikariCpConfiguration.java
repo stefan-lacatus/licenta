@@ -18,7 +18,7 @@ public class HikariCpConfiguration {
     private String password;
     @Value("${spring.datasource.dataSourceClassName}")
     private String dataSourceClassName;
-    @Value("${spring.datasource.database-name}")
+    @Value("${spring.datasource.database}")
     private String database;
     @Value("${spring.datasource.server-name}")
     private String server;

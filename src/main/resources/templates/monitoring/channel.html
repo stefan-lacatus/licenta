@@ -1,0 +1,130 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <script src="http://cdn.jsdelivr.net/webjars/jquery/2.1.4/jquery.min.js"
+            th:src="@{/webjars/jquery/2.1.4/jquery.min.js}"></script>
+
+    <link href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.5/css/bootstrap.min.css"
+          th:href="@{/webjars/bootstrap/3.3.5/css/bootstrap.min.css}"
+          rel="stylesheet" media="screen"/>
+
+    <script src="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.5/js/bootstrap.min.js"
+            th:src="@{/webjars/bootstrap/3.3.5/js/bootstrap.min.js}"></script>
+
+    <link rel="stylesheet"
+          href="http://cdn.jsdelivr.net/webjars/org.webjars/bootstrap-tagsinput/0.5/bootstrap-tagsinput.css"
+          th:href="@{/css/bootstrap-tagsinput.css}" media="screen"/>
+
+    <script src="../../static/js/charts.js"
+            th:src="@{/js/charts.js}"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"
+            th:src="@{/webjars/Chart.js/2.0.0-alpha3/Chart.min.js}"></script>
+
+
+    <link href="../../static/css/core.css" rel="stylesheet" media="screen"
+          th:href="@{/css/core.css}"/>
+
+    <title th:text="#{project_name}">Project name</title>
+
+</head>
+<body>
+<div th:replace="fragments/header :: header">
+</div>
+<div class="container">
+
+    <div class="well">
+
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+
+                <h3 class="panel-title">Data Channel&nbsp;&nbsp;
+
+                    <span class="clickable panel-title" data-toggle="tooltip" title="Add new block"
+                          data-container="body">
+								<a href="#" th:href="@{/management/block/new/}"
+                                   class="glyphicon glyphicon-plus-sign render-modal"></a>
+                    </span>
+                    &nbsp;&nbsp;
+                    <span class="clickable filter" data-toggle="tooltip" title="Toggle table filter"
+                          data-container="body">
+								<i class="glyphicon glyphicon-filter"></i>
+							</span>
+
+                </h3>
+
+                <div class="pull-right input-group">
+                    <form class="form-search" role="search" th:action="@{/management/block/search}"
+                          action="/management/block/search" method="POST">
+                        <div class="input-group">
+                            <input name="search" class="form-control" type="text" title=""/>
+                          <span class="input-group-btn">
+                            <button type="submit" class="btn btn-default"><i class="glyphicon glyphicon-search"></i>
+                            </button>
+                          </span>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+            <div class="panel-body header-search">
+                <input type="text" class="form-control" id="blocks-table-filter" data-action="filter"
+                       data-filters="#blocks-table" placeholder="Filter blocks"/>
+            </div>
+            <canvas id="myChart" width="400" height="400"></canvas>
+        </div>
+
+    </div>
+
+    <div id="deleteModal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span></a>
+                    <h4 class="modal-title" id="deleteModalLabel">Disable confirmation</h4>
+                </div>
+                <div class="modal-body">
+                    <p class="error-text">Are you sure you want to disable the block?</p>
+                </div>
+                <div class="modal-footer">
+                    <form th:action="@{/management/block/disable}" action="/management/block/disable" method="post">
+                        <input type="hidden" name="blockId" id="entityId" class="form-control">
+                          <span class="input-group-btn">
+                              <button class="btn btn-info" data-dismiss="modal" aria-hidden="true">Cancel</button>
+                              <button type="submit" class="btn btn-danger">Disable</button>
+                          </span>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="genericModal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="genericModal"
+         aria-hidden="true">
+        <div class="modal-dialog" style="width: 900px;">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <p>One fine body</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script> $('#genericModal').on('shown.bs.modal', function () {
+        codeMirror = CodeMirror.fromTextArea($("#blockFunction")[0], {
+            autoCloseTags: true,
+            lineNumbers: true,
+            fixedGutter: true,
+            lineWrapping: true,
+            autoCloseBrackets: true
+        });
+        window.codeMirror.setOption("mode", $('#blockType').val().toLowerCase());
+    });
+    </script>
+    <div th:replace="fragments/footer :: footer">&copy; 2014 The Static Templates</div>
+</div>
+</body>
+</html>
