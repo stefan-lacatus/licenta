@@ -3,6 +3,7 @@ package ro.pub.acse.sapd.configuration.security;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 public class TokenBasedRememberMeService extends TokenBasedRememberMeServices {
@@ -23,6 +24,11 @@ public class TokenBasedRememberMeService extends TokenBasedRememberMeServices {
     protected String extractRememberMeCookie(HttpServletRequest request) {
         String token = request.getHeader(HEADER_SECURITY_TOKEN);
         if ((token == null) || (token.length() == 0)) {
+            for (Cookie cookie : request.getCookies()) {
+                if (cookie.getName().equals("at")) {
+                    return cookie.getValue();
+                }
+            }
             return null;
         }
 
