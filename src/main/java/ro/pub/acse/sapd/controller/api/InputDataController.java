@@ -20,14 +20,14 @@ import java.util.List;
  * Handles adding new data
  */
 @RestController
-@RequestMapping("/api/input/")
+@RequestMapping("/api/")
 public class InputDataController {
     @Autowired
     DataChannelRepository dataRepository;
     @Autowired
     DataService dataService;
 
-    @RequestMapping(value = "{inputId}/{channelId}/{data}", method = RequestMethod.PUT)
+    @RequestMapping(value = "put/{inputId}/{channelId}/{data}", method = RequestMethod.PUT)
     @ResponseBody
     public ResponseEntity<String> addDataPut(@PathVariable Long inputId, @PathVariable Long channelId,
                                              @PathVariable String data) throws DiagramExecutionException, BlockExecutionException {
@@ -41,9 +41,13 @@ public class InputDataController {
     @ResponseBody
     public List<DataPoint> getData(@PathVariable Long channelId,
                                    @RequestParam("from") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Date from,
-                                   @RequestParam("to") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Date to) {
+                                   @RequestParam("to") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Date to,
+                                   @RequestParam(value = "maxItems", required = false) Integer maxItems) {
         DataChannel channel = dataRepository.findOne(channelId);
-        return dataService.getDataPoints(channel, from, to);
+        if (maxItems == null || maxItems == 0) {
+            maxItems = 100;
+        }
+        return dataService.getDataPoints(channel, from, to, maxItems);
     }
 
     @RequestMapping(value = "fetch/last/{channelId}", method = RequestMethod.GET,

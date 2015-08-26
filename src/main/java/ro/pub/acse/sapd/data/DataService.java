@@ -54,12 +54,11 @@ public class DataService {
         }
     }
 
-    public List<DataPoint> getDataPoints(DataChannel channel, Date startInterval, Date endInterval) {
-        return dataRepository.getDataOnChannel(channel, startInterval, endInterval);
+    public List<DataPoint> getDataPoints(DataChannel channel, Date startInterval, Date endInterval, Integer maxItems) {
+        return dataRepository.getDataOnChannel(channel, startInterval, endInterval, new PageRequest(0, maxItems));
     }
 
     public List<DataPoint> getLastDataPoints(DataChannel channel, Integer maxItems) {
-
         return dataRepository.getLastDataOnChannel(channel, new PageRequest(0, maxItems));
     }
 }

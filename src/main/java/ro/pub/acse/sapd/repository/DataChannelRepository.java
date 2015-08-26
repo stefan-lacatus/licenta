@@ -20,7 +20,8 @@ public interface DataChannelRepository extends JpaRepository<DataChannel, Long>,
     @Query("SELECT p FROM DataPointEntity p WHERE p.channel = :channel and  p.timestamp between :startInterval and :endInterval")
     List<DataPoint> getDataOnChannel(@Param("channel") DataChannel channel,
                                      @Param("startInterval") Date startInterval,
-                                     @Param("endInterval") Date endInterval);
+                                     @Param("endInterval") Date endInterval,
+                                     Pageable pageable);
 
     @Query(value = "Select p FROM DataPointEntity p WHERE p.channel = :channel order by p.timestamp DESC")
     List<DataPoint> getLastDataOnChannel(@Param("channel") DataChannel channel, Pageable pageable);
