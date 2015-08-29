@@ -8,7 +8,7 @@ $(document).ready(function () {
     // Get the context of the canvas element we want to select
     window.lineChart = new Dygraph(
         // containing div
-        document.getElementById("myChart"), chartData,
+        document.getElementById("channelChart"), chartData,
         {
             drawPoints: true,
             showRoller: true,
@@ -34,10 +34,31 @@ function updateChart() {
         }
         $.getJSON(uri, function (data) {
             window.chartData = [];
+            var displayTable = false;
             $.each(data, function (key) {
-                window.chartData.push([new Date(this.timeStamp + 1000 * key), parseFloat(this.value)]);
+                window.chartData.push([new Date(this.timeStamp + 1000 * key),
+                    isNaN(this.value) ? this.value : parseFloat(this.value)]);
+                displayTable = isNaN(this.value);
             });
-            window.lineChart.updateOptions({'file': window.chartData});
+            if (displayTable) {
+                document.getElementById('channelTable').style.display = "block";
+                document.getElementById('channelChart').style.display = "none";
+                var $channelTable = $("#channelTable");
+                var tbody = $channelTable.find("tbody");
+                $.each(window.chartData, function (i, data) {
+                    var tr = $('<tr>');
+                    $('<td>').html(data[0]).appendTo(tr);
+                    $('<td>').html(data[1]).appendTo(tr);
+                    tbody.append(tr);
+                });
+                $channelTable.trigger("update");
+            } else {
+                document.getElementById('channelTable').style.display = "none";
+                document.getElementById('channelChart').style.display = "block";
+                if (window.chartData.length > 0) {
+                    window.lineChart.updateOptions({'file': window.chartData});
+                }
+            }
         });
 
 

@@ -24,6 +24,15 @@
     <link th:href="@{/webjars/Eonasdan-bootstrap-datetimepicker/4.15.35/css/bootstrap-datetimepicker.min.css}"
           rel="stylesheet" media="screen"/>
 
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.22.3/css/theme.bootstrap.min.css"
+          th:href="@{/css/tablesorter/theme.bootstrap.min.css}" rel="stylesheet" media="screen"/>
+
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.22.3/js/jquery.tablesorter.min.js"
+            th:src="@{/js/tablesorter/jquery.tablesorter.combined.js}"></script>
+
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.22.3/js/jquery.tablesorter.widgets.min.js"
+            th:src="@{/js/tablesorter/jquery.tablesorter.widgets.min.js}"></script>
+
     <script src="../../static/js/charts.js"
             th:src="@{/js/charts.js}"></script>
 
@@ -110,7 +119,26 @@
                                 </span>
                 </div>
             </div>
-            <div id="myChart"></div>
+            <div id="channelChart"></div>
+            <table id="channelTable" style="display: none" class="table table-hover" border='1'>
+                <thead>
+                <tr>
+                    <th>Timestamp</th>
+                    <th>Value</th>
+                </tr>
+                </thead>
+                <tbody id="channelTableBody">
+                </tbody>
+            </table>
+            <script type="text/javascript">
+                $(function () {
+                    $("#channelTable").tablesorter({
+                        theme: "bootstrap",
+                        widgets: ["uitheme", "zebra"],
+                        headerTemplate: '{content} {icon}'
+                    })
+                });
+            </script>
         </div>
 
     </div>
