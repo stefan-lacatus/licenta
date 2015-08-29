@@ -1,0 +1,167 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <script src="http://cdn.jsdelivr.net/webjars/jquery/2.1.4/jquery.min.js"
+            th:src="@{/webjars/jquery/2.1.4/jquery.min.js}"></script>
+
+    <link href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.5/css/bootstrap.min.css"
+          th:href="@{/webjars/bootstrap/3.3.5/css/bootstrap.min.css}"
+          rel="stylesheet" media="screen"/>
+
+    <script src="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.5/js/bootstrap.min.js"
+            th:src="@{/webjars/bootstrap/3.3.5/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/bootstrap3-typeahead.min.js}"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dygraph/1.1.1/dygraph-combined.js"
+            th:src="@{/webjars/dygraphs/1.1.1/dygraph-combined.js}"></script>
+
+    <script th:src="@{/webjars/momentjs/2.10.6/min/moment.min.js}"></script>
+    <script th:src="@{/webjars/Eonasdan-bootstrap-datetimepicker/4.15.35/js/bootstrap-datetimepicker.min.js}"></script>
+    <link th:href="@{/webjars/Eonasdan-bootstrap-datetimepicker/4.15.35/css/bootstrap-datetimepicker.min.css}"
+          rel="stylesheet" media="screen"/>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.22.3/css/theme.bootstrap.min.css"
+          th:href="@{/css/tablesorter/theme.bootstrap.min.css}" rel="stylesheet" media="screen"/>
+
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.22.3/js/jquery.tablesorter.min.js"
+            th:src="@{/js/tablesorter/jquery.tablesorter.combined.js}"></script>
+
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.22.3/js/jquery.tablesorter.widgets.min.js"
+            th:src="@{/js/tablesorter/jquery.tablesorter.widgets.min.js}"></script>
+
+    <script src="../../static/js/charts.js"
+            th:src="@{/js/charts.js}"></script>
+
+    <script src="../../static/js/custom.js"
+            th:src="@{/js/custom.js}"></script>
+
+    <link href="../../static/css/core.css" rel="stylesheet" media="screen"
+          th:href="@{/css/core.css}"/>
+
+    <title th:text="#{project_name}">Project name</title>
+
+</head>
+<body>
+<div th:replace="fragments/header :: header">
+</div>
+<div class="container">
+
+    <div class="well">
+
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+
+                <h3 class="panel-title">Data Channel&nbsp;&nbsp;
+                    <span class="clickable filter" data-toggle="tooltip" title="Toggle table filter"
+                          data-container="body">
+								<i class="glyphicon glyphicon-filter"></i>
+                    </span>
+
+                </h3>
+
+                <div class="pull-right input-group">
+                    <div class="form-search">
+                        <div class="input-group">
+                            <input type="hidden" class="form-control" id="channelId">
+                            <input type="text" class="form-control" id="channelName" placeholder="Channel Name"
+                                   autocomplete="off">
+
+
+                            <script>
+                                var blocks = $.getJSON('/blocks/getChannels', function (data) {
+                                    var elt = $("#channelName");
+                                    elt.typeahead({
+                                        source: data,
+                                        autoSelect: true,
+                                        afterSelect: function (currItem) {
+                                            $('#channelId').val(currItem.id);
+                                            updateChart();
+                                        }
+                                    });
+                                });
+                                $(function () {
+                                    var $startDate = $('#startDate');
+                                    $startDate.datetimepicker();
+                                    var $endDate = $('#endDate');
+                                    $endDate.datetimepicker({
+                                        useCurrent: false
+                                    });
+                                    $startDate.on("dp.change", function (e) {
+                                        $endDate.data("DateTimePicker").minDate(e.date);
+                                        updateChart();
+                                    });
+                                    $endDate.on("dp.change", function (e) {
+                                        $startDate.data("DateTimePicker").maxDate(e.date);
+                                        updateChart();
+                                    });
+                                });
+                            </script>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="panel-body header-search form-inline">
+                <div class='input-group date' id='startDate'>
+                    <input type='text' class="form-control" placeholder="Start Date"/>
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                </div>
+                <span class="glyphicon glyphicon-arrow-right"></span>
+
+                <div class='input-group date' id='endDate'>
+                    <input type='text' class="form-control" placeholder="End Date"/>
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                </div>
+                <label class="control-label" for="maxItems">Maximum Items:</label>
+
+                <div class='input-group date'>
+                    <input id="maxItems" type='number' class="form-control" placeholder="Max Items"
+                           onchange="updateChart()"/>
+                </div>
+            </div>
+            <div id="channelChart"></div>
+            <table id="channelTable" style="display: none" class="table table-hover" border='1'>
+                <thead>
+                <tr>
+                    <th>Timestamp</th>
+                    <th>Value</th>
+                </tr>
+                </thead>
+                <tbody id="channelTableBody">
+                </tbody>
+            </table>
+            <script type="text/javascript">
+                $(function () {
+                    $("#channelTable").tablesorter({
+                        theme: "bootstrap",
+                        widgets: ["uitheme", "zebra"],
+                        headerTemplate: '{content} {icon}'
+                    })
+                });
+            </script>
+        </div>
+
+    </div>
+
+    <div id="genericModal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="genericModal"
+         aria-hidden="true">
+        <div class="modal-dialog" style="width: 900px;">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <p>One fine body</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:replace="fragments/footer :: footer">&copy; 2014 The Static Templates</div>
+</div>
+</body>
+</html>
