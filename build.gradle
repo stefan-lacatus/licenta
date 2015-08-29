@@ -55,7 +55,7 @@ dependencies {
     compile 'org.webjars:bootstrap:3.3.5'
     compile 'org.webjars:jquery:2.1.4'
     compile 'org.webjars:codemirror:5.5'
-    compile 'org.webjars.bower:Chart.js:2.0.0-alpha3'
+    compile 'org.webjars:dygraphs:1.1.1'
     compile 'org.webjars:momentjs:2.10.6'
     compile 'org.webjars:Eonasdan-bootstrap-datetimepicker:4.15.35'
     runtime 'org.jruby:jruby-core:9.0.0.0'

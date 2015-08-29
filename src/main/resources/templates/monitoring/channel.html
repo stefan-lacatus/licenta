@@ -16,8 +16,8 @@
             th:src="@{/webjars/bootstrap/3.3.5/js/bootstrap.min.js}"></script>
     <script th:src="@{/js/bootstrap3-typeahead.min.js}"></script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"
-            th:src="@{/webjars/Chart.js/2.0.0-alpha3/Chart.min.js}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dygraph/1.1.1/dygraph-combined.js"
+            th:src="@{/webjars/dygraphs/1.1.1/dygraph-combined.js}"></script>
 
     <script th:src="@{/webjars/momentjs/2.10.6/min/moment.min.js}"></script>
     <script th:src="@{/webjars/Eonasdan-bootstrap-datetimepicker/4.15.35/js/bootstrap-datetimepicker.min.js}"></script>
@@ -26,6 +26,9 @@
 
     <script src="../../static/js/charts.js"
             th:src="@{/js/charts.js}"></script>
+
+    <script src="../../static/js/custom.js"
+            th:src="@{/js/custom.js}"></script>
 
     <link href="../../static/css/core.css" rel="stylesheet" media="screen"
           th:href="@{/css/core.css}"/>
@@ -44,17 +47,10 @@
             <div class="panel-heading">
 
                 <h3 class="panel-title">Data Channel&nbsp;&nbsp;
-
-                    <span class="clickable panel-title" data-toggle="tooltip" title="Add new block"
-                          data-container="body">
-								<a href="#" th:href="@{/management/block/new/}"
-                                   class="glyphicon glyphicon-plus-sign render-modal"></a>
-                    </span>
-                    &nbsp;&nbsp;
                     <span class="clickable filter" data-toggle="tooltip" title="Toggle table filter"
                           data-container="body">
 								<i class="glyphicon glyphicon-filter"></i>
-							</span>
+                    </span>
 
                 </h3>
 
@@ -65,18 +61,7 @@
                             <input type="text" class="form-control" id="channelName" placeholder="Channel Name"
                                    autocomplete="off">
 
-                            <div class='input-group date' id='startDate'>
-                                <input type='text' class="form-control" placeholder="Start Date"/>
-                                <span class="input-group-addon">
-                                    <span class="glyphicon glyphicon-calendar"></span>
-                                </span>
-                            </div>
-                            <div class='input-group date' id='endDate'>
-                                <input type='text' class="form-control" placeholder="End Date"/>
-                                <span class="input-group-addon">
-                                    <span class="glyphicon glyphicon-calendar"></span>
-                                </span>
-                            </div>
+
                             <script>
                                 var blocks = $.getJSON('/blocks/getChannels', function (data) {
                                     var elt = $("#channelName");
@@ -85,6 +70,7 @@
                                         autoSelect: true,
                                         afterSelect: function (currItem) {
                                             $('#channelId').val(currItem.id);
+                                            updateChart();
                                         }
                                     });
                                 });
@@ -97,9 +83,11 @@
                                     });
                                     $startDate.on("dp.change", function (e) {
                                         $endDate.data("DateTimePicker").minDate(e.date);
+                                        updateChart();
                                     });
                                     $endDate.on("dp.change", function (e) {
                                         $startDate.data("DateTimePicker").maxDate(e.date);
+                                        updateChart();
                                     });
                                 });
                             </script>
@@ -108,37 +96,25 @@
 
                 </div>
             </div>
-            <div class="panel-body header-search">
-
+            <div class="panel-body header-search form-inline">
+                <div class='input-group date' id='startDate'>
+                    <input type='text' class="form-control" placeholder="Start Date"/>
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                </div>
+                <div class='input-group date' id='endDate'>
+                    <input type='text' class="form-control" placeholder="End Date"/>
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                </div>
             </div>
-            <canvas id="myChart" width="400" height="400"></canvas>
+            <div id="myChart"></div>
         </div>
 
     </div>
 
-    <div id="deleteModal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
-         aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <a class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span></a>
-                    <h4 class="modal-title" id="deleteModalLabel">Disable confirmation</h4>
-                </div>
-                <div class="modal-body">
-                    <p class="error-text">Are you sure you want to disable the block?</p>
-                </div>
-                <div class="modal-footer">
-                    <form th:action="@{/management/block/disable}" action="/management/block/disable" method="post">
-                        <input type="hidden" name="blockId" id="entityId" class="form-control">
-                          <span class="input-group-btn">
-                              <button class="btn btn-info" data-dismiss="modal" aria-hidden="true">Cancel</button>
-                              <button type="submit" class="btn btn-danger">Disable</button>
-                          </span>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
     <div id="genericModal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="genericModal"
          aria-hidden="true">
         <div class="modal-dialog" style="width: 900px;">
@@ -149,17 +125,6 @@
             </div>
         </div>
     </div>
-    <script> $('#genericModal').on('shown.bs.modal', function () {
-        codeMirror = CodeMirror.fromTextArea($("#blockFunction")[0], {
-            autoCloseTags: true,
-            lineNumbers: true,
-            fixedGutter: true,
-            lineWrapping: true,
-            autoCloseBrackets: true
-        });
-        window.codeMirror.setOption("mode", $('#blockType').val().toLowerCase());
-    });
-    </script>
     <div th:replace="fragments/footer :: footer">&copy; 2014 The Static Templates</div>
 </div>
 </body>
