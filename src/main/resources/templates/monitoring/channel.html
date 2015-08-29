@@ -112,11 +112,18 @@
                                     <span class="glyphicon glyphicon-calendar"></span>
                                 </span>
                 </div>
+                <span class="glyphicon glyphicon-arrow-right"></span>
                 <div class='input-group date' id='endDate'>
                     <input type='text' class="form-control" placeholder="End Date"/>
                                 <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-calendar"></span>
                                 </span>
+                </div>
+                <label class="control-label" for="maxItems">Maximum Items:</label>
+
+                <div class='input-group date'>
+                    <input id="maxItems" type='number' class="form-control" placeholder="Max Items"
+                           onchange="updateChart()"/>
                 </div>
             </div>
             <div id="channelChart"></div>

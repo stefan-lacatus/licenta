@@ -20,17 +20,18 @@ $(document).ready(function () {
 
 function updateChart() {
     update($('#channelId').val(), $('#startDate').data("DateTimePicker").date(),
-        $('#endDate').data("DateTimePicker").date(), false);
+        $('#endDate').data("DateTimePicker").date(), $("#maxItems").val(), false);
 
-    function update(channel, start, end, append) {
+    function update(channel, start, end, maxItems, append) {
+        if (!maxItems) maxItems = 100;
         var uri;
         if (start || end) {
             uri = "/api/fetch/" + channel + "?";
             var from = start ? start.toISOString() : new Date().toISOString();
             var to = end ? end.toISOString() : new Date(). toISOString();
-            uri += $.param([{name: "from", value: from}, {name: "to", value: to}]);
+            uri += $.param([{name: "from", value: from}, {name: "to", value: to}, {name: "maxItems", value: maxItems}]);
         } else {
-            uri = "/api/fetch/last/" + channel + "?maxItems=100";
+            uri = "/api/fetch/last/" + channel + "?maxItems=" + maxItems;
         }
         $.getJSON(uri, function (data) {
             window.chartData = [];
