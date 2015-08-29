@@ -28,7 +28,6 @@ public class InputDataController {
     DataService dataService;
 
     @RequestMapping(value = "put/{inputId}/{channelId}/{data}", method = RequestMethod.PUT)
-    @ResponseBody
     public ResponseEntity<String> addDataPut(@PathVariable Long inputId, @PathVariable Long channelId,
                                              @PathVariable String data) throws DiagramExecutionException, BlockExecutionException {
         DataChannel channel = dataRepository.findOne(channelId);
@@ -38,7 +37,6 @@ public class InputDataController {
 
     @RequestMapping(value = "fetch/{channelId}", method = RequestMethod.GET,
             headers = "Accept=application/json")
-    @ResponseBody
     public List<DataPoint> getData(@PathVariable Long channelId,
                                    @RequestParam("from") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Date from,
                                    @RequestParam("to") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Date to,
@@ -52,7 +50,6 @@ public class InputDataController {
 
     @RequestMapping(value = "fetch/last/{channelId}", method = RequestMethod.GET,
             headers = "Accept=application/json")
-    @ResponseBody
     public List<DataPoint> getLastData(@PathVariable Long channelId,
                                        @RequestParam("maxItems") Integer maxItems) {
         DataChannel channel = dataRepository.findOne(channelId);

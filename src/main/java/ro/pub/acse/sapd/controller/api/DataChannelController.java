@@ -1,9 +1,8 @@
 package ro.pub.acse.sapd.controller.api;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import ro.pub.acse.sapd.model.entities.DataChannel;
 import ro.pub.acse.sapd.model.entities.FunctionalDiagram;
 import ro.pub.acse.sapd.model.entities.InputBlock;
@@ -15,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Controller
+@RestController
 public class DataChannelController {
     @Autowired
     private InputBlockRepository inputBlockRepository;
@@ -23,7 +22,6 @@ public class DataChannelController {
     private FunctionalDiagramRepository diagramRepository;
 
     @RequestMapping(value = "/blocks/getChannels", headers = "Accept=application/json")
-    @ResponseBody
     public List<InputChannelJsonResult> getAllChannels() {
         List<InputChannelJsonResult> channels = new ArrayList<>();
         for (InputBlock inputBlock : inputBlockRepository.findAll()) {
