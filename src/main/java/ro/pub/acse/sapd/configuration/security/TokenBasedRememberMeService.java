@@ -24,14 +24,15 @@ public class TokenBasedRememberMeService extends TokenBasedRememberMeServices {
     protected String extractRememberMeCookie(HttpServletRequest request) {
         String token = request.getHeader(HEADER_SECURITY_TOKEN);
         if ((token == null) || (token.length() == 0)) {
-            for (Cookie cookie : request.getCookies()) {
-                if (cookie.getName().equals("at")) {
-                    return cookie.getValue();
+            if (request.getCookies() != null) {
+                for (Cookie cookie : request.getCookies()) {
+                    if (cookie.getName().equals("at")) {
+                        return cookie.getValue();
+                    }
                 }
+                return null;
             }
-            return null;
         }
-
         return token;
     }
 }

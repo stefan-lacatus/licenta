@@ -17,7 +17,11 @@ public enum DataType {
      *
      * @see <a href="http://www.ietf.org/rfc/rfc4627.txt">RFC4627</a>
      */
-    STRING("String");
+    STRING("String"),
+    /**
+     * A serialized object that is stored as a string in the database
+     */
+    OBJECT("Object");
 
     private final String value;
 
