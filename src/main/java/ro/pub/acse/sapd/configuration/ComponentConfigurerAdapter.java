@@ -9,7 +9,6 @@ import org.springframework.format.FormatterRegistry;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
@@ -57,12 +56,6 @@ public class ComponentConfigurerAdapter extends WebMvcConfigurerAdapter {
         resolver.setFallbackPageable(new PageRequest(0, 30, Sort.Direction.DESC, "id"));
         argumentResolvers.add(resolver);
         super.addArgumentResolvers(argumentResolvers);
-    }
-
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("**/*.css", "**/*.js", "**/*.map", "*.html").
-                addResourceLocations("classpath:META-INF/resources/").setCachePeriod(0);
     }
 
     @Override
