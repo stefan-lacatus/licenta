@@ -13,7 +13,7 @@ import java.sql.Types;
 @Component
 public class DataChannelRepositoryImpl implements DataChannelCustomRepository {
     private final static String INSERT_DATA_QUERY = "INSERT INTO data_points(channel_id, value, timestamp) " +
-            "VALUES (?, ?, ?)";
+            "VALUES (?, ?, ? )";
     @Autowired
     private DataSource dataSource;
 
