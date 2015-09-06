@@ -50,8 +50,8 @@ dependencies {
     compile('com.zaxxer:HikariCP:2.4.0')
     compile('net.sourceforge.nekohtml:nekohtml:1.9.22')
     compile('org.thymeleaf.extras:thymeleaf-extras-java8time:2.1.0.RELEASE')
-    compile('org.jsondoc:spring-boot-starter-jsondoc:1.2.2')
-    compile('org.jsondoc:jsondoc-ui-webjar:1.2.2')
+    // compile('org.jsondoc:spring-boot-starter-jsondoc:1.2.2')
+    //  compile('org.jsondoc:jsondoc-ui-webjar:1.2.2')
 
     compile 'org.webjars:bootstrap:3.3.5'
     compile 'org.webjars:jquery:2.1.4'
