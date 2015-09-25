@@ -18,50 +18,48 @@ $(document).ready(function () {
     );
 });
 
-function updateChart() {
+setInterval(function updateChart() {
     update($('#channelId').val(), $('#startDate').data("DateTimePicker").date(),
         $('#endDate').data("DateTimePicker").date(), $("#maxItems").val(), false);
+}, 2000);
 
-    function update(channel, start, end, maxItems, append) {
-        if (!maxItems) maxItems = 100;
-        var uri;
-        if (start || end) {
-            uri = "/api/fetch/" + channel + "?";
-            var from = start ? start.toISOString() : new Date().toISOString();
-            var to = end ? end.toISOString() : new Date(). toISOString();
-            uri += $.param([{name: "from", value: from}, {name: "to", value: to}, {name: "maxItems", value: maxItems}]);
-        } else {
-            uri = "/api/fetch/last/" + channel + "?maxItems=" + maxItems;
-        }
-        $.getJSON(uri, function (data) {
-            window.chartData = [];
-            var displayTable = false;
-            $.each(data, function (key) {
-                window.chartData.push([new Date(this.timeStamp + 1000 * key),
-                    isNaN(this.value) ? this.value : parseFloat(this.value)]);
-                displayTable = isNaN(this.value);
-            });
-            if (displayTable) {
-                document.getElementById('channelTable').style.display = "block";
-                document.getElementById('channelChart').style.display = "none";
-                var $channelTable = $("#channelTable");
-                var tbody = $channelTable.find("tbody");
-                $.each(window.chartData, function (i, data) {
-                    var tr = $('<tr>');
-                    $('<td>').html(data[0]).appendTo(tr);
-                    $('<td>').html(data[1]).appendTo(tr);
-                    tbody.append(tr);
-                });
-                $channelTable.trigger("update");
-            } else {
-                document.getElementById('channelTable').style.display = "none";
-                document.getElementById('channelChart').style.display = "block";
-                if (window.chartData.length > 0) {
-                    window.lineChart.updateOptions({'file': window.chartData});
-                }
-            }
-        });
-
-
+function update(channel, start, end, maxItems, append) {
+    if (!maxItems) maxItems = 100;
+    var uri;
+    if (start || end) {
+        uri = "/api/fetch/" + channel + "?";
+        var from = start ? start.toISOString() : new Date().toISOString();
+        var to = end ? end.toISOString() : new Date(). toISOString();
+        uri += $.param([{name: "from", value: from}, {name: "to", value: to}, {name: "maxItems", value: maxItems}]);
+    } else {
+        uri = "/api/fetch/last/" + channel + "?maxItems=" + maxItems;
     }
+    $.getJSON(uri, function (data) {
+        window.chartData = [];
+        var displayTable = false;
+        $.each(data, function (key) {
+            window.chartData.push([new Date(this.timeStamp),
+                isNaN(this.value) ? this.value : parseFloat(this.value)]);
+            displayTable = isNaN(this.value);
+        });
+        if (displayTable) {
+            document.getElementById('channelTable').style.display = "block";
+            document.getElementById('channelChart').style.display = "none";
+            var $channelTable = $("#channelTable");
+            var tbody = $channelTable.find("tbody");
+            $.each(window.chartData, function (i, data) {
+                var tr = $('<tr>');
+                $('<td>').html(data[0]).appendTo(tr);
+                $('<td>').html(data[1]).appendTo(tr);
+                tbody.append(tr);
+            });
+            $channelTable.trigger("update");
+        } else {
+            document.getElementById('channelTable').style.display = "none";
+            document.getElementById('channelChart').style.display = "block";
+            if (window.chartData.length > 0) {
+                window.lineChart.updateOptions({'file': window.chartData});
+            }
+        }
+    });
 }
