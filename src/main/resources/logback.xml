@@ -1,8 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration>
+<configuration debug="true">
     <include resource="org/springframework/boot/logging/logback/base.xml"/>
-
+    <appender name="db" class="ch.qos.logback.classic.db.DBAppender">
+        <connectionSource
+                class="ch.qos.logback.core.db.DriverManagerConnectionSource">
+            <driverClass>org.postgresql.Driver</driverClass>
+            <url>jdbc:postgresql://localhost:5432/sapd_logs</url>
+            <user>licenta</user>
+            <password>test123#</password> <!-- no password -->
+        </connectionSource>
+        <SQLDialect class="ch.qos.logback.core.db.dialect.PostgreSQLDialect"/>
+        <insertHeaders>true</insertHeaders>
+    </appender>
     <root level="INFO">
         <appender-ref ref="FILE"/>
+        <appender-ref ref="db"/>
     </root>
 </configuration>
