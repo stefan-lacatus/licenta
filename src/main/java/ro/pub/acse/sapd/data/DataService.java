@@ -1,10 +1,12 @@
 package ro.pub.acse.sapd.data;
 
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
+import ro.pub.acse.sapd.SapdApplication;
 import ro.pub.acse.sapd.blocks.BlockExecutionException;
 import ro.pub.acse.sapd.blocks.BlockExecutor;
 import ro.pub.acse.sapd.diagrams.executor.DiagramExecutionException;
@@ -31,6 +33,7 @@ public class DataService {
     DiagramExecutor diagramExecutor;
     @Loggable
     private Logger LOGGER;
+    private Logger eventLogger = LoggerFactory.getLogger(SapdApplication.EVENT_LOGGER);
 
     public int addData(DataChannel channel, DataPoint data) throws BlockExecutionException, DiagramExecutionException {
         if (channel.getInputPreprocessor() != null) {
@@ -40,7 +43,7 @@ public class DataService {
         }
         int rows = dataRepository.addDataToTable(channel.getId(), data);
         LOGGER.debug(String.format("New data %s on channel %s", channel.getName(), data.getValue()));
-
+        eventLogger.warn(String.format("New data %s on channel %s", channel.getName(), data.getValue()));
         fireNewDataOnChannel(channel);
         return rows;
     }
@@ -50,6 +53,8 @@ public class DataService {
         for (FunctionalDiagram functionalDiagram : channel.getSubscribedDiagrams()) {
             DataPoint result = diagramExecutor.execute(functionalDiagram);
             LOGGER.debug(String.format("Executed diagram %s because of new data on channel %s and got result %s",
+                    functionalDiagram.getName(), channel.getName(), result.getValue()));
+            eventLogger.debug(String.format("Executed diagram %s because of new data on channel %s and got result %s",
                     functionalDiagram.getName(), channel.getName(), result.getValue()));
         }
     }

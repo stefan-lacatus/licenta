@@ -9,8 +9,6 @@
             <user>licenta</user>
             <password>test123#</password> <!-- no password -->
         </connectionSource>
-        <SQLDialect class="ch.qos.logback.core.db.dialect.PostgreSQLDialect"/>
-        <insertHeaders>true</insertHeaders>
     </appender>
     <root level="INFO">
         <appender-ref ref="FILE"/>
