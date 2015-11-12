@@ -9,6 +9,7 @@ import ro.pub.acse.sapd.data.DataPoint;
 import ro.pub.acse.sapd.logging.Loggable;
 import ro.pub.acse.sapd.model.entities.ProcessorBlock;
 
+import javax.script.ScriptException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,8 +25,12 @@ public class BlockExecutor {
 
     public BlockExecutor() {
         executors.put(ProcessorBlockType.JAVA, new JavaBlockExecutor());
-        executors.put(ProcessorBlockType.JAVASCRIPT, new JavascriptBlockExecutor());
-        executors.put(ProcessorBlockType.RUBY, new RubyBlockExecutor());
+        try {
+            executors.put(ProcessorBlockType.JAVASCRIPT, new JavascriptBlockExecutor());
+            executors.put(ProcessorBlockType.RUBY, new RubyBlockExecutor());
+        } catch (ScriptException e) {
+            log.warn("Failed to initialize the script manager functions", e);
+        }
     }
 
     public DataPoint execute(ProcessorBlock block, List<DataPoint> points) throws BlockExecutionException {

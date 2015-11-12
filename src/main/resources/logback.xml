@@ -12,6 +12,6 @@
     </appender>
     <root level="INFO">
         <appender-ref ref="FILE"/>
-        <appender-ref ref="db"/>
+        <!--appender-ref ref="db"/-->
     </root>
 </configuration>

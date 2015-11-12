@@ -13,13 +13,12 @@ import java.util.List;
  * Executes a block using the script engine mechanism defined in java
  */
 public class ScriptEngineBlockExecutor implements GenericBlockExecutor {
-    private final ScriptEngine engine;
+    protected final ScriptEngine engine;
 
     public ScriptEngineBlockExecutor(String engineName) {
         engine = new ScriptEngineManager().getEngineByName(engineName);
         // add some loggers to the engine
         engine.put("log", LoggerFactory.getLogger(SapdApplication.EVENT_LOGGER));
-        engine.getBindings(ScriptContext.ENGINE_SCOPE).put()
     }
 
     @Override
