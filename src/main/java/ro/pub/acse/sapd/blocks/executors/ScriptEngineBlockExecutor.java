@@ -1,5 +1,6 @@
 package ro.pub.acse.sapd.blocks.executors;
 
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ro.pub.acse.sapd.SapdApplication;
 import ro.pub.acse.sapd.blocks.BlockExecutionException;

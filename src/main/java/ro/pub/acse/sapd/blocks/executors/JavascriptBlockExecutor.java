@@ -11,6 +11,6 @@ public class JavascriptBlockExecutor extends ScriptEngineBlockExecutor {
         super("js");
         engine.eval("if (typeof importPackage != 'function') {\n" +
                 "   load('nashorn:mozilla_compat.js');\n" +
-                "} importPackage('ro.pub.acse.sapd.data.impl')");
+                "} importPackage('ro.pub.acse.sapd.data.impl')\n");
     }
 }

@@ -5,15 +5,16 @@ import ro.pub.acse.sapd.blocks.BlockExecutionException;
 
 import javax.script.ScriptException;
 
-import static org.junit.Assert.*;
-
 /**
  * Created by petrisor on 11/11/15.
  */
-public class JavascriptBlockExecutorTest {
+public class RubyBlockExecutorTest {
     @Test
     public void testJsContext() throws ScriptException, BlockExecutionException {
-        JavascriptBlockExecutor test = new JavascriptBlockExecutor();
-        test.processData("function parseInput(data) {log.warn('tdasdsadasdsaest');return new FloatDataPoint(1.0);}",null);
+        RubyBlockExecutor test = new RubyBlockExecutor();
+        test.processData("def parseInput(data) \n" +
+                "$log.warn('test')\n" +
+                "FloatDataPoint.new(1.0);\n" +
+                "end",null);
     }
 }
