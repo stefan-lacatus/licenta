@@ -5,7 +5,7 @@
         <connectionSource
                 class="ch.qos.logback.core.db.DriverManagerConnectionSource">
             <driverClass>org.postgresql.Driver</driverClass>
-            <url>jdbc:postgresql://localhost:5432/sapd_logs</url>
+            <url>jdbc:postgresql://localhost:5432/sapd</url>
             <user>licenta</user>
             <password>test123#</password> <!-- no password -->
         </connectionSource>
