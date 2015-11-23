@@ -11,6 +11,6 @@ public class MonitorChannelController {
     @RequestMapping(value = {"channels", "channels/"})
     public String managementHome(Model model) {
         model.addAttribute("current_page", "monitor");
-        return "monitoring/channel";
+        return "monitor/channel";
     }
 }

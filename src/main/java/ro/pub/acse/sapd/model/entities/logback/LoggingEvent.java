@@ -2,6 +2,7 @@ package ro.pub.acse.sapd.model.entities.logback;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * Created by placatus on 15.11.2015.
@@ -43,6 +44,9 @@ public class LoggingEvent implements Serializable{
     public void setTimestmp(long timestmp) {
         this.timestmp = timestmp;
     }
+
+    @Transient
+    public Date getTimestamp() {return new Date(timestmp);}
 
     @Column(columnDefinition = "text", nullable = false)
     public String getFormattedMessage() {

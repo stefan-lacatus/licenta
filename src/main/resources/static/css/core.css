@@ -91,3 +91,25 @@ body {
     margin-right: 10px;;
     height: 400px;
 }
+
+/* overflow table */
+.wrapper {
+    overflow-x: auto;
+    overflow-y: hidden;
+    width: 800px;
+}
+.wrapper table {
+    width: auto;
+    table-layout: fixed;
+}
+.wrapper .tablesorter td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 10px;
+}
+.wrapper .tablesorter th {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 10px;
+}

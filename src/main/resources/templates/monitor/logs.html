@@ -1,0 +1,127 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <script src="http://cdn.jsdelivr.net/webjars/jquery/2.1.4/jquery.min.js"
+            th:src="@{/webjars/jquery/2.1.4/jquery.min.js}"></script>
+
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.22.3/css/theme.bootstrap.min.css"
+          th:href="@{/css/tablesorter/theme.bootstrap.min.css}" rel="stylesheet" media="screen"/>
+
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.22.3/js/jquery.tablesorter.min.js"
+            th:src="@{/js/tablesorter/jquery.tablesorter.combined.js}"></script>
+
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.22.3/js/jquery.tablesorter.widgets.min.js"
+            th:src="@{/js/tablesorter/jquery.tablesorter.widgets.min.js}"></script>
+
+    <link href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.5/css/bootstrap.min.css"
+          th:href="@{/webjars/bootstrap/3.3.5/css/bootstrap.min.css}"
+          rel="stylesheet" media="screen"/>
+
+    <script src="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.5/js/bootstrap.min.js"
+            th:src="@{/webjars/bootstrap/3.3.5/js/bootstrap.min.js}"></script>
+
+    <script src="../../static/js/custom.js"
+            th:src="@{/js/custom.js}"></script>
+
+    <link href="../../static/css/core.css" rel="stylesheet" media="screen"
+          th:href="@{/css/core.css}"/>
+
+    <title th:text="#{project_name}">Project name</title>
+
+</head>
+<body>
+<div th:replace="fragments/header :: header">
+</div>
+<div class="container">
+
+    <div class="well">
+
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+
+                <h3 class="panel-title">Logs&nbsp;&nbsp;
+
+                    <span class="clickable filter" data-toggle="tooltip" title="Toggle table filter"
+                          data-container="body">
+								<i class="glyphicon glyphicon-filter"></i>
+							</span>
+
+                </h3>
+
+                <div class="pull-right input-group">
+                    <form class="form-search" role="search" th:action="@{/monitor/logs/search}"
+                          action="/management/input/search" method="POST">
+                        <div class="input-group">
+                            <input name="search" class="form-control" type="text" title=""/>
+                          <span class="input-group-btn">
+                            <button type="submit" class="btn btn-default"><i class="glyphicon glyphicon-search"></i>
+                            </button>
+                          </span>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+            <div class="panel-body header-search">
+                <input type="text" class="form-control" id="logs-table-filter" data-action="filter"
+                       data-filters="#logs-table" placeholder="Filter inputs"/>
+            </div>
+            <div class="wrapper">
+                <table class="table table-hover" id="logs-table">
+                    <thead>
+                    <tr>
+                        <th class="{sorter: 'isoDate'}">Timestamp</th>
+                        <th>Level</th>
+                        <th>Message</th>
+                        <th>Logger</th>
+                        <th>Class</th>
+                        <th>Method</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="input : ${page.content}" th:classappend="${input.levelString == 'ERROR'} ? 'danger'">
+                        <td th:text="${input.timestamp}">Timestamp</td>
+                        <td th:text="${input.levelString}">channum</td>
+                        <td th:text="${input.formattedMessage}">message</td>
+                        <td th:text="${input.loggerName}">Logger</td>
+                        <td th:text="${input.callerClass}">channum</td>
+                        <td th:text="${input.callerMethod + ': ' + input.callerLine}">lastName</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <script type="text/javascript">
+                $(function () {
+                    $("#logs-table").tablesorter({
+                        theme: "bootstrap",
+                        widgets: ["uitheme", "zebra", 'resizable'],
+                        widgetOptions: {
+                            //resizable_addLastColumn: true,
+                            resizable_widths: ['130px', '50px', '210px', '100px', '10px', '140px']
+                        },
+                        headerTemplate: '{content} {icon}'
+                    })
+                });
+            </script>
+        </div>
+        <div th:replace="fragments/pagination :: paginationbar" class="pagination">
+            <ul class="pagination">
+                <li><a href="#">&laquo;</a></li>
+                <li><a href="#">1</a></li>
+                <li><a href="#">2</a></li>
+                <li><a href="#">3</a></li>
+                <li><a href="#">4</a></li>
+                <li><a href="#">5</a></li>
+                <li><a href="#">&raquo;</a></li>
+            </ul>
+        </div>
+    </div>
+    <div th:replace="fragments/footer :: footer">&copy; 2014 The Static Templates</div>
+</div>
+</body>
+</html>
